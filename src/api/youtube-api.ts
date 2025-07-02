@@ -10,7 +10,7 @@ const THIRTY_MINUTES = 1800; // 30分鐘
 const TWO_HOURS = 7200; // 2小時
 
 // 取得發燒影片（無緩存）
-export const GetHotVideos = async () => {
+export const YoutubeGetHotVideos = async () => {
     const response = await youtube.videos.list({
         part: ['snippet', 'statistics', 'contentDetails'],
         chart: 'mostPopular',
@@ -22,13 +22,17 @@ export const GetHotVideos = async () => {
 };
 
 // 取得發燒影片（帶緩存）
-export const GetHotVideosWithCache = unstable_cache(async () => GetHotVideos(), ['get-hot-videos-cache'], {
-    revalidate: TWO_HOURS,
-    tags: ['youtube-hot-videos']
-});
+export const YoutubeGetHotVideosWithCache = unstable_cache(
+    async () => YoutubeGetHotVideos(),
+    ['get-hot-videos-cache'],
+    {
+        revalidate: TWO_HOURS,
+        tags: ['youtube-hot-videos']
+    }
+);
 
 // 取得影片詳細資訊（無緩存）
-export const GetVideoDetails = async (videoId: string) => {
+export const YoutubeGetVideoDetails = async (videoId: string) => {
     const response = await youtube.videos.list({
         part: ['snippet'],
         id: [videoId]
@@ -38,8 +42,8 @@ export const GetVideoDetails = async (videoId: string) => {
 };
 
 // 取得影片詳細資訊（帶緩存）
-export const GetVideoDetailsWithCache = unstable_cache(
-    async (videoId: string) => GetVideoDetails(videoId),
+export const YoutubeGetVideoDetailsWithCache = unstable_cache(
+    async (videoId: string) => YoutubeGetVideoDetails(videoId),
     ['get-video-details-cache'],
     {
         revalidate: THIRTY_MINUTES,
@@ -48,7 +52,7 @@ export const GetVideoDetailsWithCache = unstable_cache(
 );
 
 // 搜尋影片（無緩存）
-export const SearchVideos = async (query: string, maxResults: number = 10) => {
+export const YoutubeSearchVideos = async (query: string, maxResults: number = 10) => {
     const response = await youtube.search.list({
         part: ['snippet'],
         q: query,
@@ -60,8 +64,8 @@ export const SearchVideos = async (query: string, maxResults: number = 10) => {
 };
 
 // 搜尋影片（帶緩存）
-export const SearchVideosWithCache = unstable_cache(
-    async (query: string, maxResults: number = 10) => SearchVideos(query, maxResults),
+export const YoutubeSearchVideosWithCache = unstable_cache(
+    async (query: string, maxResults: number = 10) => YoutubeSearchVideos(query, maxResults),
     ['search-videos-cache'],
     {
         revalidate: THIRTY_MINUTES,
@@ -70,7 +74,7 @@ export const SearchVideosWithCache = unstable_cache(
 );
 
 // 取得頻道資訊（無緩存）
-export const GetChannelDetails = async (channelId: string) => {
+export const YoutubeGetChannelDetails = async (channelId: string) => {
     const response = await youtube.channels.list({
         part: ['snippet', 'statistics'],
         id: [channelId]
@@ -80,8 +84,8 @@ export const GetChannelDetails = async (channelId: string) => {
 };
 
 // 取得頻道資訊（帶緩存）
-export const GetChannelDetailsWithCache = unstable_cache(
-    async (channelId: string) => GetChannelDetails(channelId),
+export const YoutubeGetChannelDetailsWithCache = unstable_cache(
+    async (channelId: string) => YoutubeGetChannelDetails(channelId),
     ['get-channel-details-cache'],
     {
         revalidate: TWO_HOURS,
