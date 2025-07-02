@@ -1,5 +1,5 @@
 import type { youtube_v3 } from 'googleapis';
-import Image from 'next/image';
+import NativeImage from '@/components/atoms/native-image';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -76,14 +76,8 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
         <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">
             <Card className="flex h-full cursor-pointer flex-col overflow-hidden pt-0 hover:shadow-lg">
                 <AspectRatio ratio={16 / 9}>
-                    <Image
-                        src={thumbnailUrl}
-                        alt={title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                    {isShort && <Badge className="absolute right-2 bottom-2">Shorts</Badge>}
+                    <NativeImage className="h-full w-full object-cover" src={thumbnailUrl} alt={title} loading="lazy" />
+                    {isShort && <Badge className="absolute right-2 bottom-2">SHORTS</Badge>}
                 </AspectRatio>
                 <CardContent className="flex flex-1 flex-col justify-between space-y-2 px-4">
                     <div className="space-y-2">
