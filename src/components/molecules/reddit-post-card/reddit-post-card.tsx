@@ -89,23 +89,19 @@ const RedditPostCard = ({ post }: RedditPostCardProps) => {
                         </div>
                     )}
                     <CardContent className="flex h-[120px] flex-1 flex-col justify-between p-3 sm:h-[140px] sm:p-4">
-                        <div className="space-y-2 sm:space-y-3">
-                            <div className="space-y-1 sm:space-y-2">
-                                <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                                    <Badge variant="secondary" className="text-xs">
-                                        r/{post.subreddit}
-                                    </Badge>
-                                    <span className="text-muted-foreground hidden text-xs sm:inline">
-                                        by {post.author}
-                                    </span>
-                                    <span className="text-muted-foreground text-xs">
-                                        {formatPublishedTime(post.created_utc)}
-                                    </span>
-                                </div>
-                                <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
-                                    {post.title}
-                                </h3>
+                        <div>
+                            <div className="mb-4 flex flex-wrap items-center gap-1 sm:gap-2">
+                                <Badge variant="secondary" className="text-xs">
+                                    r/{post.subreddit}
+                                </Badge>
+                                <span className="text-muted-foreground hidden text-xs sm:inline">by {post.author}</span>
+                                <span className="text-muted-foreground text-xs">
+                                    {formatPublishedTime(post.created_utc)}
+                                </span>
                             </div>
+                            <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                                {post.title}
+                            </h3>
                         </div>
                         <div className="text-muted-foreground mt-2 flex items-center gap-2 text-xs sm:gap-4 sm:text-sm">
                             <div className="flex items-center gap-1">
