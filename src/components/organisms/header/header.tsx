@@ -2,7 +2,7 @@ import { FaGithub, FaGoogle, FaLinkedin } from 'react-icons/fa';
 
 import React from 'react';
 
-import { ThemeToggle } from '@/components/atoms/theme-toggle';
+import ThemeToggle from '@/components/atoms/theme-toggle';
 
 const Header = () => {
     return (

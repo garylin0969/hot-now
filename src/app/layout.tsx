@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import { ThemeProvider } from '@/components/atoms/theme-provider';
-import { Header } from '@/components/organisms/header';
+import ThemeProvider from '@/components/atoms/theme-provider';
+import Header from '@/components/organisms/header';
 import { cn } from '@/utils/shadcn';
 
 import './globals.css';

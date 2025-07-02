@@ -1,5 +1,5 @@
 import { GetHotVideos } from '@/api/youtube-api';
-import VideoCard from '@/components/molecules/video-card/video-card';
+import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 
 const Home = async () => {
     const response = await GetHotVideos();
@@ -9,7 +9,7 @@ const Home = async () => {
         <div className='container mx-auto px-4 py-8'>
             <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5'>
                 {videos.map(video => (
-                    <VideoCard key={video.id} video={video} />
+                    <YoutubeVideoCard key={video.id} video={video} />
                 ))}
             </div>
         </div>
