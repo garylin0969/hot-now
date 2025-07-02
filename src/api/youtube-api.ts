@@ -6,8 +6,8 @@ import { unstable_cache } from 'next/cache';
 const YOUTUBE_API_KEY = String(process.env.NEXT_PRIVATE_YOUTUBE_API_KEY);
 const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
 
-const THIRTY_MINUTES = 1800; // 30分鐘
-const TWO_HOURS = 7200; // 2小時
+const THIRTY_MINUTES = 60 * 30; // 30分鐘
+const TWO_HOURS = 60 * 60 * 2; // 2小時
 
 // 取得發燒影片（無緩存）
 export const GetYoutubeHotVideos = async () => {
