@@ -25,12 +25,8 @@ const simplifyNewsData = (apiResponse: NewsDataApiResponse): SimplifiedNews[] =>
 // 取得熱門新聞
 export const GetNewsDataHotNews = async (limit: number = 10): Promise<NewsDataApiResponse> => {
     const response = await fetch(
-        `${NEWS_DATA_BASE_URL}/latest?apikey=${NEWS_DATA_API_KEY}&country=tw&language=zh&category=top&size=${limit}&timezone=Asia/Taipei`,
-        {
-            next: {
-                revalidate: 60 * 60 * 2, // 2小時
-            },
-        }
+        `${NEWS_DATA_BASE_URL}/latest?apikey=${NEWS_DATA_API_KEY}&country=tw&language=zh&size=${limit}&timezone=Asia/Taipei`,
+        { next: { revalidate: 60 * 60 * 2 } }
     );
     const data = await response.json();
     console.log(data);
