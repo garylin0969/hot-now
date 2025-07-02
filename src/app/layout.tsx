@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import { ThemeProvider } from '@/components/atoms/theme-provider';
 import { Header } from '@/components/organisms/header';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn';
 
 import './globals.css';
 
@@ -27,10 +28,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='zh-TW'>
+        <html lang='zh-TW' suppressHydrationWarning>
             <body className={cn('antialiased', geistSans.variable, geistMono.variable)}>
-                <Header />
-                {children}
+                <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+                    <Header />
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );
