@@ -2,7 +2,7 @@
     "singleQuote": true,
     "trailingComma": "es5",
     "semi": true,
-    "endOfLine": "auto",
+    "endOfLine": "lf",
     "tabWidth": 4,
     "printWidth": 120,
     "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
