@@ -1,5 +1,6 @@
 import { google } from 'googleapis';
 import type { youtube_v3 } from 'googleapis';
+
 import { unstable_cache } from 'next/cache';
 
 // 設定 YouTube API
@@ -23,29 +24,29 @@ export const GetHotVideos = async (): Promise<VideoResponse> => {
         part: ['snippet', 'statistics'],
         chart: 'mostPopular',
         regionCode: 'TW',
-        maxResults: 50,
+        maxResults: 50
     });
 
     return {
-        items: response.data.items || [],
+        items: response.data.items || []
     };
 };
 
 // 取得發燒影片（帶緩存）
 export const GetHotVideosWithCache = unstable_cache(async () => GetHotVideos(), ['get-hot-videos-cache'], {
     revalidate: TWO_HOURS,
-    tags: ['youtube-hot-videos'],
+    tags: ['youtube-hot-videos']
 });
 
 // 取得影片詳細資訊（無緩存）
 export const GetVideoDetails = async (videoId: string): Promise<VideoResponse> => {
     const response = await youtube.videos.list({
         part: ['snippet'],
-        id: [videoId],
+        id: [videoId]
     });
 
     return {
-        items: response.data.items || [],
+        items: response.data.items || []
     };
 };
 
@@ -55,7 +56,7 @@ export const GetVideoDetailsWithCache = unstable_cache(
     ['get-video-details-cache'],
     {
         revalidate: THIRTY_MINUTES,
-        tags: ['youtube-video-details'],
+        tags: ['youtube-video-details']
     }
 );
 
@@ -65,11 +66,11 @@ export const SearchVideos = async (query: string, maxResults: number = 10): Prom
         part: ['snippet'],
         q: query,
         type: ['video'],
-        maxResults,
+        maxResults
     });
 
     return {
-        items: response.data.items || [],
+        items: response.data.items || []
     };
 };
 
@@ -79,7 +80,7 @@ export const SearchVideosWithCache = unstable_cache(
     ['search-videos-cache'],
     {
         revalidate: THIRTY_MINUTES,
-        tags: ['youtube-search'],
+        tags: ['youtube-search']
     }
 );
 
@@ -87,11 +88,11 @@ export const SearchVideosWithCache = unstable_cache(
 export const GetChannelDetails = async (channelId: string) => {
     const response = await youtube.channels.list({
         part: ['snippet', 'statistics'],
-        id: [channelId],
+        id: [channelId]
     });
 
     return {
-        items: response.data.items || [],
+        items: response.data.items || []
     };
 };
 
@@ -101,6 +102,6 @@ export const GetChannelDetailsWithCache = unstable_cache(
     ['get-channel-details-cache'],
     {
         revalidate: TWO_HOURS,
-        tags: ['youtube-channel'],
+        tags: ['youtube-channel']
     }
 );
