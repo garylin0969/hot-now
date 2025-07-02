@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-
 import { unstable_cache } from 'next/cache';
 
 // 設定 YouTube API
@@ -15,7 +14,7 @@ export const GetYoutubeHotVideos = async () => {
         part: ['snippet', 'statistics', 'contentDetails'],
         chart: 'mostPopular',
         regionCode: 'TW',
-        maxResults: 50
+        maxResults: 50,
     });
 
     return response;
@@ -27,7 +26,7 @@ export const GetYoutubeHotVideosWithCache = unstable_cache(
     ['get-hot-videos-cache'],
     {
         revalidate: TWO_HOURS,
-        tags: ['youtube-hot-videos']
+        tags: ['youtube-hot-videos'],
     }
 );
 
@@ -35,7 +34,7 @@ export const GetYoutubeHotVideosWithCache = unstable_cache(
 export const GetYoutubeVideoDetails = async (videoId: string) => {
     const response = await youtube.videos.list({
         part: ['snippet'],
-        id: [videoId]
+        id: [videoId],
     });
 
     return response;
@@ -47,7 +46,7 @@ export const GetYoutubeVideoDetailsWithCache = unstable_cache(
     ['get-video-details-cache'],
     {
         revalidate: THIRTY_MINUTES,
-        tags: ['youtube-video-details']
+        tags: ['youtube-video-details'],
     }
 );
 
@@ -57,7 +56,7 @@ export const GetYoutubeSearchVideos = async (query: string, maxResults: number =
         part: ['snippet'],
         q: query,
         type: ['video'],
-        maxResults
+        maxResults,
     });
 
     return response;
@@ -69,7 +68,7 @@ export const GetYoutubeSearchVideosWithCache = unstable_cache(
     ['search-videos-cache'],
     {
         revalidate: THIRTY_MINUTES,
-        tags: ['youtube-search']
+        tags: ['youtube-search'],
     }
 );
 
@@ -77,7 +76,7 @@ export const GetYoutubeSearchVideosWithCache = unstable_cache(
 export const GetYoutubeChannelDetails = async (channelId: string) => {
     const response = await youtube.channels.list({
         part: ['snippet', 'statistics'],
-        id: [channelId]
+        id: [channelId],
     });
 
     return response;
@@ -89,6 +88,6 @@ export const GetYoutubeChannelDetailsWithCache = unstable_cache(
     ['get-channel-details-cache'],
     {
         revalidate: TWO_HOURS,
-        tags: ['youtube-channel']
+        tags: ['youtube-channel'],
     }
 );

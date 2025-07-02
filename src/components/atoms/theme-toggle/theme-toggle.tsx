@@ -1,11 +1,8 @@
 'use client';
 
 import { Moon, Sun } from 'lucide-react';
-
-import React, { useEffect, useState } from 'react';
-
 import { useTheme } from 'next-themes';
-
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const ThemeToggle = () => {
@@ -19,26 +16,26 @@ const ThemeToggle = () => {
 
     if (!mounted) {
         return (
-            <Button variant='ghost' size='sm' className='h-9 w-9 p-0'>
-                <div className='h-4 w-4' />
-                <span className='sr-only'>切換主題</span>
+            <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                <div className="h-4 w-4" />
+                <span className="sr-only">切換主題</span>
             </Button>
         );
     }
 
     return (
         <Button
-            variant='ghost'
-            size='sm'
-            className='h-9 w-9 p-0'
+            variant="ghost"
+            size="sm"
+            className="h-9 w-9 p-0"
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >
             {theme === 'light' ? (
-                <Moon className='h-4 w-4 transition-all' />
+                <Moon className="h-4 w-4 transition-all" />
             ) : (
-                <Sun className='h-4 w-4 transition-all' />
+                <Sun className="h-4 w-4 transition-all" />
             )}
-            <span className='sr-only'>切換主題</span>
+            <span className="sr-only">切換主題</span>
         </Button>
     );
 };

@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'i.ytimg.com'
-            }
-        ]
-    }
+                hostname: 'i.ytimg.com',
+            },
+        ],
+    },
 };
 
 export default nextConfig;

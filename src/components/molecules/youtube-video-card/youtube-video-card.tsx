@@ -1,7 +1,5 @@
 import type { youtube_v3 } from 'googleapis';
-
 import Image from 'next/image';
-
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -75,26 +73,26 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
     const publishedAt = snippet.publishedAt;
 
     return (
-        <a href={`https://www.youtube.com/watch?v=${id}`} target='_blank' rel='noopener noreferrer'>
-            <Card className='flex h-full cursor-pointer flex-col overflow-hidden pt-0 hover:shadow-lg'>
+        <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">
+            <Card className="flex h-full cursor-pointer flex-col overflow-hidden pt-0 hover:shadow-lg">
                 <AspectRatio ratio={16 / 9}>
                     <Image
                         src={thumbnailUrl}
                         alt={title}
                         fill
-                        className='object-cover'
-                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
-                    {isShort && <Badge className='absolute right-2 bottom-2'>Shorts</Badge>}
+                    {isShort && <Badge className="absolute right-2 bottom-2">Shorts</Badge>}
                 </AspectRatio>
-                <CardContent className='flex flex-1 flex-col justify-between space-y-2 px-4'>
-                    <div className='space-y-2'>
-                        <h3 className='line-clamp-2 h-10 text-sm leading-5 font-semibold'>{title}</h3>
-                        <p className='text-muted-foreground line-clamp-3 h-12 text-xs leading-4'>{description}</p>
+                <CardContent className="flex flex-1 flex-col justify-between space-y-2 px-4">
+                    <div className="space-y-2">
+                        <h3 className="line-clamp-2 h-10 text-sm leading-5 font-semibold">{title}</h3>
+                        <p className="text-muted-foreground line-clamp-3 h-12 text-xs leading-4">{description}</p>
                     </div>
-                    <div className='text-muted-foreground space-y-2 text-xs'>
-                        <p className='text-foreground font-medium'>頻道：{channelTitle}</p>
-                        <div className='flex items-center space-x-2'>
+                    <div className="text-muted-foreground space-y-2 text-xs">
+                        <p className="text-foreground font-medium">頻道：{channelTitle}</p>
+                        <div className="flex items-center space-x-2">
                             <span>觀看次數：{formatViewCount(viewCount)}</span>
                             <span>•</span>
                             <span>{formatPublishedTime(publishedAt)}</span>
