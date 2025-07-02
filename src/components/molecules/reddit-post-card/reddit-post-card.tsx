@@ -1,7 +1,7 @@
-import type { SimplifiedRedditPost } from '@/api/reddit-api';
 import NativeImage from '@/components/atoms/native-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import type { SimplifiedRedditPost } from '@/types';
 import { cn } from '@/utils/shadcn';
 
 // 時間常數
