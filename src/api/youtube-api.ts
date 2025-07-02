@@ -12,7 +12,7 @@ const TWO_HOURS = 7200; // 2小時
 // 取得發燒影片（無緩存）
 export const GetHotVideos = async () => {
     const response = await youtube.videos.list({
-        part: ['snippet', 'statistics'],
+        part: ['snippet', 'statistics', 'contentDetails'],
         chart: 'mostPopular',
         regionCode: 'TW',
         maxResults: 50
