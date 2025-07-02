@@ -1,9 +1,9 @@
-import { GetHotVideos } from '@/api/youtube-api';
+import { GetHotVideosWithCache } from '@/api/youtube-api';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Home = async () => {
-    const response = await GetHotVideos();
+    const response = await GetHotVideosWithCache();
     const videos = response?.data?.items || [];
 
     return (
