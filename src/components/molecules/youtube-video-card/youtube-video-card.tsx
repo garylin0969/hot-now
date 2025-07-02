@@ -3,11 +3,25 @@ import type { youtube_v3 } from 'googleapis';
 import Image from 'next/image';
 
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 
-interface VideoCardProps {
-    video: youtube_v3.Schema$Video;
-}
+// 判斷是否為 Shorts
+const isShorts = (duration: string): boolean => {
+    // Match ISO 8601 duration format: PT#H#M#S
+    const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+    const match = duration.match(regex);
+
+    if (!match) return false;
+
+    const hours = parseInt(match[1] ?? '0', 10);
+    const minutes = parseInt(match[2] ?? '0', 10);
+    const seconds = parseInt(match[3] ?? '0', 10);
+
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+    return totalSeconds > 0 && totalSeconds < 60;
+};
 
 // 格式化觀看次數
 const formatViewCount = (viewCount: string | null | undefined): string => {
@@ -43,12 +57,17 @@ const formatPublishedTime = (publishedAt: string | null | undefined): string => 
     }
 };
 
-const VideoCard = ({ video }: VideoCardProps) => {
-    const { id, snippet, statistics } = video;
+interface YoutubeVideoCardProps {
+    video: youtube_v3.Schema$Video;
+}
+
+const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
+    const { id, snippet, statistics, contentDetails } = video;
 
     if (!snippet) return null;
 
     const thumbnailUrl = snippet.thumbnails?.high?.url || snippet.thumbnails?.default?.url || '';
+    const isShort = isShorts(contentDetails?.duration || '');
     const title = snippet.title || '無標題';
     const description = snippet.description || '無描述';
     const channelTitle = snippet.channelTitle || '未知頻道';
@@ -66,6 +85,7 @@ const VideoCard = ({ video }: VideoCardProps) => {
                         className='object-cover'
                         sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     />
+                    {isShort && <Badge className='absolute right-2 bottom-2'>Shorts</Badge>}
                 </AspectRatio>
                 <CardContent className='flex flex-1 flex-col justify-between space-y-2 px-4'>
                     <div className='space-y-2'>
@@ -86,4 +106,4 @@ const VideoCard = ({ video }: VideoCardProps) => {
     );
 };
 
-export default VideoCard;
+export default YoutubeVideoCard;
