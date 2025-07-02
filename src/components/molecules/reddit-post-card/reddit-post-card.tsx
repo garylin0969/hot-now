@@ -2,26 +2,25 @@ import type { SimplifiedRedditPost } from '@/api/reddit-api';
 import NativeImage from '@/components/atoms/native-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/utils/shadcn';
 
-// 格式化分數
-const formatScore = (score: number): string => {
-    if (score >= 1000000) {
-        return `${(score / 1000000).toFixed(1)}M`;
-    } else if (score >= 1000) {
-        return `${(score / 1000).toFixed(1)}K`;
-    } else {
-        return score.toString();
-    }
-};
+// 時間常數
+const TIME_CONSTANTS = {
+    SECOND: 1,
+    MINUTE: 60,
+    HOUR: 3600,
+    DAY: 86400,
+    MONTH: 86400 * 30,
+} as const;
 
-// 格式化評論數
-const formatCommentCount = (count: number): string => {
-    if (count >= 1000000) {
-        return `${(count / 1000000).toFixed(1)}M`;
-    } else if (count >= 1000) {
-        return `${(count / 1000).toFixed(1)}K`;
+// 通用數字格式化函數
+const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+        return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+        return `${(num / 1000).toFixed(1)}K`;
     } else {
-        return count.toString();
+        return num.toString();
     }
 };
 
@@ -31,17 +30,17 @@ const formatPublishedTime = (created_utc: number): string => {
     const published = new Date(created_utc * 1000); // Reddit 時間戳是秒，需要轉換為毫秒
     const diffInSeconds = Math.floor((now.getTime() - published.getTime()) / 1000);
 
-    if (diffInSeconds < 3600) {
-        const minutes = Math.floor(diffInSeconds / 60);
+    if (diffInSeconds < TIME_CONSTANTS.HOUR) {
+        const minutes = Math.floor(diffInSeconds / TIME_CONSTANTS.MINUTE);
         return `${minutes} 分鐘前`;
-    } else if (diffInSeconds < 86400) {
-        const hours = Math.floor(diffInSeconds / 3600);
+    } else if (diffInSeconds < TIME_CONSTANTS.DAY) {
+        const hours = Math.floor(diffInSeconds / TIME_CONSTANTS.HOUR);
         return `${hours} 小時前`;
-    } else if (diffInSeconds < 86400 * 30) {
-        const days = Math.floor(diffInSeconds / 86400);
+    } else if (diffInSeconds < TIME_CONSTANTS.MONTH) {
+        const days = Math.floor(diffInSeconds / TIME_CONSTANTS.DAY);
         return `${days} 天前`;
     } else {
-        const months = Math.floor(diffInSeconds / (86400 * 30));
+        const months = Math.floor(diffInSeconds / TIME_CONSTANTS.MONTH);
         return `${months} 個月前`;
     }
 };
@@ -55,11 +54,11 @@ const getThumbnailUrl = (post: SimplifiedRedditPost): string => {
     }
 
     // 如果 thumbnail 是有效的 URL，使用它
-    if (post.thumbnail && post.thumbnail.startsWith('http')) {
+    if (post.thumbnail?.startsWith('http')) {
         return post.thumbnail;
     }
 
-    // 否則返回默認圖片或 null
+    // 否則返回空字符串
     return '';
 };
 
@@ -71,10 +70,15 @@ const RedditPostCard = ({ post }: RedditPostCardProps) => {
     const thumbnailUrl = getThumbnailUrl(post);
     const redditUrl = `https://www.reddit.com${post.permalink}`;
 
+    // 提取重複的樣式類名
+    const cardHeightClasses = 'h-[120px] sm:h-[140px]';
+    const textMutedClasses = 'text-muted-foreground text-xs';
+    const badgeTextClasses = 'text-xs';
+
     return (
         <a href={redditUrl} target="_blank" rel="noopener noreferrer">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
-                <div className="flex h-[120px] flex-row sm:h-[140px]">
+                <div className={cn('flex flex-row', cardHeightClasses)}>
                     {thumbnailUrl && (
                         <div className="relative w-24 flex-shrink-0 sm:w-32 md:w-40 lg:w-48">
                             <NativeImage
@@ -84,34 +88,34 @@ const RedditPostCard = ({ post }: RedditPostCardProps) => {
                                 loading="lazy"
                             />
                             {post.is_video && (
-                                <Badge className="absolute right-1 bottom-1 px-1 py-0.5 text-xs">VIDEO</Badge>
+                                <Badge className={cn('absolute right-1 bottom-1 px-1 py-0.5', badgeTextClasses)}>
+                                    VIDEO
+                                </Badge>
                             )}
                         </div>
                     )}
-                    <CardContent className="flex h-[120px] flex-1 flex-col justify-between p-3 sm:h-[140px] sm:p-4">
+                    <CardContent className={cn('flex flex-1 flex-col justify-between p-3 sm:p-4', cardHeightClasses)}>
                         <div>
                             <div className="mb-4 flex flex-wrap items-center gap-1 sm:gap-2">
-                                <Badge variant="secondary" className="text-xs">
+                                <Badge variant="secondary" className={badgeTextClasses}>
                                     r/{post.subreddit}
                                 </Badge>
-                                <span className="text-muted-foreground hidden text-xs sm:inline">by {post.author}</span>
-                                <span className="text-muted-foreground text-xs">
-                                    {formatPublishedTime(post.created_utc)}
-                                </span>
+                                <span className={cn('hidden sm:inline', textMutedClasses)}>by {post.author}</span>
+                                <span className={textMutedClasses}>{formatPublishedTime(post.created_utc)}</span>
                             </div>
                             <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                                 {post.title}
                             </h3>
                         </div>
-                        <div className="text-muted-foreground mt-2 flex items-center gap-2 text-xs sm:gap-4 sm:text-sm">
+                        <div className={cn('mt-2 flex items-center gap-2 sm:gap-4 sm:text-sm', textMutedClasses)}>
                             <div className="flex items-center gap-1">
                                 <span>👍</span>
-                                <span>{formatScore(post.score)}</span>
+                                <span>{formatNumber(post.score)}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <span>💬</span>
-                                <span className="hidden sm:inline">{formatCommentCount(post.num_comments)} 留言</span>
-                                <span className="sm:hidden">{formatCommentCount(post.num_comments)}</span>
+                                <span className="hidden sm:inline">{formatNumber(post.num_comments)} 留言</span>
+                                <span className="sm:hidden">{formatNumber(post.num_comments)}</span>
                             </div>
                         </div>
                     </CardContent>
