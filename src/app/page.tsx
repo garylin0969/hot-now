@@ -1,7 +1,9 @@
+import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetSimplifiedRedditHotArticles } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
+import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
@@ -15,6 +17,9 @@ const Home = async () => {
     // PTT
     const pttResponse = await GetPttTrends();
     const pttArticles = pttResponse.articles || [];
+    // Google
+    const googleResponse = await GetGoogleTrends();
+    const googleTrends = googleResponse.trends || [];
     // Reddit
     const redditArticles = await GetSimplifiedRedditHotArticles(50);
     // Komica
@@ -36,6 +41,12 @@ const Home = async () => {
                         value="ptt"
                     >
                         PTT
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
+                        value="google"
+                    >
+                        Google
                     </TabsTrigger>
                     <TabsTrigger
                         className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
@@ -61,6 +72,13 @@ const Home = async () => {
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
                         {pttArticles?.map((article) => (
                             <PttArticleCard key={article.link} article={article} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="google">
+                    <div className="mx-auto flex max-w-2xl flex-col gap-4">
+                        {googleTrends?.map((trend) => (
+                            <GoogleTrendCard key={trend.googleTrend} trend={trend} />
                         ))}
                     </div>
                 </TabsContent>
