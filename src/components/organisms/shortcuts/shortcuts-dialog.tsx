@@ -147,6 +147,7 @@ const ShortcutsDialog = ({ children }: ShortcutsDialogProps) => {
                                 <Input
                                     id={`url-${i}`}
                                     placeholder={DIALOG_MESSAGES.PLACEHOLDER}
+                                    autoComplete="off"
                                     {...register(`shortcuts.${i}.url`)}
                                 />
                             </div>
