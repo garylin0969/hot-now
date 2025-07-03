@@ -86,7 +86,7 @@ const Home = async () => {
                             24H熱門文章
                         </div>
                     </div>
-                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+                    <div className="mx-auto flex max-w-3xl flex-col gap-4">
                         {pttArticles?.map((article) => (
                             <PttArticleCard key={article.link} article={article} />
                         ))}
@@ -120,7 +120,7 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="komica">
-                    <KomicaList className="mx-auto max-w-2xl" trends={komicaTrends} />
+                    <KomicaList className="mx-auto max-w-xl" trends={komicaTrends} />
                 </TabsContent>
             </Tabs>
         </div>
