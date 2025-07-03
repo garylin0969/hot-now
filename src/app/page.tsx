@@ -28,12 +28,37 @@ const Home = async () => {
     return (
         <div className="container mx-auto px-4 py-8">
             <Tabs defaultValue="youtube" className="w-full">
-                <TabsList className="mx-auto mb-4">
-                    <TabsTrigger value="youtube">Youtube</TabsTrigger>
-                    <TabsTrigger value="ptt">PTT</TabsTrigger>
-                    <TabsTrigger value="reddit">Reddit</TabsTrigger>
-                    <TabsTrigger value="news">新聞</TabsTrigger>
-                    <TabsTrigger value="komica">Komica</TabsTrigger>
+                <TabsList className="text-muted-foreground mx-auto mb-4 space-x-1 bg-transparent">
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        value="youtube"
+                    >
+                        Youtube
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        value="ptt"
+                    >
+                        PTT
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        value="reddit"
+                    >
+                        Reddit
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        value="news"
+                    >
+                        News
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        value="komica"
+                    >
+                        Komica
+                    </TabsTrigger>
                 </TabsList>
                 <TabsContent value="youtube">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
