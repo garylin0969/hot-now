@@ -10,6 +10,7 @@ import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
+import Shortcuts from '@/components/organisms/shortcuts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Home = async () => {
@@ -33,7 +34,7 @@ const Home = async () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="py-4"></div>
+            <Shortcuts className="mb-4" />
             <Tabs defaultValue="youtube" className="w-full">
                 <TabsList className="text-muted-foreground mx-auto mb-3 space-x-1 bg-transparent">
                     <TabsTrigger
