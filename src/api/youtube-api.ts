@@ -5,7 +5,6 @@ import { unstable_cache } from 'next/cache';
 const YOUTUBE_API_KEY = String(process.env.NEXT_PRIVATE_YOUTUBE_API_KEY);
 const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
 
-const THIRTY_MINUTES = 60 * 30; // 30分鐘
 const TWO_HOURS = 60 * 60 * 2; // 2小時
 
 // YouTube 類別定義
@@ -52,67 +51,5 @@ export const GetYoutubeHotVideosByCategory = unstable_cache(
     {
         revalidate: TWO_HOURS,
         tags: ['youtube-hot-videos-by-category'],
-    }
-);
-
-// 取得影片詳細資訊（無緩存）
-export const GetYoutubeVideoDetails = async (videoId: string) => {
-    const response = await youtube.videos.list({
-        part: ['snippet'],
-        id: [videoId],
-    });
-
-    return response;
-};
-
-// 取得影片詳細資訊（帶緩存）
-export const GetYoutubeVideoDetailsWithCache = unstable_cache(
-    async (videoId: string) => GetYoutubeVideoDetails(videoId),
-    ['get-video-details-cache'],
-    {
-        revalidate: THIRTY_MINUTES,
-        tags: ['youtube-video-details'],
-    }
-);
-
-// 搜尋影片（無緩存）
-export const GetYoutubeSearchVideos = async (query: string, maxResults: number = 10) => {
-    const response = await youtube.search.list({
-        part: ['snippet'],
-        q: query,
-        type: ['video'],
-        maxResults,
-    });
-
-    return response;
-};
-
-// 搜尋影片（帶緩存）
-export const GetYoutubeSearchVideosWithCache = unstable_cache(
-    async (query: string, maxResults: number = 10) => GetYoutubeSearchVideos(query, maxResults),
-    ['search-videos-cache'],
-    {
-        revalidate: THIRTY_MINUTES,
-        tags: ['youtube-search'],
-    }
-);
-
-// 取得頻道資訊（無緩存）
-export const GetYoutubeChannelDetails = async (channelId: string) => {
-    const response = await youtube.channels.list({
-        part: ['snippet', 'statistics'],
-        id: [channelId],
-    });
-
-    return response;
-};
-
-// 取得頻道資訊（帶緩存）
-export const GetYoutubeChannelDetailsWithCache = unstable_cache(
-    async (channelId: string) => GetYoutubeChannelDetails(channelId),
-    ['get-channel-details-cache'],
-    {
-        revalidate: TWO_HOURS,
-        tags: ['youtube-channel'],
     }
 );
