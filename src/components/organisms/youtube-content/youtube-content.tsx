@@ -2,9 +2,9 @@
 
 import type { youtube_v3 } from 'googleapis';
 import { useState, useMemo } from 'react';
+import type { YouTubeCategoryKey } from '@/api/youtube-api';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { YouTubeCategoryKey } from '@/services/youtube-api';
 
 interface YouTubeContentProps {
     latestVideos: youtube_v3.Schema$Video[];
