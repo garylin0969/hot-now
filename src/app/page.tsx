@@ -10,6 +10,7 @@ import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
+import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Home = async () => {
@@ -34,7 +35,7 @@ const Home = async () => {
     return (
         <div className="container mx-auto px-4 py-8">
             <Tabs defaultValue="youtube" className="w-full">
-                <TabsList className="text-muted-foreground mx-auto mb-4 space-x-1 bg-transparent">
+                <TabsList className="text-muted-foreground mx-auto mb-3 space-x-1 bg-transparent">
                     <TabsTrigger
                         className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
                         value="youtube"
@@ -80,6 +81,11 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="ptt">
+                    <div className="mb-4 flex items-center justify-center">
+                        <Badge variant="destructive" className="text-foreground px-4 py-2 font-medium">
+                            24H熱門文章
+                        </Badge>
+                    </div>
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
                         {pttArticles?.map((article) => (
                             <PttArticleCard key={article.link} article={article} />
@@ -87,6 +93,11 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="google">
+                    <div className="mb-4 flex items-center justify-center">
+                        <Badge variant="destructive" className="text-foreground px-4 py-2 font-medium">
+                            過去4小時
+                        </Badge>
+                    </div>
                     <div className="mx-auto flex max-w-2xl flex-col gap-4">
                         {googleTrends?.map((trend) => (
                             <GoogleTrendCard key={trend.googleTrend} trend={trend} />
