@@ -1,7 +1,8 @@
 'use client';
 
 import { Check, Copy } from 'lucide-react';
-import { ReactNode, useState } from 'react';
+import { toast } from 'sonner';
+import { ReactNode, useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/shadcn';
 
@@ -10,6 +11,7 @@ interface CopyToClipboardProps {
     className?: string;
     variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
     size?: 'default' | 'sm' | 'lg' | 'icon';
+    showToast?: boolean;
     children?: ReactNode;
 }
 
@@ -18,19 +20,49 @@ const CopyToClipboard = ({
     className,
     variant = 'outline',
     size = 'sm',
+    showToast = true,
     children,
 }: CopyToClipboardProps) => {
     const [isCopied, setIsCopied] = useState(false);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+    const clearTimer = () => {
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+    };
 
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(text);
             setIsCopied(true);
-            setTimeout(() => setIsCopied(false), 2000);
+            if (showToast) {
+                toast.success('已複製');
+            }
+
+            // 清除之前的 timer（如果存在）
+            clearTimer();
+
+            // 2秒後重置狀態
+            timerRef.current = setTimeout(() => {
+                setIsCopied(false);
+                timerRef.current = null;
+            }, 2000);
         } catch (err) {
             console.error('Failed to copy text: ', err);
+            if (showToast) {
+                toast.error('複製失敗');
+            }
         }
     };
+
+    // 組件卸載時清理 timer
+    useEffect(() => {
+        return () => {
+            clearTimer();
+        };
+    }, []);
 
     return (
         <Button
