@@ -1,7 +1,9 @@
+import { GetKomicaTrends } from '@/api/komica-api';
 import { GetSimplifiedNewsDataHotNews } from '@/api/news-data-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetSimplifiedRedditHotArticles } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
+import KomicaList from '@/components/molecules/komica-list';
 import NewsDataCard from '@/components/molecules/news-data-card';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
@@ -19,6 +21,9 @@ const Home = async () => {
     // PTT
     const pttResponse = await GetPttTrends();
     const pttArticles = pttResponse.articles || [];
+    // Komica
+    const komicaResponse = await GetKomicaTrends();
+    const komicaTrends = komicaResponse.trends || [];
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -28,6 +33,7 @@ const Home = async () => {
                     <TabsTrigger value="reddit">Reddit</TabsTrigger>
                     <TabsTrigger value="news">新聞</TabsTrigger>
                     <TabsTrigger value="ptt">PTT</TabsTrigger>
+                    <TabsTrigger value="komica">Komica</TabsTrigger>
                 </TabsList>
                 <TabsContent value="youtube">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -56,6 +62,9 @@ const Home = async () => {
                             <PttArticleCard key={article.link} article={article} />
                         ))}
                     </div>
+                </TabsContent>
+                <TabsContent value="komica">
+                    <KomicaList trends={komicaTrends} />
                 </TabsContent>
             </Tabs>
         </div>
