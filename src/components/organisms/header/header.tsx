@@ -30,7 +30,6 @@ const Header = () => {
                 <Link href="/">
                     <h1 className="text-primary text-2xl font-extrabold">Hot Now</h1>
                 </Link>
-                <h1 className="text-primary text-2xl font-extrabold">Hot Now</h1>
                 <nav className="flex items-center gap-2">
                     {SOCIAL_LINKS.map(({ href, target, icon: Icon, label }) => (
                         <a key={label} href={href} target={target} rel="noopener noreferrer">
