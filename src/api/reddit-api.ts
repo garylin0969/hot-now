@@ -1,38 +1,23 @@
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import type { RedditApiResponse, SimplifiedRedditArticle } from '@/types';
 
 const REDDIT_BASE_URL = 'https://www.reddit.com';
 
+// 配置 axios 实例
+const redditAxios = axios.create({
+    baseURL: REDDIT_BASE_URL,
+    timeout: 10000,
+    headers: {
+        'User-Agent': 'HotNow/1.0',
+    },
+});
+
 // Reddit所有看版的熱門文章
 export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditApiResponse> => {
-    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
-    if (isBuildTime) {
-        console.warn('Skipping Reddit fetch during Vercel build');
-        return {
-            kind: 'Listing',
-            data: {
-                after: null,
-                dist: 0,
-                modhash: '',
-                geo_filter: null,
-                children: [],
-                before: null,
-            },
-        };
-    }
-
     try {
-        const response = await fetch(`${REDDIT_BASE_URL}/r/all/hot.json?limit=${limit}`, {
-            next: {
-                revalidate: 60 * 5, // 5 minutes
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: RedditApiResponse = await response.json();
-        return data;
+        const response = await redditAxios.get(`/r/all/hot.json?limit=${limit}`);
+        return response.data;
     } catch (error) {
         console.error('Error fetching Reddit hot articles:', error);
         throw new Error(
@@ -46,34 +31,9 @@ export const GetRedditHotArticlesBySubreddit = async (
     subreddit: string,
     limit: number = 50
 ): Promise<RedditApiResponse> => {
-    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
-    if (isBuildTime) {
-        console.warn('Skipping Reddit fetch during Vercel build');
-        return {
-            kind: 'Listing',
-            data: {
-                after: null,
-                dist: 0,
-                modhash: '',
-                geo_filter: null,
-                children: [],
-                before: null,
-            },
-        };
-    }
     try {
-        const response = await fetch(`${REDDIT_BASE_URL}/r/${subreddit}/hot.json?limit=${limit}`, {
-            next: {
-                revalidate: 60 * 5, // 5 minutes
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: RedditApiResponse = await response.json();
-        return data;
+        const response = await redditAxios.get(`/r/${subreddit}/hot.json?limit=${limit}`);
+        return response.data;
     } catch (error) {
         console.error(`Error fetching Reddit hot articles for subreddit ${subreddit}:`, error);
         throw new Error(
@@ -145,4 +105,24 @@ export const GetSimplifiedRedditHotArticlesBySubreddit = async (
             `Failed to get simplified Reddit hot articles for subreddit ${subreddit}: ${error instanceof Error ? error.message : 'Unknown error'}`
         );
     }
+};
+
+// React Query Hooks
+export const useRedditHotArticles = (limit: number = 50) => {
+    return useQuery({
+        queryKey: ['reddit', 'hot', 'all', limit],
+        queryFn: () => GetSimplifiedRedditHotArticles(limit),
+        staleTime: 30 * 60 * 1000, // 30 minutes
+        gcTime: 30 * 60 * 1000, // 30 minutes
+    });
+};
+
+export const useRedditHotArticlesBySubreddit = (subreddit: string, limit: number = 50) => {
+    return useQuery({
+        queryKey: ['reddit', 'hot', subreddit, limit],
+        queryFn: () => GetSimplifiedRedditHotArticlesBySubreddit(subreddit, limit),
+        staleTime: 30 * 60 * 1000, // 30 minutes
+        gcTime: 30 * 60 * 1000, // 30 minutes
+        enabled: !!subreddit,
+    });
 };

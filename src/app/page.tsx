@@ -2,7 +2,6 @@ import { GetGamerTrends } from '@/api/gamer-api';
 import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
-import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
@@ -37,10 +36,6 @@ const Home = async () => {
     // Gamer
     const gamerResponse = await GetGamerTrends();
     const gamerTrends = gamerResponse.trends || [];
-    // Reddit
-    const redditAllArticles = await GetSimplifiedRedditHotArticles(50);
-    const redditTaiwaneseArticles = await GetSimplifiedRedditHotArticlesBySubreddit('Taiwanese', 50);
-    const redditChinaArticles = await GetSimplifiedRedditHotArticlesBySubreddit('China_irl', 50);
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
@@ -130,11 +125,7 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="reddit">
-                    <RedditContent
-                        allArticles={redditAllArticles || []}
-                        taiwaneseArticles={redditTaiwaneseArticles || []}
-                        chinaArticles={redditChinaArticles || []}
-                    />
+                    <RedditContent />
                 </TabsContent>
                 <TabsContent value="komica">
                     <KomicaList className="mx-auto max-w-xl" trends={komicaTrends} />

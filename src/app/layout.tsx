@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import ThemeProvider from '@/components/atoms/theme-provider';
 import Header from '@/components/organisms/header';
 import { Toaster } from '@/components/ui/sonner';
+import { QueryProvider } from '@/providers';
 import { cn } from '@/utils/shadcn';
 import './globals.css';
 
@@ -157,11 +158,13 @@ export default function RootLayout({
     return (
         <html lang="zh-TW" suppressHydrationWarning>
             <body className={cn('antialiased', geistSans.variable, geistMono.variable)}>
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <Header />
-                    {children}
-                    <Toaster />
-                </ThemeProvider>
+                <QueryProvider>
+                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                        <Header />
+                        {children}
+                        <Toaster />
+                    </ThemeProvider>
+                </QueryProvider>
                 <GoogleAnalytics gaId={GA_ID} />
             </body>
         </html>

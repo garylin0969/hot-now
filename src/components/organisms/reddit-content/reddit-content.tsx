@@ -1,15 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRedditHotArticles, useRedditHotArticlesBySubreddit } from '@/api/reddit-api';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { SimplifiedRedditArticle } from '@/types';
-
-interface RedditContentProps {
-    allArticles: SimplifiedRedditArticle[];
-    taiwaneseArticles: SimplifiedRedditArticle[];
-    chinaArticles: SimplifiedRedditArticle[];
-}
 
 type SubredditType = 'all' | 'taiwanese' | 'china_irl';
 
@@ -21,17 +15,48 @@ const SUBREDDIT_TABS = [
 
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
-const RedditContent = ({ allArticles, taiwaneseArticles, chinaArticles }: RedditContentProps) => {
+const RedditContent = () => {
     const [selectedSubreddit, setSelectedSubreddit] = useState<SubredditType>('all');
+
+    // 使用 React Query hooks 获取数据
+    const { data: allArticles, isLoading: isLoadingAll, error: errorAll } = useRedditHotArticles(50);
+    const {
+        data: taiwaneseArticles,
+        isLoading: isLoadingTaiwanese,
+        error: errorTaiwanese,
+    } = useRedditHotArticlesBySubreddit('Taiwanese', 50);
+    const {
+        data: chinaArticles,
+        isLoading: isLoadingChina,
+        error: errorChina,
+    } = useRedditHotArticlesBySubreddit('China_irl', 50);
 
     const currentArticles = useMemo(() => {
         const articleMap = {
-            all: allArticles,
-            taiwanese: taiwaneseArticles,
-            china_irl: chinaArticles,
+            all: allArticles || [],
+            taiwanese: taiwaneseArticles || [],
+            china_irl: chinaArticles || [],
         };
         return articleMap[selectedSubreddit];
     }, [selectedSubreddit, allArticles, taiwaneseArticles, chinaArticles]);
+
+    const isLoading = useMemo(() => {
+        const loadingMap = {
+            all: isLoadingAll,
+            taiwanese: isLoadingTaiwanese,
+            china_irl: isLoadingChina,
+        };
+        return loadingMap[selectedSubreddit];
+    }, [selectedSubreddit, isLoadingAll, isLoadingTaiwanese, isLoadingChina]);
+
+    const error = useMemo(() => {
+        const errorMap = {
+            all: errorAll,
+            taiwanese: errorTaiwanese,
+            china_irl: errorChina,
+        };
+        return errorMap[selectedSubreddit];
+    }, [selectedSubreddit, errorAll, errorTaiwanese, errorChina]);
 
     const handleSubredditChange = (value: string) => {
         setSelectedSubreddit(value as SubredditType);
@@ -51,12 +76,29 @@ const RedditContent = ({ allArticles, taiwaneseArticles, chinaArticles }: Reddit
                     </TabsList>
                 </Tabs>
             </div>
+
+            {/* 载入状态 */}
+            {isLoading && (
+                <div className="flex items-center justify-center py-8">
+                    <div className="text-muted-foreground">Loading...</div>
+                </div>
+            )}
+
+            {/* 错误状态 */}
+            {error && (
+                <div className="flex items-center justify-center py-8">
+                    <div className="text-destructive">Error: {error.message}</div>
+                </div>
+            )}
+
             {/* 文章列表 */}
-            <div className="flex flex-col gap-4">
-                {currentArticles?.map((article) => (
-                    <RedditArticleCard key={article.id} article={article} />
-                ))}
-            </div>
+            {!isLoading && !error && (
+                <div className="flex flex-col gap-4">
+                    {currentArticles?.map((article) => (
+                        <RedditArticleCard key={article.id} article={article} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
