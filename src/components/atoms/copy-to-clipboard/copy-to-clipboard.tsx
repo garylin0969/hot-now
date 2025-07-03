@@ -38,7 +38,7 @@ const CopyToClipboard = ({
             await navigator.clipboard.writeText(text);
             setIsCopied(true);
             if (showToast) {
-                toast.success('已複製');
+                toast.success('Copied');
             }
 
             // 清除之前的 timer（如果存在）
@@ -52,7 +52,7 @@ const CopyToClipboard = ({
         } catch (err) {
             console.error('Failed to copy text: ', err);
             if (showToast) {
-                toast.error('複製失敗');
+                toast.error('Failed to copy');
             }
         }
     };
