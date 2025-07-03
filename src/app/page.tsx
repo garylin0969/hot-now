@@ -33,6 +33,7 @@ const Home = async () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <div className="py-4"></div>
             <Tabs defaultValue="youtube" className="w-full">
                 <TabsList className="text-muted-foreground mx-auto mb-3 space-x-1 bg-transparent">
                     <TabsTrigger
