@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import ThemeProvider from '@/components/atoms/theme-provider';
 import Header from '@/components/organisms/header';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/utils/shadcn';
 import './globals.css';
 
@@ -31,6 +32,7 @@ export default function RootLayout({
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <Header />
                     {children}
+                    <Toaster />
                 </ThemeProvider>
             </body>
         </html>
