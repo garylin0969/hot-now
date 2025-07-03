@@ -4,13 +4,25 @@ const REDDIT_BASE_URL = 'https://www.reddit.com';
 
 // Reddit所有看版的熱門文章
 export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditApiResponse> => {
+    if (process.env.VERCEL === '1') {
+        console.warn('Skipping Reddit fetch during Vercel build');
+        return {
+            kind: 'Listing',
+            data: {
+                after: null,
+                dist: 0,
+                modhash: '',
+                geo_filter: null,
+                children: [],
+                before: null,
+            },
+        };
+    }
+
     try {
         const response = await fetch(`${REDDIT_BASE_URL}/r/all/hot.json?limit=${limit}`, {
             next: {
                 revalidate: 60 * 5, // 5 minutes
-            },
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (compatible; MyRedditBot/1.0; +https://github.com/garylin0969)',
             },
         });
 
@@ -33,13 +45,24 @@ export const GetRedditHotArticlesBySubreddit = async (
     subreddit: string,
     limit: number = 50
 ): Promise<RedditApiResponse> => {
+    if (process.env.VERCEL === '1') {
+        console.warn('Skipping Reddit fetch during Vercel build');
+        return {
+            kind: 'Listing',
+            data: {
+                after: null,
+                dist: 0,
+                modhash: '',
+                geo_filter: null,
+                children: [],
+                before: null,
+            },
+        };
+    }
     try {
         const response = await fetch(`${REDDIT_BASE_URL}/r/${subreddit}/hot.json?limit=${limit}`, {
             next: {
                 revalidate: 60 * 5, // 5 minutes
-            },
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (compatible; MyRedditBot/1.0; +https://github.com/garylin0969)',
             },
         });
 
