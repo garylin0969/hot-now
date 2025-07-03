@@ -4,7 +4,8 @@ const REDDIT_BASE_URL = 'https://www.reddit.com';
 
 // Reddit所有看版的熱門文章
 export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditApiResponse> => {
-    if (process.env.VERCEL === '1') {
+    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
+    if (isBuildTime) {
         console.warn('Skipping Reddit fetch during Vercel build');
         return {
             kind: 'Listing',
@@ -45,7 +46,8 @@ export const GetRedditHotArticlesBySubreddit = async (
     subreddit: string,
     limit: number = 50
 ): Promise<RedditApiResponse> => {
-    if (process.env.VERCEL === '1') {
+    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
+    if (isBuildTime) {
         console.warn('Skipping Reddit fetch during Vercel build');
         return {
             kind: 'Listing',
