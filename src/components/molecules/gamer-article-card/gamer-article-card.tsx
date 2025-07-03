@@ -29,16 +29,15 @@ const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
         <a href={article.link} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
-                    {article.articleImage && (
-                        <div className="relative w-24 flex-shrink-0 overflow-hidden sm:w-32 md:w-40 lg:w-48">
-                            <NativeImage
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                src={article.articleImage}
-                                alt={article.title}
-                                loading="lazy"
-                            />
-                        </div>
-                    )}
+                    <div className="relative w-24 flex-shrink-0 overflow-hidden sm:w-32 md:w-40 lg:w-48">
+                        <NativeImage
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            src={article.articleImage}
+                            alt={article.title}
+                            loading="lazy"
+                        />
+                    </div>
+
                     <CardContent className={cn('flex flex-1 flex-col justify-between p-3 sm:p-4', cardHeightClasses)}>
                         <div className="space-y-2">
                             <div className="flex flex-wrap items-center gap-1 sm:gap-2">

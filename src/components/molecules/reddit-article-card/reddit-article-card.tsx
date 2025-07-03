@@ -79,21 +79,19 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
         <a href={redditUrl} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
-                    {thumbnailUrl && (
-                        <div className="relative w-24 flex-shrink-0 overflow-hidden sm:w-32 md:w-40 lg:w-48">
-                            <NativeImage
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                src={thumbnailUrl}
-                                alt={article.title}
-                                loading="lazy"
-                            />
-                            {article.is_video && (
-                                <Badge className={cn('absolute right-1 bottom-1 px-1 py-0.5', badgeTextClasses)}>
-                                    VIDEO
-                                </Badge>
-                            )}
-                        </div>
-                    )}
+                    <div className="relative w-24 flex-shrink-0 overflow-hidden sm:w-32 md:w-40 lg:w-48">
+                        <NativeImage
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            src={thumbnailUrl}
+                            alt={article.title}
+                            loading="lazy"
+                        />
+                        {article.is_video && (
+                            <Badge className={cn('absolute right-1 bottom-1 px-1 py-0.5', badgeTextClasses)}>
+                                VIDEO
+                            </Badge>
+                        )}
+                    </div>
                     <CardContent className={cn('flex flex-1 flex-col justify-between p-3 sm:p-4', cardHeightClasses)}>
                         <div>
                             <div className="mb-4 flex flex-wrap items-center gap-1 sm:gap-2">
