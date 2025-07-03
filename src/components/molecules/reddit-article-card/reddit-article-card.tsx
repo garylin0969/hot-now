@@ -76,7 +76,7 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
     const badgeTextClasses = 'text-xs';
 
     return (
-        <a href={redditUrl} target="_blank" rel="noopener noreferrer">
+        <a href={redditUrl} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
                     {thumbnailUrl && (
@@ -103,7 +103,7 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
                                 <span className={cn('hidden sm:inline', textMutedClasses)}>by {article.author}</span>
                                 <span className={textMutedClasses}>{formatPublishedTime(article.created_utc)}</span>
                             </div>
-                            <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                            <h3 className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                                 {article.title}
                             </h3>
                         </div>

@@ -43,7 +43,7 @@ const NewsDataCard = ({ news }: NewsDataCardProps) => {
     const badgeTextClasses = 'text-xs';
 
     return (
-        <a href={news.link} target="_blank" rel="noopener noreferrer">
+        <a href={news.link} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
                     {news.image_url && (
@@ -79,7 +79,7 @@ const NewsDataCard = ({ news }: NewsDataCardProps) => {
                                 )}
                                 <span className={textMutedClasses}>{formatPublishedTime(news.pubDate)}</span>
                             </div>
-                            <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                            <h3 className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                                 {news.title}
                             </h3>
                         </div>

@@ -73,7 +73,7 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
     const publishedAt = snippet.publishedAt;
 
     return (
-        <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">
+        <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="flex h-full cursor-pointer flex-col overflow-hidden pt-0 hover:shadow-lg">
                 <AspectRatio ratio={16 / 9}>
                     <NativeImage className="h-full w-full object-cover" src={thumbnailUrl} alt={title} loading="lazy" />
@@ -81,7 +81,9 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
                 </AspectRatio>
                 <CardContent className="flex flex-1 flex-col justify-between space-y-2 px-4">
                     <div className="space-y-2">
-                        <h3 className="line-clamp-2 h-10 text-sm leading-5 font-semibold">{title}</h3>
+                        <h3 className="group-hover:text-primary line-clamp-2 h-10 text-sm leading-5 font-semibold">
+                            {title}
+                        </h3>
                         <p className="text-muted-foreground line-clamp-3 h-12 text-xs leading-4">{description}</p>
                     </div>
                     <div className="text-muted-foreground space-y-2 text-xs">

@@ -97,7 +97,7 @@ const PttArticleCard = ({ article }: PttArticleCardProps) => {
     const formattedCount = formatRecommendCount(article.recommendCount);
 
     return (
-        <a href={pttUrl} target="_blank" rel="noopener noreferrer">
+        <a href={pttUrl} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <CardContent className={cn('flex flex-col justify-between p-3 sm:p-4', STYLES.cardHeight)}>
                     <div>
@@ -108,7 +108,7 @@ const PttArticleCard = ({ article }: PttArticleCardProps) => {
                             <span className={cn('hidden sm:inline', STYLES.textMuted)}>by {article.author}</span>
                             <span className={STYLES.textMuted}>{formattedTime}</span>
                         </div>
-                        <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                        <h3 className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                             {article.title}
                         </h3>
                     </div>
