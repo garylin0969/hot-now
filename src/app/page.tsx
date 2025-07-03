@@ -64,7 +64,7 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="komica">
-                    <KomicaList trends={komicaTrends} />
+                    <KomicaList className="mx-auto max-w-2xl" trends={komicaTrends} />
                 </TabsContent>
             </Tabs>
         </div>
