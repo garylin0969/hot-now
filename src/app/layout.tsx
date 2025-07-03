@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -146,6 +147,8 @@ export const metadata: Metadata = {
     },
 };
 
+const GA_ID = 'G-F0MRGZ2J39';
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -159,6 +162,7 @@ export default function RootLayout({
                     {children}
                     <Toaster />
                 </ThemeProvider>
+                <GoogleAnalytics gaId={GA_ID} />
             </body>
         </html>
     );
