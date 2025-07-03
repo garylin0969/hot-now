@@ -34,7 +34,9 @@ const Home = async () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <Shortcuts className="mb-4" />
+            <div className="mb-4 flex justify-center">
+                <Shortcuts />
+            </div>
             <Tabs defaultValue="youtube" className="w-full">
                 <TabsList className="text-muted-foreground mx-auto mb-3 space-x-1 bg-transparent">
                     <TabsTrigger
