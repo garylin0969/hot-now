@@ -1,6 +1,6 @@
 import type { PttApiResponse } from '@/types';
 
-// PTT API Key
+// PTT API URL
 const PTT_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
 
 export const GetPttTrends = async (): Promise<PttApiResponse> => {

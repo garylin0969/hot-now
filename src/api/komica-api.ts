@@ -1,6 +1,6 @@
 import type { KomicaApiResponse } from '@/types';
 
-// KOMICA API Key
+// KOMICA API URL
 const KOMICA_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
 
 // K島熱門文章

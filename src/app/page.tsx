@@ -1,8 +1,10 @@
+import { GetGamerTrends } from '@/api/gamer-api';
 import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetSimplifiedRedditHotArticles } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
+import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
@@ -25,6 +27,9 @@ const Home = async () => {
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
+    // Gamer
+    const gamerResponse = await GetGamerTrends();
+    const gamerTrends = gamerResponse.trends || [];
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -60,6 +65,12 @@ const Home = async () => {
                     >
                         Komica
                     </TabsTrigger>
+                    <TabsTrigger
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
+                        value="gamer"
+                    >
+                        Gamer
+                    </TabsTrigger>
                 </TabsList>
                 <TabsContent value="youtube">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -91,6 +102,13 @@ const Home = async () => {
                 </TabsContent>
                 <TabsContent value="komica">
                     <KomicaList className="mx-auto max-w-2xl" trends={komicaTrends} />
+                </TabsContent>
+                <TabsContent value="gamer">
+                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+                        {gamerTrends?.map((article) => (
+                            <GamerArticleCard key={article.link} article={article} />
+                        ))}
+                    </div>
                 </TabsContent>
             </Tabs>
         </div>
