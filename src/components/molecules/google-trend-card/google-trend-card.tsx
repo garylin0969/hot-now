@@ -14,12 +14,12 @@ const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
                 <CardTitle className="text-foreground text-lg font-semibold">{trend.googleTrend}</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center gap-x-4">
-                <div className="flex items-center gap-4">
-                    <span className="text-muted-foreground text-sm">搜尋量</span>
+                <div className="flex items-center">
+                    <span className="text-muted-foreground text-sm">搜尋量：</span>
                     <Badge variant="outline">{trend.searchVolume}</Badge>
                 </div>
-                <div className="flex items-center gap-4">
-                    <span className="text-muted-foreground text-sm">已開始</span>
+                <div className="flex items-center">
+                    <span className="text-muted-foreground text-sm">已開始：</span>
                     <span className="text-muted-foreground text-sm">{trend.started}</span>
                 </div>
                 <CopyToClipboard text={trend?.googleTrend} />
