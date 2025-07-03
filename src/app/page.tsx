@@ -1,4 +1,5 @@
 import { GetSimplifiedNewsDataHotNews } from '@/api/news-data-api';
+import { GetPttTrends } from '@/api/ptt-api';
 import { GetSimplifiedRedditHotPosts } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
 import NewsDataCard from '@/components/molecules/news-data-card';
@@ -14,6 +15,9 @@ const Home = async () => {
     const redditPosts = await GetSimplifiedRedditHotPosts(50);
     // News
     const newsDataResults = await GetSimplifiedNewsDataHotNews(10);
+    // PTT
+    const pttResponse = await GetPttTrends();
+    const { articles: pttArticles } = pttResponse;
 
     return (
         <div className="container mx-auto px-4 py-8">
