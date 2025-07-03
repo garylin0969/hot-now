@@ -14,13 +14,13 @@ const Home = async () => {
     // Youtube
     const youtubeResponse = await GetYoutubeHotVideosWithCache();
     const youtubeVideos = youtubeResponse?.data?.items || [];
+    // PTT
+    const pttResponse = await GetPttTrends();
+    const pttArticles = pttResponse.articles || [];
     // Reddit
     const redditArticles = await GetSimplifiedRedditHotArticles(50);
     // News
     const newsDataResults = await GetSimplifiedNewsDataHotNews(10);
-    // PTT
-    const pttResponse = await GetPttTrends();
-    const pttArticles = pttResponse.articles || [];
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
@@ -30,15 +30,22 @@ const Home = async () => {
             <Tabs defaultValue="youtube" className="w-full">
                 <TabsList className="mx-auto mb-4">
                     <TabsTrigger value="youtube">Youtube</TabsTrigger>
+                    <TabsTrigger value="ptt">PTT</TabsTrigger>
                     <TabsTrigger value="reddit">Reddit</TabsTrigger>
                     <TabsTrigger value="news">新聞</TabsTrigger>
-                    <TabsTrigger value="ptt">PTT</TabsTrigger>
                     <TabsTrigger value="komica">Komica</TabsTrigger>
                 </TabsList>
                 <TabsContent value="youtube">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                         {youtubeVideos?.map((video) => (
                             <YoutubeVideoCard key={video.id} video={video} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="ptt">
+                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+                        {pttArticles?.map((article) => (
+                            <PttArticleCard key={article.link} article={article} />
                         ))}
                     </div>
                 </TabsContent>
@@ -53,13 +60,6 @@ const Home = async () => {
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
                         {newsDataResults?.map((news) => (
                             <NewsDataCard key={news.article_id} news={news} />
-                        ))}
-                    </div>
-                </TabsContent>
-                <TabsContent value="ptt">
-                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                        {pttArticles?.map((article) => (
-                            <PttArticleCard key={article.link} article={article} />
                         ))}
                     </div>
                 </TabsContent>
