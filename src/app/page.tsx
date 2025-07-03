@@ -48,46 +48,48 @@ const Home = async () => {
                 <Shortcuts />
             </div>
             <Tabs defaultValue="youtube" className="w-full">
-                <TabsList className="text-muted-foreground mx-auto mb-3 space-x-1 bg-transparent">
-                    <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                        value="youtube"
-                    >
-                        Youtube
-                    </TabsTrigger>
-                    <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                        value="ptt"
-                    >
-                        PTT
-                    </TabsTrigger>
-                    <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                        value="google"
-                    >
-                        Google
-                    </TabsTrigger>
-                    {isShowGamer && (
+                <div className="mb-3 flex w-full justify-center">
+                    <TabsList className="text-muted-foreground mx-auto max-w-full space-x-1 bg-transparent sm:min-w-fit">
                         <TabsTrigger
-                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                            value="gamer"
+                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                            value="youtube"
                         >
-                            Gamer
+                            Youtube
                         </TabsTrigger>
-                    )}
-                    <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                        value="reddit"
-                    >
-                        Reddit
-                    </TabsTrigger>
-                    <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                        value="komica"
-                    >
-                        Komica
-                    </TabsTrigger>
-                </TabsList>
+                        <TabsTrigger
+                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                            value="ptt"
+                        >
+                            PTT
+                        </TabsTrigger>
+                        <TabsTrigger
+                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                            value="google"
+                        >
+                            Google
+                        </TabsTrigger>
+                        {isShowGamer && (
+                            <TabsTrigger
+                                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                                value="gamer"
+                            >
+                                Gamer
+                            </TabsTrigger>
+                        )}
+                        <TabsTrigger
+                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                            value="reddit"
+                        >
+                            Reddit
+                        </TabsTrigger>
+                        <TabsTrigger
+                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                            value="komica"
+                        >
+                            Komica
+                        </TabsTrigger>
+                    </TabsList>
+                </div>
                 <TabsContent value="youtube">
                     <YouTubeContent
                         latestVideos={youtubeLatestVideos}
