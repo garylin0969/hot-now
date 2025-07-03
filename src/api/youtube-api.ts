@@ -19,21 +19,44 @@ export type YouTubeCategoryKey = keyof typeof YOUTUBE_CATEGORIES;
 
 // 取得發燒影片（無緩存）
 export const GetYoutubeHotVideos = async (categoryId?: string) => {
-    const params = {
-        part: ['snippet', 'statistics', 'contentDetails'],
-        chart: 'mostPopular',
-        regionCode: 'TW',
-        maxResults: 50,
-        ...(categoryId && { videoCategoryId: categoryId }),
-    };
+    try {
+        if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'undefined') {
+            throw new Error('YouTube API key is not configured');
+        }
 
-    const response = await youtube.videos.list(params);
-    return response;
+        const params = {
+            part: ['snippet', 'statistics', 'contentDetails'],
+            chart: 'mostPopular',
+            regionCode: 'TW',
+            maxResults: 50,
+            ...(categoryId && { videoCategoryId: categoryId }),
+        };
+
+        const response = await youtube.videos.list(params);
+
+        if (!response.data) {
+            throw new Error('No data received from YouTube API');
+        }
+
+        return response;
+    } catch (error) {
+        console.error('Error fetching YouTube hot videos:', error);
+        throw new Error(
+            `Failed to fetch YouTube hot videos: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
+    }
 };
 
 // 取得發燒影片（帶緩存）
 export const GetYoutubeHotVideosWithCache = unstable_cache(
-    async (categoryId?: string) => GetYoutubeHotVideos(categoryId),
+    async (categoryId?: string) => {
+        try {
+            return await GetYoutubeHotVideos(categoryId);
+        } catch (error) {
+            console.error('Error in cached YouTube hot videos:', error);
+            throw error;
+        }
+    },
     ['get-hot-videos-cache'],
     {
         revalidate: TWO_HOURS,
@@ -44,8 +67,15 @@ export const GetYoutubeHotVideosWithCache = unstable_cache(
 // 取得特定類別的發燒影片（帶緩存）
 export const GetYoutubeHotVideosByCategory = unstable_cache(
     async (categoryKey: YouTubeCategoryKey) => {
-        const categoryId = YOUTUBE_CATEGORIES[categoryKey];
-        return GetYoutubeHotVideos(categoryId);
+        try {
+            const categoryId = YOUTUBE_CATEGORIES[categoryKey];
+            return await GetYoutubeHotVideos(categoryId);
+        } catch (error) {
+            console.error(`Error fetching YouTube hot videos for category ${categoryKey}:`, error);
+            throw new Error(
+                `Failed to fetch YouTube hot videos for category ${categoryKey}: ${error instanceof Error ? error.message : 'Unknown error'}`
+            );
+        }
     },
     ['get-hot-videos-by-category-cache'],
     {
