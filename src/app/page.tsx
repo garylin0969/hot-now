@@ -96,7 +96,7 @@ const Home = async () => {
                     <div className="mb-4 flex items-center justify-center">
                         <div className="text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold">過去4小時</div>
                     </div>
-                    <div className="mx-auto flex max-w-2xl flex-col gap-4">
+                    <div className="mx-auto flex max-w-xl flex-col gap-4">
                         {googleTrends?.map((trend) => (
                             <GoogleTrendCard key={trend.googleTrend} trend={trend} />
                         ))}
