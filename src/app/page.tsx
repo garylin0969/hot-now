@@ -1,9 +1,3 @@
-import { GetGamerTrends } from '@/api/gamer-api';
-import { GetGoogleTrends } from '@/api/google-api';
-import { GetKomicaTrends } from '@/api/komica-api';
-import { GetPttTrends } from '@/api/ptt-api';
-import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
-import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
@@ -12,6 +6,12 @@ import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GetGamerTrends } from '@/services/gamer-api';
+import { GetGoogleTrends } from '@/services/google-api';
+import { GetKomicaTrends } from '@/services/komica-api';
+import { GetPttTrends } from '@/services/ptt-api';
+import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/services/reddit-api';
+import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/services/youtube-api';
 
 const Home = async () => {
     // Youtube - 獲取不同類別的影片
