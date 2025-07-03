@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FaGithub, FaGoogle, FaLinkedin } from 'react-icons/fa';
+import NativeImage from '@/components/atoms/native-image';
 import ThemeToggle from '@/components/atoms/theme-toggle';
 
 const SOCIAL_LINKS = [
@@ -27,7 +28,8 @@ const Header = () => {
     return (
         <header className="border-border/40 bg-background/70 sticky top-0 left-0 z-50 h-14.5 border-b shadow-md backdrop-blur-md">
             <div className="container mx-auto flex h-full items-center justify-between">
-                <Link href="/">
+                <Link href="/" className="flex items-center gap-2">
+                    <NativeImage src="/favicon/favicon-32x32.png" alt="Hot Now" className="h-8 w-8" />
                     <h1 className="text-primary text-2xl font-extrabold">Hot Now</h1>
                 </Link>
                 <nav className="flex items-center gap-2">
