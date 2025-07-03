@@ -10,7 +10,6 @@ import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Home = async () => {
