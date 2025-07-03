@@ -1,7 +1,8 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
-import { useRedditHotArticles, useRedditHotArticlesBySubreddit } from '@/api/reddit-api';
+import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -18,18 +19,37 @@ const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:tex
 const RedditContent = () => {
     const [selectedSubreddit, setSelectedSubreddit] = useState<SubredditType>('all');
 
-    // 使用 React Query hooks 获取数据
-    const { data: allArticles, isLoading: isLoadingAll, error: errorAll } = useRedditHotArticles(50);
+    // 使用 React Query hooks 獲取資料
+    const {
+        data: allArticles,
+        isLoading: isLoadingAll,
+        error: errorAll,
+    } = useQuery({
+        queryKey: ['reddit', 'hot', 'all', 50],
+        queryFn: () => GetSimplifiedRedditHotArticles(50),
+        staleTime: 30 * 60 * 1000, // 30 minutes
+        gcTime: 30 * 60 * 1000, // 30 minutes
+    });
     const {
         data: taiwaneseArticles,
         isLoading: isLoadingTaiwanese,
         error: errorTaiwanese,
-    } = useRedditHotArticlesBySubreddit('Taiwanese', 50);
+    } = useQuery({
+        queryKey: ['reddit', 'hot', 'taiwanese', 50],
+        queryFn: () => GetSimplifiedRedditHotArticlesBySubreddit('Taiwanese', 50),
+        staleTime: 30 * 60 * 1000, // 30 minutes
+        gcTime: 30 * 60 * 1000, // 30 minutes
+    });
     const {
         data: chinaArticles,
         isLoading: isLoadingChina,
         error: errorChina,
-    } = useRedditHotArticlesBySubreddit('China_irl', 50);
+    } = useQuery({
+        queryKey: ['reddit', 'hot', 'china_irl', 50],
+        queryFn: () => GetSimplifiedRedditHotArticlesBySubreddit('China_irl', 50),
+        staleTime: 30 * 60 * 1000, // 30 minutes
+        gcTime: 30 * 60 * 1000, // 30 minutes
+    });
 
     const currentArticles = useMemo(() => {
         const articleMap = {
@@ -77,14 +97,14 @@ const RedditContent = () => {
                 </Tabs>
             </div>
 
-            {/* 载入状态 */}
+            {/* 載入狀態 */}
             {isLoading && (
                 <div className="flex items-center justify-center py-8">
                     <div className="text-muted-foreground">Loading...</div>
                 </div>
             )}
 
-            {/* 错误状态 */}
+            {/* 錯誤狀態 */}
             {error && (
                 <div className="flex items-center justify-center py-8">
                     <div className="text-destructive">Error: {error.message}</div>

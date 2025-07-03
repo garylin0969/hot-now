@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import type { RedditApiResponse, SimplifiedRedditArticle } from '@/types';
 
@@ -105,24 +104,4 @@ export const GetSimplifiedRedditHotArticlesBySubreddit = async (
             `Failed to get simplified Reddit hot articles for subreddit ${subreddit}: ${error instanceof Error ? error.message : 'Unknown error'}`
         );
     }
-};
-
-// React Query Hooks
-export const useRedditHotArticles = (limit: number = 50) => {
-    return useQuery({
-        queryKey: ['reddit', 'hot', 'all', limit],
-        queryFn: () => GetSimplifiedRedditHotArticles(limit),
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        gcTime: 30 * 60 * 1000, // 30 minutes
-    });
-};
-
-export const useRedditHotArticlesBySubreddit = (subreddit: string, limit: number = 50) => {
-    return useQuery({
-        queryKey: ['reddit', 'hot', subreddit, limit],
-        queryFn: () => GetSimplifiedRedditHotArticlesBySubreddit(subreddit, limit),
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        gcTime: 30 * 60 * 1000, // 30 minutes
-        enabled: !!subreddit,
-    });
 };
