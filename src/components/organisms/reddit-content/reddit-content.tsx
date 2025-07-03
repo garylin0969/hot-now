@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
+import StatusDisplay from '@/components/atoms/status-display';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -97,19 +98,8 @@ const RedditContent = () => {
                 </Tabs>
             </div>
 
-            {/* 載入狀態 */}
-            {isLoading && (
-                <div className="flex items-center justify-center py-8">
-                    <div className="text-muted-foreground">Loading...</div>
-                </div>
-            )}
-
-            {/* 錯誤狀態 */}
-            {error && (
-                <div className="flex items-center justify-center py-8">
-                    <div className="text-destructive">Error: {error.message}</div>
-                </div>
-            )}
+            {/* 狀態顯示：Loading、Error */}
+            <StatusDisplay isLoading={isLoading} error={error} />
 
             {/* 文章列表 */}
             {!isLoading && !error && (
