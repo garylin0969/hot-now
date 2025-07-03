@@ -10,8 +10,7 @@ export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditAp
                 revalidate: 60 * 5, // 5 minutes
             },
             headers: {
-                'User-Agent':
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'User-Agent': 'Mozilla/5.0 (compatible; MyRedditBot/1.0; +https://github.com/garylin0969)',
             },
         });
 
@@ -40,8 +39,7 @@ export const GetRedditHotArticlesBySubreddit = async (
                 revalidate: 60 * 5, // 5 minutes
             },
             headers: {
-                'User-Agent':
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'User-Agent': 'Mozilla/5.0 (compatible; MyRedditBot/1.0; +https://github.com/garylin0969)',
             },
         });
 
