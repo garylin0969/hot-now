@@ -1,5 +1,5 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
 import ThemeProvider from '@/components/atoms/theme-provider';
@@ -115,15 +115,8 @@ export const metadata: Metadata = {
     },
     manifest: '/favicon/site.webmanifest',
     other: {
-        'theme-color': '#ffffff',
         'msapplication-TileColor': '#ffffff',
         'msapplication-config': '/favicon/browserconfig.xml',
-    },
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-        maximumScale: 1,
-        userScalable: false,
     },
     verification: {
         google: 'your-google-site-verification-code',
@@ -133,11 +126,6 @@ export const metadata: Metadata = {
     category: 'technology',
     classification: 'Hot Content Aggregator',
     referrer: 'origin-when-cross-origin',
-    themeColor: [
-        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-        { media: '(prefers-color-scheme: dark)', color: '#000000' },
-    ],
-    colorScheme: 'light dark',
     generator: 'Next.js',
     applicationName: 'Hot Now',
     appleWebApp: {
@@ -145,6 +133,18 @@ export const metadata: Metadata = {
         statusBarStyle: 'default',
         capable: true,
     },
+};
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+        { media: '(prefers-color-scheme: dark)', color: '#000000' },
+    ],
+    colorScheme: 'light dark',
 };
 
 const GA_ID = 'G-F0MRGZ2J39';
