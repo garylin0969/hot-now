@@ -75,8 +75,13 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
     return (
         <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="flex h-full cursor-pointer flex-col overflow-hidden pt-0 hover:shadow-lg">
-                <AspectRatio ratio={16 / 9}>
-                    <NativeImage className="h-full w-full object-cover" src={thumbnailUrl} alt={title} loading="lazy" />
+                <AspectRatio className="overflow-hidden" ratio={16 / 9}>
+                    <NativeImage
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        src={thumbnailUrl}
+                        alt={title}
+                        loading="lazy"
+                    />
                     {isShort && <Badge className="absolute right-2 bottom-2">SHORTS</Badge>}
                 </AspectRatio>
                 <CardContent className="flex flex-1 flex-col justify-between space-y-2 px-4">
