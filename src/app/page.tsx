@@ -3,20 +3,31 @@ import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
-import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
+import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
-import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
+import YouTubeContent from '@/components/organisms/youtube-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Home = async () => {
-    // Youtube
-    const youtubeResponse = await GetYoutubeHotVideosWithCache();
-    const youtubeVideos = youtubeResponse?.data?.items || [];
+    // Youtube - 獲取不同類別的影片
+    const [youtubeLatestResponse, youtubeGamingResponse, youtubeMusicResponse, youtubeFilmResponse] = await Promise.all(
+        [
+            GetYoutubeHotVideosWithCache(),
+            GetYoutubeHotVideosByCategory('gaming'),
+            GetYoutubeHotVideosByCategory('music'),
+            GetYoutubeHotVideosByCategory('film'),
+        ]
+    );
+
+    const youtubeLatestVideos = youtubeLatestResponse?.data?.items || [];
+    const youtubeGamingVideos = youtubeGamingResponse?.data?.items || [];
+    const youtubeMusicVideos = youtubeMusicResponse?.data?.items || [];
+    const youtubeFilmVideos = youtubeFilmResponse?.data?.items || [];
     // PTT
     const pttResponse = await GetPttTrends();
     const pttArticles = pttResponse.articles || [];
@@ -79,11 +90,12 @@ const Home = async () => {
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value="youtube">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        {youtubeVideos?.map((video) => (
-                            <YoutubeVideoCard key={video.id} video={video} />
-                        ))}
-                    </div>
+                    <YouTubeContent
+                        latestVideos={youtubeLatestVideos}
+                        gamingVideos={youtubeGamingVideos}
+                        musicVideos={youtubeMusicVideos}
+                        filmVideos={youtubeFilmVideos}
+                    />
                 </TabsContent>
                 <TabsContent value="ptt">
                     <div className="mb-4 flex items-center justify-center">
