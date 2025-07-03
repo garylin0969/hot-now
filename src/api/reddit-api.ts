@@ -4,7 +4,11 @@ const REDDIT_BASE_URL = 'https://www.reddit.com';
 
 // Reddit所有看版的熱門文章
 export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditApiResponse> => {
-    const response = await fetch(`${REDDIT_BASE_URL}/r/all/hot.json?limit=${limit}`, { cache: 'no-store' });
+    const response = await fetch(`${REDDIT_BASE_URL}/r/all/hot.json?limit=${limit}`, {
+        next: {
+            revalidate: 60 * 5, // 5 minutes
+        },
+    });
     const data: RedditApiResponse = await response.json();
     return data;
 };
