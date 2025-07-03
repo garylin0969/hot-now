@@ -1,10 +1,8 @@
 import { GetKomicaTrends } from '@/api/komica-api';
-import { GetSimplifiedNewsDataHotNews } from '@/api/news-data-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetSimplifiedRedditHotArticles } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
 import KomicaList from '@/components/molecules/komica-list';
-import NewsDataCard from '@/components/molecules/news-data-card';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
@@ -19,8 +17,6 @@ const Home = async () => {
     const pttArticles = pttResponse.articles || [];
     // Reddit
     const redditArticles = await GetSimplifiedRedditHotArticles(50);
-    // News
-    const newsDataResults = await GetSimplifiedNewsDataHotNews(10);
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
@@ -30,31 +26,25 @@ const Home = async () => {
             <Tabs defaultValue="youtube" className="w-full">
                 <TabsList className="text-muted-foreground mx-auto mb-4 space-x-1 bg-transparent">
                     <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
                         value="youtube"
                     >
                         Youtube
                     </TabsTrigger>
                     <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
                         value="ptt"
                     >
                         PTT
                     </TabsTrigger>
                     <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
                         value="reddit"
                     >
                         Reddit
                     </TabsTrigger>
                     <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
-                        value="news"
-                    >
-                        News
-                    </TabsTrigger>
-                    <TabsTrigger
-                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
                         value="komica"
                     >
                         Komica
@@ -78,13 +68,6 @@ const Home = async () => {
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
                         {redditArticles?.map((article) => (
                             <RedditArticleCard key={article.id} article={article} />
-                        ))}
-                    </div>
-                </TabsContent>
-                <TabsContent value="news">
-                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                        {newsDataResults?.map((news) => (
-                            <NewsDataCard key={news.article_id} news={news} />
                         ))}
                     </div>
                 </TabsContent>
