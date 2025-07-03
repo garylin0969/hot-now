@@ -20,11 +20,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: {
-        default: 'Hot Now - 即時熱門內容聚合平台',
+        default: 'Hot Now - 即時熱門內容整合平台',
         template: '%s | Hot Now',
     },
-    description:
-        '即時追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，一站式瀏覽最新話題與趨勢。',
+    description: '即時追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
     keywords: [
         'PTT',
         'Reddit',
@@ -35,7 +34,7 @@ export const metadata: Metadata = {
         '熱門',
         '趨勢',
         '即時',
-        '聚合',
+        '整合',
         '台灣',
         '討論區',
     ],
@@ -57,9 +56,9 @@ export const metadata: Metadata = {
         },
     },
     openGraph: {
-        title: 'Hot Now - 即時熱門內容聚合平台',
+        title: 'Hot Now - 即時熱門內容整合平台',
         description:
-            '即時追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，一站式瀏覽最新話題與趨勢。',
+            '即時追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
         url: 'https://hot-now.vercel.app',
         siteName: 'Hot Now',
         locale: 'zh_TW',
@@ -69,13 +68,13 @@ export const metadata: Metadata = {
                 url: '/og-image.png',
                 width: 1200,
                 height: 630,
-                alt: 'Hot Now - 即時熱門內容聚合平台',
+                alt: 'Hot Now - 即時熱門內容整合平台',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Hot Now - 即時熱門內容聚合平台',
+        title: 'Hot Now - 即時熱門內容整合平台',
         description: '即時追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容',
         images: ['/og-image.png'],
         creator: '@hotnow',
