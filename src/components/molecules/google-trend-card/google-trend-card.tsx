@@ -9,8 +9,8 @@ interface GoogleTrendCardProps {
 
 const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
     return (
-        <Card className="flex flex-row items-center justify-between transition-shadow duration-200 hover:shadow-lg">
-            <CardHeader className="flex-1">
+        <Card className="flex flex-col gap-y-1 transition-shadow duration-200 hover:shadow-lg md:flex-row md:items-center md:justify-between md:gap-y-0">
+            <CardHeader className="flex-1 gap-0">
                 <CardTitle className="text-foreground text-lg font-semibold">{trend.googleTrend}</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center gap-x-4">
