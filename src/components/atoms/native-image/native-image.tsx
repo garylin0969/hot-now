@@ -1,6 +1,6 @@
-import React from 'react';
+import { ImgHTMLAttributes } from 'react';
 
-interface NativeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface NativeImageProps extends ImgHTMLAttributes<HTMLImageElement> {
     src?: string;
     alt: string;
     className?: string;
