@@ -7,8 +7,6 @@ const NEWS_DATA_BASE_URL = 'https://www.newsdata.io/api/1';
 
 // 轉換新聞數據為簡化格式
 const simplifyNewsData = (apiResponse: NewsDataApiResponse): SimplifiedNews[] => {
-    console.log(apiResponse);
-
     return apiResponse.results.map((news) => ({
         article_id: news.article_id,
         title: news.title,
@@ -29,15 +27,11 @@ export const GetNewsDataHotNews = async (limit: number = 10): Promise<NewsDataAp
         { next: { revalidate: 60 * 60 * 2 } }
     );
     const data = await response.json();
-    console.log(data);
-
     return data;
 };
 
 // 取得簡化的熱門新聞
 export const GetSimplifiedNewsDataHotNews = async (limit: number = 10): Promise<SimplifiedNews[]> => {
     const apiResponse = await GetNewsDataHotNews(limit);
-    console.log(apiResponse);
-
     return simplifyNewsData(apiResponse);
 };
