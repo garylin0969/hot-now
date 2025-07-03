@@ -9,6 +9,10 @@ export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditAp
             next: {
                 revalidate: 60 * 5, // 5 minutes
             },
+            headers: {
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            },
         });
 
         if (!response.ok) {
@@ -34,6 +38,10 @@ export const GetRedditHotArticlesBySubreddit = async (
         const response = await fetch(`${REDDIT_BASE_URL}/r/${subreddit}/hot.json?limit=${limit}`, {
             next: {
                 revalidate: 60 * 5, // 5 minutes
+            },
+            headers: {
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             },
         });
 
