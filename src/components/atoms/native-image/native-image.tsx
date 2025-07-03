@@ -9,7 +9,7 @@ interface NativeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 const NativeImage = ({ src, alt, className = '', loading = 'lazy', ...props }: NativeImageProps) => {
     if (!src) {
-        src = '/photo-coming-soon.jpg';
+        src = '/image-not-found.png';
     }
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={alt} className={className} loading={loading} {...props} />;
