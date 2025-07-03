@@ -15,7 +15,7 @@ export interface RedditPreview {
     enabled: boolean;
 }
 
-export interface RedditPostData {
+export interface RedditArticleData {
     approved_at_utc: null;
     subreddit: string;
     selftext: string;
@@ -125,9 +125,9 @@ export interface RedditPostData {
     is_video: boolean;
 }
 
-export interface RedditPost {
+export interface RedditArticle {
     kind: 't3';
-    data: RedditPostData;
+    data: RedditArticleData;
 }
 
 export interface RedditListingData {
@@ -135,7 +135,7 @@ export interface RedditListingData {
     dist: number;
     modhash: string;
     geo_filter: null;
-    children: RedditPost[];
+    children: RedditArticle[];
     before: null;
 }
 
@@ -145,7 +145,7 @@ export interface RedditApiResponse {
 }
 
 // 簡化的文章資料格式
-export interface SimplifiedRedditPost {
+export interface SimplifiedRedditArticle {
     id: string;
     title: string;
     author: string;

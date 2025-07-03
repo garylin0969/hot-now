@@ -1,9 +1,10 @@
 import { GetSimplifiedNewsDataHotNews } from '@/api/news-data-api';
 import { GetPttTrends } from '@/api/ptt-api';
-import { GetSimplifiedRedditHotPosts } from '@/api/reddit-api';
+import { GetSimplifiedRedditHotArticles } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
 import NewsDataCard from '@/components/molecules/news-data-card';
-import RedditPostCard from '@/components/molecules/reddit-post-card';
+import PttArticleCard from '@/components/molecules/ptt-article-card';
+import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -12,12 +13,12 @@ const Home = async () => {
     const youtubeResponse = await GetYoutubeHotVideosWithCache();
     const youtubeVideos = youtubeResponse?.data?.items || [];
     // Reddit
-    const redditPosts = await GetSimplifiedRedditHotPosts(50);
+    const redditArticles = await GetSimplifiedRedditHotArticles(50);
     // News
     const newsDataResults = await GetSimplifiedNewsDataHotNews(10);
     // PTT
     const pttResponse = await GetPttTrends();
-    const { articles: pttArticles } = pttResponse;
+    const pttArticles = pttResponse.articles || [];
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -26,6 +27,7 @@ const Home = async () => {
                     <TabsTrigger value="youtube">Youtube</TabsTrigger>
                     <TabsTrigger value="reddit">Reddit</TabsTrigger>
                     <TabsTrigger value="news">新聞</TabsTrigger>
+                    <TabsTrigger value="ptt">PTT</TabsTrigger>
                 </TabsList>
                 <TabsContent value="youtube">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -36,8 +38,8 @@ const Home = async () => {
                 </TabsContent>
                 <TabsContent value="reddit">
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                        {redditPosts?.map((post) => (
-                            <RedditPostCard key={post.id} post={post} />
+                        {redditArticles?.map((article) => (
+                            <RedditArticleCard key={article.id} article={article} />
                         ))}
                     </div>
                 </TabsContent>
@@ -45,6 +47,13 @@ const Home = async () => {
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
                         {newsDataResults?.map((news) => (
                             <NewsDataCard key={news.article_id} news={news} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="ptt">
+                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+                        {pttArticles?.map((article) => (
+                            <PttArticleCard key={article.link} article={article} />
                         ))}
                     </div>
                 </TabsContent>

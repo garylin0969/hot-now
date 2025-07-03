@@ -1,17 +1,17 @@
-import type { RedditApiResponse, SimplifiedRedditPost } from '@/types';
+import type { RedditApiResponse, SimplifiedRedditArticle } from '@/types';
 
 const REDDIT_BASE_URL = 'https://www.reddit.com';
 
 // Reddit所有看版的熱門文章
-export const GetRedditHotPosts = async (limit: number = 50): Promise<RedditApiResponse> => {
+export const GetRedditHotArticles = async (limit: number = 50): Promise<RedditApiResponse> => {
     const response = await fetch(`${REDDIT_BASE_URL}/r/all/hot.json?limit=${limit}`, { cache: 'no-store' });
     const data: RedditApiResponse = await response.json();
     return data;
 };
 
 // 取得簡化的Reddit熱門文章資料
-export const GetSimplifiedRedditHotPosts = async (limit: number = 50): Promise<SimplifiedRedditPost[]> => {
-    const response = await GetRedditHotPosts(limit);
+export const GetSimplifiedRedditHotArticles = async (limit: number = 50): Promise<SimplifiedRedditArticle[]> => {
+    const response = await GetRedditHotArticles(limit);
 
     return response?.data?.children?.map((post) => ({
         id: post.data.id,

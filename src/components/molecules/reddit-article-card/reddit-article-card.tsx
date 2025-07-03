@@ -1,7 +1,7 @@
 import NativeImage from '@/components/atoms/native-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import type { SimplifiedRedditPost } from '@/types';
+import type { SimplifiedRedditArticle } from '@/types';
 import { cn } from '@/utils/shadcn';
 
 // 時間常數
@@ -46,29 +46,29 @@ const formatPublishedTime = (created_utc: number): string => {
 };
 
 // 取得適合的縮圖 URL
-const getThumbnailUrl = (post: SimplifiedRedditPost): string => {
+const getThumbnailUrl = (article: SimplifiedRedditArticle): string => {
     // 優先使用 preview_image
-    if (post.preview_image) {
+    if (article.preview_image) {
         // Reddit 的 preview_image URL 需要解碼 HTML entities
-        return post.preview_image.replace(/&amp;/g, '&');
+        return article.preview_image.replace(/&amp;/g, '&');
     }
 
     // 如果 thumbnail 是有效的 URL，使用它
-    if (post.thumbnail?.startsWith('http')) {
-        return post.thumbnail;
+    if (article.thumbnail?.startsWith('http')) {
+        return article.thumbnail;
     }
 
     // 否則返回空字符串
     return '';
 };
 
-interface RedditPostCardProps {
-    post: SimplifiedRedditPost;
+interface RedditArticleCardProps {
+    article: SimplifiedRedditArticle;
 }
 
-const RedditPostCard = ({ post }: RedditPostCardProps) => {
-    const thumbnailUrl = getThumbnailUrl(post);
-    const redditUrl = `https://www.reddit.com${post.permalink}`;
+const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
+    const thumbnailUrl = getThumbnailUrl(article);
+    const redditUrl = `https://www.reddit.com${article.permalink}`;
 
     // 提取重複的樣式類名
     const cardHeightClasses = 'h-[120px] sm:h-[140px]';
@@ -84,10 +84,10 @@ const RedditPostCard = ({ post }: RedditPostCardProps) => {
                             <NativeImage
                                 className="h-full w-full object-cover"
                                 src={thumbnailUrl}
-                                alt={post.title}
+                                alt={article.title}
                                 loading="lazy"
                             />
-                            {post.is_video && (
+                            {article.is_video && (
                                 <Badge className={cn('absolute right-1 bottom-1 px-1 py-0.5', badgeTextClasses)}>
                                     VIDEO
                                 </Badge>
@@ -98,24 +98,24 @@ const RedditPostCard = ({ post }: RedditPostCardProps) => {
                         <div>
                             <div className="mb-4 flex flex-wrap items-center gap-1 sm:gap-2">
                                 <Badge variant="secondary" className={badgeTextClasses}>
-                                    r/{post.subreddit}
+                                    r/{article.subreddit}
                                 </Badge>
-                                <span className={cn('hidden sm:inline', textMutedClasses)}>by {post.author}</span>
-                                <span className={textMutedClasses}>{formatPublishedTime(post.created_utc)}</span>
+                                <span className={cn('hidden sm:inline', textMutedClasses)}>by {article.author}</span>
+                                <span className={textMutedClasses}>{formatPublishedTime(article.created_utc)}</span>
                             </div>
                             <h3 className="hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
-                                {post.title}
+                                {article.title}
                             </h3>
                         </div>
                         <div className={cn('mt-2 flex items-center gap-2 sm:gap-4 sm:text-sm', textMutedClasses)}>
                             <div className="flex items-center gap-1">
                                 <span>👍</span>
-                                <span>{formatNumber(post.score)}</span>
+                                <span>{formatNumber(article.score)}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <span>💬</span>
-                                <span className="hidden sm:inline">{formatNumber(post.num_comments)} 留言</span>
-                                <span className="sm:hidden">{formatNumber(post.num_comments)}</span>
+                                <span className="hidden sm:inline">{formatNumber(article.num_comments)} 留言</span>
+                                <span className="sm:hidden">{formatNumber(article.num_comments)}</span>
                             </div>
                         </div>
                     </CardContent>
@@ -125,4 +125,4 @@ const RedditPostCard = ({ post }: RedditPostCardProps) => {
     );
 };
 
-export default RedditPostCard;
+export default RedditArticleCard;
