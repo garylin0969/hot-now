@@ -6,13 +6,13 @@ interface GoogleTrendCardProps {
     trend: GoogleTrend;
 }
 
-const GoogleTrendCard: React.FC<GoogleTrendCardProps> = ({ trend }) => {
+const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
     return (
-        <Card className="gap-0 transition-shadow duration-200 hover:shadow-lg">
-            <CardHeader>
+        <Card className="flex flex-row items-center justify-between transition-shadow duration-200 hover:shadow-lg">
+            <CardHeader className="flex-1">
                 <CardTitle className="text-foreground text-lg font-semibold">{trend.googleTrend}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="flex gap-x-4">
                 <div className="flex items-center gap-4">
                     <span className="text-muted-foreground text-sm">搜尋量</span>
                     <Badge variant="outline">{trend.searchVolume}</Badge>
