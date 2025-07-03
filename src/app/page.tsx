@@ -2,14 +2,14 @@ import { GetGamerTrends } from '@/api/gamer-api';
 import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
-import { GetSimplifiedRedditHotArticles } from '@/api/reddit-api';
+import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache } from '@/api/youtube-api';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
-import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
+import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -27,7 +27,9 @@ const Home = async () => {
     const gamerResponse = await GetGamerTrends();
     const gamerTrends = gamerResponse.trends || [];
     // Reddit
-    const redditArticles = await GetSimplifiedRedditHotArticles(50);
+    const redditAllArticles = await GetSimplifiedRedditHotArticles(50);
+    const redditTaiwaneseArticles = await GetSimplifiedRedditHotArticlesBySubreddit('Taiwanese', 50);
+    const redditChinaArticles = await GetSimplifiedRedditHotArticlesBySubreddit('China_irl', 50);
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
@@ -116,11 +118,11 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="reddit">
-                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                        {redditArticles?.map((article) => (
-                            <RedditArticleCard key={article.id} article={article} />
-                        ))}
-                    </div>
+                    <RedditContent
+                        allArticles={redditAllArticles || []}
+                        taiwaneseArticles={redditTaiwaneseArticles || []}
+                        chinaArticles={redditChinaArticles || []}
+                    />
                 </TabsContent>
                 <TabsContent value="komica">
                     <KomicaList className="mx-auto max-w-xl" trends={komicaTrends} />
