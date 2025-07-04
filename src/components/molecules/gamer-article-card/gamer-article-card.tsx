@@ -48,7 +48,7 @@ const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
 
                     <CardContent className={cn('flex flex-1 flex-col justify-between p-3 sm:p-4', cardHeightClasses)}>
                         <div className="space-y-2">
-                            <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                            <div className="flex flex-wrap items-center gap-x-1 sm:gap-x-2">
                                 <Badge variant="secondary" className={badgeTextClasses}>
                                     {article.name}
                                 </Badge>

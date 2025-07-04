@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
-    metadataBase: new URL('https://hot-now.vercel.app'),
+    metadataBase: new URL('https://hotnow.garylin.dev'),
     alternates: {
         canonical: '/',
         languages: {
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Hot Now - 熱門內容整合平台',
         description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
-        url: 'https://hot-now.vercel.app',
+        url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
         locale: 'zh_TW',
         type: 'website',

@@ -19,6 +19,23 @@ const CATEGORY_TABS = [
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
 const YouTubeContent = ({ latestVideos, gamingVideos, musicVideos, filmVideos }: YouTubeContentProps) => {
+    // 視頻數據映射
+    const videoData = {
+        latest: latestVideos,
+        gaming: gamingVideos,
+        music: musicVideos,
+        film: filmVideos,
+    };
+
+    // 渲染視頻網格
+    const renderVideoGrid = (videos: youtube_v3.Schema$Video[], keyPrefix: string) => (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {videos?.map((video) => (
+                <YoutubeVideoCard key={`${keyPrefix}-${video.id}`} video={video} />
+            ))}
+        </div>
+    );
+
     return (
         <div className="w-full">
             <Tabs defaultValue="latest">
@@ -33,41 +50,12 @@ const YouTubeContent = ({ latestVideos, gamingVideos, musicVideos, filmVideos }:
                     </TabsList>
                 </div>
 
-                {/* 最新影片 */}
-                <TabsContent value="latest">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        {latestVideos?.map((video) => (
-                            <YoutubeVideoCard key={`latest-${video.id}`} video={video} />
-                        ))}
-                    </div>
-                </TabsContent>
-
-                {/* 遊戲影片 */}
-                <TabsContent value="gaming">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        {gamingVideos?.map((video) => (
-                            <YoutubeVideoCard key={`gaming-${video.id}`} video={video} />
-                        ))}
-                    </div>
-                </TabsContent>
-
-                {/* 音樂影片 */}
-                <TabsContent value="music">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        {musicVideos?.map((video) => (
-                            <YoutubeVideoCard key={`music-${video.id}`} video={video} />
-                        ))}
-                    </div>
-                </TabsContent>
-
-                {/* 電影影片 */}
-                <TabsContent value="film">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        {filmVideos?.map((video) => (
-                            <YoutubeVideoCard key={`film-${video.id}`} video={video} />
-                        ))}
-                    </div>
-                </TabsContent>
+                {/* 動態渲染所有類別的內容 */}
+                {CATEGORY_TABS.map(({ value }) => (
+                    <TabsContent key={value} value={value}>
+                        {renderVideoGrid(videoData[value], value)}
+                    </TabsContent>
+                ))}
             </Tabs>
         </div>
     );
