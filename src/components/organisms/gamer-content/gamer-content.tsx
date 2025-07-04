@@ -1,19 +1,9 @@
-'use client';
-
-import { useState, useMemo } from 'react';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import type { GamerTrend } from '@/types';
+import { cn } from '@/utils/shadcn';
 
-interface GamerContentProps {
-    allTrends: GamerTrend[];
-    gameTrends: GamerTrend[];
-    acTrends: GamerTrend[];
-    lifeTrends: GamerTrend[];
-}
-
-type CategoryType = 'all' | 'game' | 'ac' | 'life';
-
+// 類別頁籤資料
 const CATEGORY_TABS = [
     { value: 'all', label: '全部' },
     { value: 'game', label: '遊戲' },
@@ -21,46 +11,56 @@ const CATEGORY_TABS = [
     { value: 'life', label: '宅生活' },
 ] as const;
 
+// 頁籤樣式
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
-const GamerContent = ({ allTrends, gameTrends, acTrends, lifeTrends }: GamerContentProps) => {
-    const [selectedCategory, setSelectedCategory] = useState<CategoryType>('all');
+interface GamerContentProps {
+    className?: string;
+    allTrends: GamerTrend[];
+    gameTrends: GamerTrend[];
+    acTrends: GamerTrend[];
+    lifeTrends: GamerTrend[];
+}
 
-    const currentTrends = useMemo(() => {
-        const trendMap = {
-            all: allTrends,
-            game: gameTrends,
-            ac: acTrends,
-            life: lifeTrends,
-        };
-        return trendMap[selectedCategory] || [];
-    }, [selectedCategory, allTrends, gameTrends, acTrends, lifeTrends]);
-
-    const handleCategoryChange = (value: string) => {
-        setSelectedCategory(value as CategoryType);
+const GamerContent = ({ className, allTrends, gameTrends, acTrends, lifeTrends }: GamerContentProps) => {
+    // 趨勢資料
+    const trendData = {
+        all: allTrends,
+        game: gameTrends,
+        ac: acTrends,
+        life: lifeTrends,
     };
 
+    // 渲染文章列表
+    const renderArticleList = (trends: GamerTrend[], keyPrefix: string) => (
+        <div className="mx-auto flex max-w-4xl flex-col gap-4">
+            {trends?.map((article) => (
+                <GamerArticleCard key={`${keyPrefix}-${article.bsn}-${article.snA}`} article={article} />
+            ))}
+        </div>
+    );
+
     return (
-        <div className="w-full">
-            {/* 類別選擇器 */}
-            <div className="mb-6">
-                <Tabs value={selectedCategory} onValueChange={handleCategoryChange}>
+        <div className={cn('w-full', className)}>
+            <Tabs defaultValue={CATEGORY_TABS[0]?.value}>
+                {/* 類別選擇器 */}
+                <div className="mb-6">
                     <TabsList className="mx-auto grid w-full max-w-2xl grid-cols-4">
-                        {CATEGORY_TABS.map(({ value, label }) => (
-                            <TabsTrigger key={value} value={value} className={`text-sm ${ACTIVE_TAB_CLASS}`}>
+                        {CATEGORY_TABS?.map(({ value, label }) => (
+                            <TabsTrigger key={value} value={value} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
                                 {label}
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                </Tabs>
-            </div>
+                </div>
 
-            {/* 文章列表 */}
-            <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                {currentTrends?.map((article) => (
-                    <GamerArticleCard key={`${article.bsn}-${article.snA}`} article={article} />
+                {/* 動態渲染所有類別的內容 */}
+                {CATEGORY_TABS?.map(({ value }) => (
+                    <TabsContent key={value} value={value}>
+                        {renderArticleList(trendData[value], value)}
+                    </TabsContent>
                 ))}
-            </div>
+            </Tabs>
         </div>
     );
 };
