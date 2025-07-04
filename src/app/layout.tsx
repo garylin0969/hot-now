@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         default: 'Hot Now｜熱門話題一把抓',
         template: '%s | Hot Now',
     },
-    description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
+    description: '用 Hot Now 隨時掌握最新熱門話題。',
     keywords: [
         'PTT',
         'Reddit',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: 'Hot Now｜熱門話題一把抓',
-        description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
+        description: '用 Hot Now 隨時掌握最新熱門話題。',
         url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
         locale: 'zh_TW',
