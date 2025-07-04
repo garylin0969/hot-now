@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
+import Footer from '@/components/organisms/footer';
 import Header from '@/components/organisms/header';
 import { Toaster } from '@/components/ui/sonner';
 import { QueryProvider, ThemeProvider } from '@/providers';
@@ -158,6 +159,7 @@ export default function RootLayout({
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                         <Header />
                         {children}
+                        <Footer />
                         <Toaster />
                     </ThemeProvider>
                 </QueryProvider>
