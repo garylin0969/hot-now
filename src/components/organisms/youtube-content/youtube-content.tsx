@@ -59,7 +59,7 @@ const YouTubeContent = ({ latestVideos, gamingVideos, musicVideos, filmVideos }:
             {/* 影片網格 */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {currentVideos?.map((video) => (
-                    <YoutubeVideoCard key={video.id} video={video} />
+                    <YoutubeVideoCard key={`${selectedCategory}-${video.id}`} video={video} />
                 ))}
             </div>
         </div>

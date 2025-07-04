@@ -1,4 +1,6 @@
-import { ImgHTMLAttributes } from 'react';
+'use client';
+
+import { ImgHTMLAttributes, SyntheticEvent } from 'react';
 
 interface NativeImageProps extends ImgHTMLAttributes<HTMLImageElement> {
     src?: string;
@@ -8,11 +10,15 @@ interface NativeImageProps extends ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const NativeImage = ({ src, alt, className = '', loading = 'lazy', ...props }: NativeImageProps) => {
-    if (!src) {
-        src = '/image-not-found.png';
-    }
+    const imgSrc = src || '/image-not-found.png';
+
+    const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+        const target = e.target as HTMLImageElement;
+        target.src = '/image-not-found.png';
+    };
+
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} className={className} loading={loading} {...props} />;
+    return <img src={imgSrc} alt={alt} className={className} loading={loading} onError={handleError} {...props} />;
 };
 
 export default NativeImage;
