@@ -4,7 +4,7 @@ import { useState } from 'react';
 import NativeImage from '@/components/atoms/native-image';
 import { useShortcutsStore } from '@/store/shortcuts';
 import { cn } from '@/utils/shadcn';
-import { SHORTCUTS_CONFIG, getFaviconUrl, getShortcutInitial, openUrlInNewTab } from '@/utils/shortcuts';
+import { getFaviconUrl, getShortcutInitial, openUrlInNewTab } from '@/utils/shortcuts';
 import ShortcutsDialog from './shortcuts-dialog';
 
 interface ShortcutsProps {
@@ -66,10 +66,8 @@ const Shortcuts = ({ className }: ShortcutsProps) => {
         openUrlInNewTab(url);
     };
 
-    const showAddButton = shortcuts.length < SHORTCUTS_CONFIG.MAX_SHORTCUTS;
-
     return (
-        <div className={cn('flex flex-wrap gap-4', className)}>
+        <div className={cn('flex flex-wrap items-center justify-center gap-4', className)}>
             {shortcuts.map((shortcut) => (
                 <div
                     key={shortcut.id}
@@ -87,7 +85,7 @@ const Shortcuts = ({ className }: ShortcutsProps) => {
                 </div>
             ))}
 
-            {showAddButton && <AddShortcutButton />}
+            <AddShortcutButton />
         </div>
     );
 };
