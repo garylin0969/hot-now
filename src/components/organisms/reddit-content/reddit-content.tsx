@@ -1,11 +1,10 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
-import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubreddit } from '@/api/reddit-api';
 import StatusDisplay from '@/components/atoms/status-display';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useAllRedditQuery } from '@/hooks';
 import { cn } from '@/utils/shadcn';
 
 // 子版塊類型
@@ -24,67 +23,38 @@ const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:tex
 const RedditContent = ({ className }: { className?: string }) => {
     const [selectedSubreddit, setSelectedSubreddit] = useState<SubredditType>('all');
 
-    // 使用 React Query hooks 獲取資料
-    const {
-        data: allArticles,
-        isLoading: isLoadingAll,
-        error: errorAll,
-    } = useQuery({
-        queryKey: ['reddit', 'hot', 'all', 50],
-        queryFn: () => GetSimplifiedRedditHotArticles(50),
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        gcTime: 30 * 60 * 1000, // 30 minutes
-    });
-    const {
-        data: taiwaneseArticles,
-        isLoading: isLoadingTaiwanese,
-        error: errorTaiwanese,
-    } = useQuery({
-        queryKey: ['reddit', 'hot', 'taiwanese', 50],
-        queryFn: () => GetSimplifiedRedditHotArticlesBySubreddit('Taiwanese', 50),
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        gcTime: 30 * 60 * 1000, // 30 minutes
-    });
-    const {
-        data: chinaArticles,
-        isLoading: isLoadingChina,
-        error: errorChina,
-    } = useQuery({
-        queryKey: ['reddit', 'hot', 'china_irl', 50],
-        queryFn: () => GetSimplifiedRedditHotArticlesBySubreddit('China_irl', 50),
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        gcTime: 30 * 60 * 1000, // 30 minutes
-    });
+    // 使用自定義 hooks 獲取所有 Reddit 查詢
+    const { allArticlesQuery, taiwaneseArticlesQuery, chinaArticlesQuery } = useAllRedditQuery(50);
 
     // 當前文章
     const currentArticles = useMemo(() => {
         const articleMap = {
-            all: allArticles || [],
-            taiwanese: taiwaneseArticles || [],
-            china_irl: chinaArticles || [],
+            all: allArticlesQuery.data || [],
+            taiwanese: taiwaneseArticlesQuery.data || [],
+            china_irl: chinaArticlesQuery.data || [],
         };
         return articleMap[selectedSubreddit];
-    }, [selectedSubreddit, allArticles, taiwaneseArticles, chinaArticles]);
+    }, [selectedSubreddit, allArticlesQuery.data, taiwaneseArticlesQuery.data, chinaArticlesQuery.data]);
 
     // 是否加載中
     const isLoading = useMemo(() => {
         const loadingMap = {
-            all: isLoadingAll,
-            taiwanese: isLoadingTaiwanese,
-            china_irl: isLoadingChina,
+            all: allArticlesQuery.isLoading,
+            taiwanese: taiwaneseArticlesQuery.isLoading,
+            china_irl: chinaArticlesQuery.isLoading,
         };
         return loadingMap[selectedSubreddit];
-    }, [selectedSubreddit, isLoadingAll, isLoadingTaiwanese, isLoadingChina]);
+    }, [selectedSubreddit, allArticlesQuery.isLoading, taiwaneseArticlesQuery.isLoading, chinaArticlesQuery.isLoading]);
 
     // 錯誤
     const error = useMemo(() => {
         const errorMap = {
-            all: errorAll,
-            taiwanese: errorTaiwanese,
-            china_irl: errorChina,
+            all: allArticlesQuery.error,
+            taiwanese: taiwaneseArticlesQuery.error,
+            china_irl: chinaArticlesQuery.error,
         };
         return errorMap[selectedSubreddit];
-    }, [selectedSubreddit, errorAll, errorTaiwanese, errorChina]);
+    }, [selectedSubreddit, allArticlesQuery.error, taiwaneseArticlesQuery.error, chinaArticlesQuery.error]);
 
     // 子版塊選擇器
     const handleSubredditChange = (value: string) => {
