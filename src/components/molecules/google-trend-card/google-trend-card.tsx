@@ -1,4 +1,4 @@
-import CopyToClipboard from '@/components/atoms/copy-to-clipboard';
+// import CopyToClipboard from '@/components/atoms/copy-to-clipboard';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { GoogleTrend } from '@/types';
@@ -22,7 +22,7 @@ const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
                     <span className="text-muted-foreground text-sm">已開始：</span>
                     <span className="text-muted-foreground text-sm">{trend.started}</span>
                 </div>
-                <CopyToClipboard text={trend?.googleTrend} />
+                {/* <CopyToClipboard text={trend?.googleTrend} /> */}
             </CardContent>
         </Card>
     );
