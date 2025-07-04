@@ -13,7 +13,7 @@ const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
             <CardHeader className="flex-1 gap-0">
                 <CardTitle className="text-foreground text-lg font-semibold">{trend.googleTrend}</CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center gap-x-4">
+            <CardContent className="flex items-center justify-between gap-x-4 md:justify-start">
                 <div className="flex items-center">
                     <span className="text-muted-foreground text-sm">搜尋量：</span>
                     <Badge variant="outline">{trend.searchVolume}</Badge>
