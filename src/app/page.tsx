@@ -8,7 +8,7 @@ import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import GamerContent from '@/components/organisms/gamer-content';
-import RedditContent from '@/components/organisms/reddit-content';
+import RedditContent, { RedditPrefetch } from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -64,6 +64,8 @@ const Home = async () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            {/* Reddit 資料預載，避免TAB載入時的延遲，因為Reddit API是Client Side */}
+            <RedditPrefetch />
             <div className="mb-4 flex justify-center">
                 <Shortcuts />
             </div>
