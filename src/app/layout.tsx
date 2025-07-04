@@ -154,11 +154,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="zh-TW" suppressHydrationWarning>
-            <body className={cn('antialiased', geistSans.variable, geistMono.variable)}>
+            <body className={cn('flex min-h-screen flex-col antialiased', geistSans.variable, geistMono.variable)}>
                 <QueryProvider>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                         <Header />
-                        {children}
+                        <main className="flex-1">{children}</main>
                         <Footer />
                         <Toaster />
                     </ThemeProvider>
