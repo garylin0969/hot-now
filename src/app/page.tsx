@@ -23,7 +23,7 @@ const TABS = [
 ];
 
 // 頁籤樣式
-const tabTriggerClassName =
+const TAB_TRIGGER_CLASSNAME =
     'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground ' +
     'hover:bg-accent hover:text-accent-foreground ' +
     'flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm';
@@ -71,7 +71,7 @@ const Home = async () => {
                 <div className="mb-3 flex w-full justify-center">
                     <TabsList className="text-muted-foreground mx-auto max-w-full space-x-1 bg-transparent sm:min-w-fit">
                         {TABS.map((tab) => (
-                            <TabsTrigger key={tab?.value} className={tabTriggerClassName} value={tab?.value}>
+                            <TabsTrigger key={tab?.value} className={TAB_TRIGGER_CLASSNAME} value={tab?.value}>
                                 {tab?.label}
                             </TabsTrigger>
                         ))}
