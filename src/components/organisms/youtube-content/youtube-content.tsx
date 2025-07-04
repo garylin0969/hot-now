@@ -1,10 +1,6 @@
-'use client';
-
 import type { youtube_v3 } from 'googleapis';
-import { useState, useMemo } from 'react';
-import type { YouTubeCategoryKey } from '@/api/youtube-api';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 interface YouTubeContentProps {
     latestVideos: youtube_v3.Schema$Video[];
@@ -12,8 +8,6 @@ interface YouTubeContentProps {
     musicVideos: youtube_v3.Schema$Video[];
     filmVideos: youtube_v3.Schema$Video[];
 }
-
-type CategoryType = YouTubeCategoryKey;
 
 const CATEGORY_TABS = [
     { value: 'latest', label: '最新' },
@@ -25,27 +19,11 @@ const CATEGORY_TABS = [
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
 const YouTubeContent = ({ latestVideos, gamingVideos, musicVideos, filmVideos }: YouTubeContentProps) => {
-    const [selectedCategory, setSelectedCategory] = useState<CategoryType>('latest');
-
-    const currentVideos = useMemo(() => {
-        const videoMap = {
-            latest: latestVideos,
-            gaming: gamingVideos,
-            music: musicVideos,
-            film: filmVideos,
-        };
-        return videoMap[selectedCategory] || [];
-    }, [selectedCategory, latestVideos, gamingVideos, musicVideos, filmVideos]);
-
-    const handleCategoryChange = (value: string) => {
-        setSelectedCategory(value as CategoryType);
-    };
-
     return (
         <div className="w-full">
-            {/* 類別選擇器 */}
-            <div className="mb-6">
-                <Tabs value={selectedCategory} onValueChange={handleCategoryChange}>
+            <Tabs defaultValue="latest">
+                {/* 類別選擇器 */}
+                <div className="mb-6">
                     <TabsList className="mx-auto grid w-full max-w-2xl grid-cols-4">
                         {CATEGORY_TABS.map(({ value, label }) => (
                             <TabsTrigger key={value} value={value} className={`text-sm ${ACTIVE_TAB_CLASS}`}>
@@ -53,15 +31,44 @@ const YouTubeContent = ({ latestVideos, gamingVideos, musicVideos, filmVideos }:
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                </Tabs>
-            </div>
+                </div>
 
-            {/* 影片網格 */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                {currentVideos?.map((video) => (
-                    <YoutubeVideoCard key={`${selectedCategory}-${video.id}`} video={video} />
-                ))}
-            </div>
+                {/* 最新影片 */}
+                <TabsContent value="latest">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                        {latestVideos?.map((video) => (
+                            <YoutubeVideoCard key={`latest-${video.id}`} video={video} />
+                        ))}
+                    </div>
+                </TabsContent>
+
+                {/* 遊戲影片 */}
+                <TabsContent value="gaming">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                        {gamingVideos?.map((video) => (
+                            <YoutubeVideoCard key={`gaming-${video.id}`} video={video} />
+                        ))}
+                    </div>
+                </TabsContent>
+
+                {/* 音樂影片 */}
+                <TabsContent value="music">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                        {musicVideos?.map((video) => (
+                            <YoutubeVideoCard key={`music-${video.id}`} video={video} />
+                        ))}
+                    </div>
+                </TabsContent>
+
+                {/* 電影影片 */}
+                <TabsContent value="film">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                        {filmVideos?.map((video) => (
+                            <YoutubeVideoCard key={`film-${video.id}`} video={video} />
+                        ))}
+                    </div>
+                </TabsContent>
+            </Tabs>
         </div>
     );
 };
