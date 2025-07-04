@@ -3,13 +3,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import type { PttArticle } from '@/types';
 import { cn } from '@/utils/shadcn';
 
-// 常量定義
+// 推薦分數閾值
 const SCORE_THRESHOLDS = {
     HIGH: 100,
     MEDIUM: 50,
     LOW: 10,
 } as const;
 
+// 時間常量
 const TIME_CONSTANTS = {
     MINUTE: 60,
     HOUR: 3600,
@@ -17,6 +18,7 @@ const TIME_CONSTANTS = {
     MONTH: 86400 * 30,
 } as const;
 
+// 推薦分數顏色
 const SCORE_COLORS = {
     HIGH: 'text-red-500',
     MEDIUM: 'text-orange-500',
