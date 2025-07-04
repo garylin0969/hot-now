@@ -7,9 +7,6 @@ const REDDIT_BASE_URL = 'https://www.reddit.com';
 const redditAxios = axios.create({
     baseURL: REDDIT_BASE_URL,
     timeout: 10000,
-    headers: {
-        'User-Agent': 'HotNow/1.0',
-    },
 });
 
 // Reddit所有看版的熱門文章
