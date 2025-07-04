@@ -6,18 +6,22 @@ import { GetSimplifiedRedditHotArticles, GetSimplifiedRedditHotArticlesBySubredd
 import StatusDisplay from '@/components/atoms/status-display';
 import RedditArticleCard from '@/components/molecules/reddit-article-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/utils/shadcn';
 
+// 子版塊類型
 type SubredditType = 'all' | 'taiwanese' | 'china_irl';
 
+// 子版塊頁籤資料
 const SUBREDDIT_TABS = [
     { value: 'all', label: 'All' },
     { value: 'taiwanese', label: 'Taiwanese' },
     { value: 'china_irl', label: 'China_irl' },
 ] as const;
 
+// 頁籤樣式
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
-const RedditContent = () => {
+const RedditContent = ({ className }: { className?: string }) => {
     const [selectedSubreddit, setSelectedSubreddit] = useState<SubredditType>('all');
 
     // 使用 React Query hooks 獲取資料
@@ -52,6 +56,7 @@ const RedditContent = () => {
         gcTime: 30 * 60 * 1000, // 30 minutes
     });
 
+    // 當前文章
     const currentArticles = useMemo(() => {
         const articleMap = {
             all: allArticles || [],
@@ -61,6 +66,7 @@ const RedditContent = () => {
         return articleMap[selectedSubreddit];
     }, [selectedSubreddit, allArticles, taiwaneseArticles, chinaArticles]);
 
+    // 是否加載中
     const isLoading = useMemo(() => {
         const loadingMap = {
             all: isLoadingAll,
@@ -70,6 +76,7 @@ const RedditContent = () => {
         return loadingMap[selectedSubreddit];
     }, [selectedSubreddit, isLoadingAll, isLoadingTaiwanese, isLoadingChina]);
 
+    // 錯誤
     const error = useMemo(() => {
         const errorMap = {
             all: errorAll,
@@ -79,12 +86,13 @@ const RedditContent = () => {
         return errorMap[selectedSubreddit];
     }, [selectedSubreddit, errorAll, errorTaiwanese, errorChina]);
 
+    // 子版塊選擇器
     const handleSubredditChange = (value: string) => {
         setSelectedSubreddit(value as SubredditType);
     };
 
     return (
-        <div className="mx-auto max-w-4xl">
+        <div className={cn('mx-auto max-w-4xl', className)}>
             {/* Subreddit選擇器 */}
             <div className="mb-6">
                 <Tabs value={selectedSubreddit} onValueChange={handleSubredditChange}>
