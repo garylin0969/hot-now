@@ -3,10 +3,10 @@ import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
-import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
+import GamerContent from '@/components/organisms/gamer-content';
 import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
@@ -33,9 +33,12 @@ const Home = async () => {
     // Google
     const googleResponse = await GetGoogleTrends();
     const googleTrends = googleResponse.trends || [];
-    // Gamer
+    // Gamer - 获取所有分类数据
     const gamerResponse = await GetGamerTrends();
-    const gamerTrends = gamerResponse.data?.game || [];
+    const gamerAllTrends = gamerResponse.data?.all || [];
+    const gamerGameTrends = gamerResponse.data?.game || [];
+    const gamerAcTrends = gamerResponse.data?.ac || [];
+    const gamerLifeTrends = gamerResponse.data?.life || [];
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
@@ -117,14 +120,12 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="gamer">
-                    <div className="mb-4 flex items-center justify-center">
-                        <div className="text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold">熱門話題</div>
-                    </div>
-                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                        {gamerTrends?.map((article) => (
-                            <GamerArticleCard key={`${article.bsn}-${article.snA}`} article={article} />
-                        ))}
-                    </div>
+                    <GamerContent
+                        allTrends={gamerAllTrends}
+                        gameTrends={gamerGameTrends}
+                        acTrends={gamerAcTrends}
+                        lifeTrends={gamerLifeTrends}
+                    />
                 </TabsContent>
                 <TabsContent value="reddit">
                     <RedditContent />
