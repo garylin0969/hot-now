@@ -3,6 +3,7 @@ import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
 import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
+import SectionTitle from '@/components/atoms/section-title';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
@@ -26,9 +27,6 @@ const tabTriggerClassName =
     'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground ' +
     'hover:bg-accent hover:text-accent-foreground ' +
     'flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm';
-
-// 分類標題樣式
-const sectionTitleClassName = 'text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold';
 
 const Home = async () => {
     // YouTube - 獲取不同類別的影片
@@ -88,9 +86,7 @@ const Home = async () => {
                     />
                 </TabsContent>
                 <TabsContent value="ptt">
-                    <div className="mb-4 flex items-center justify-center">
-                        <div className={sectionTitleClassName}>24H熱門文章</div>
-                    </div>
+                    <SectionTitle title="24H熱門文章" />
                     <div className="mx-auto flex max-w-3xl flex-col gap-4">
                         {pttArticles?.map((article) => (
                             <PttArticleCard key={article.link} article={article} />
@@ -98,9 +94,7 @@ const Home = async () => {
                     </div>
                 </TabsContent>
                 <TabsContent value="google">
-                    <div className="mb-4 flex items-center justify-center">
-                        <div className={sectionTitleClassName}>過去4小時</div>
-                    </div>
+                    <SectionTitle title="過去4小時" />
                     <div className="mx-auto flex max-w-xl flex-col gap-4">
                         {googleTrends?.map((trend) => (
                             <GoogleTrendCard key={trend.googleTrend} trend={trend} />
