@@ -1,12 +1,12 @@
 import type { GamerApiResponse } from '@/types';
 
 // Gamer API URL
-const GAMER_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
+const GAMER_API_URL = 'https://api.gamer.com.tw/www/v1/forum_hot_post.php';
 
 // Gamer 熱門文章
 export const GetGamerTrends = async (): Promise<GamerApiResponse> => {
     try {
-        const response = await fetch(`${GAMER_BASE_URL}/gamer-trends.json`, {
+        const response = await fetch(GAMER_API_URL, {
             next: {
                 revalidate: 60 * 60, // 60 minutes
             },

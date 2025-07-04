@@ -1,19 +1,31 @@
 // Gamer API 回應格式的型別定義
 export interface GamerTrend {
-    boardName: string;
-    boardImage: string;
-    subBoard: string;
+    fromBoard: boolean;
+    bsn: number;
+    snA: number;
+    propic: string;
+    name: string;
+    subbsn: number;
+    subbtitle: string;
+    postTime: string;
+    wtime: string;
+    userid: string;
     title: string;
-    content: string;
-    articleImage: string;
-    gp: number;
-    bp: number;
-    comments: number;
-    link: string;
-    author: string;
+    summary: string;
+    thumbnail: string;
+    interaction: {
+        gp: string;
+        bp: string;
+        others: number;
+    };
+    tnum: number;
 }
 
 export interface GamerApiResponse {
-    updated: string;
-    trends: GamerTrend[];
+    data: {
+        game: GamerTrend[];
+        ac: GamerTrend[];
+        life: GamerTrend[];
+        all: GamerTrend[];
+    };
 }

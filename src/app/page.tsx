@@ -35,12 +35,10 @@ const Home = async () => {
     const googleTrends = googleResponse.trends || [];
     // Gamer
     const gamerResponse = await GetGamerTrends();
-    const gamerTrends = gamerResponse.trends || [];
+    const gamerTrends = gamerResponse.data?.game || [];
     // Komica
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
-
-    const isShowGamer = Boolean(gamerTrends?.[0]?.link);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -68,14 +66,12 @@ const Home = async () => {
                         >
                             Google
                         </TabsTrigger>
-                        {isShowGamer && (
-                            <TabsTrigger
-                                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
-                                value="gamer"
-                            >
-                                Gamer
-                            </TabsTrigger>
-                        )}
+                        <TabsTrigger
+                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
+                            value="gamer"
+                        >
+                            Gamer
+                        </TabsTrigger>
                         <TabsTrigger
                             className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent hover:text-accent-foreground dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground dark:hover:bg-accent dark:hover:text-accent-foreground flex-shrink-0 px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm"
                             value="reddit"
@@ -120,20 +116,16 @@ const Home = async () => {
                         ))}
                     </div>
                 </TabsContent>
-                {isShowGamer && (
-                    <TabsContent value="gamer">
-                        <div className="mb-4 flex items-center justify-center">
-                            <div className="text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold">
-                                熱門話題
-                            </div>
-                        </div>
-                        <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                            {gamerTrends?.map((article) => (
-                                <GamerArticleCard key={article.link} article={article} />
-                            ))}
-                        </div>
-                    </TabsContent>
-                )}
+                <TabsContent value="gamer">
+                    <div className="mb-4 flex items-center justify-center">
+                        <div className="text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold">熱門話題</div>
+                    </div>
+                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+                        {gamerTrends?.map((article) => (
+                            <GamerArticleCard key={`${article.bsn}-${article.snA}`} article={article} />
+                        ))}
+                    </div>
+                </TabsContent>
                 <TabsContent value="reddit">
                     <RedditContent />
                 </TabsContent>
