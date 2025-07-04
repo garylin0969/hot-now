@@ -9,16 +9,16 @@ interface GoogleTrendCardProps {
 
 const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
     return (
-        <Card className="flex flex-col gap-y-1 transition-shadow duration-200 hover:shadow-lg md:flex-row md:items-center md:justify-between md:gap-y-0">
+        <Card className="flex flex-col gap-y-1 py-3 transition-shadow duration-200 hover:shadow-lg md:flex-row md:items-center md:justify-between md:gap-y-0">
             <CardHeader className="flex-1 gap-0">
                 <CardTitle className="text-foreground text-lg font-semibold">{trend.googleTrend}</CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center justify-between gap-x-4 md:justify-start">
-                <div className="flex items-center">
+            <CardContent className="flex flex-2 items-center">
+                <div className="flex flex-1 items-center">
                     <span className="text-muted-foreground text-sm">搜尋量：</span>
                     <Badge variant="outline">{trend.searchVolume}</Badge>
                 </div>
-                <div className="flex items-center">
+                <div className="flex flex-1 items-center justify-end">
                     <span className="text-muted-foreground text-sm">已開始：</span>
                     <span className="text-muted-foreground text-sm">{trend.started}</span>
                 </div>
