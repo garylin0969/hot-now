@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: {
-        default: 'Hot Now - 熱門內容整合平台',
+        default: 'Hot Now｜熱門話題一把抓',
         template: '%s | Hot Now',
     },
     description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
         },
     },
     openGraph: {
-        title: 'Hot Now - 熱門內容整合平台',
+        title: 'Hot Now｜熱門話題一把抓',
         description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容，瀏覽最新話題與趨勢。',
         url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
@@ -67,13 +67,13 @@ export const metadata: Metadata = {
                 url: '/og-image.png',
                 width: 1200,
                 height: 630,
-                alt: 'Hot Now - 熱門內容整合平台',
+                alt: 'Hot Now｜熱門話題一把抓',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Hot Now - 熱門內容整合平台',
+        title: 'Hot Now｜熱門話題一把抓',
         description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容',
         images: ['/og-image.png'],
         creator: '@hotnow',
