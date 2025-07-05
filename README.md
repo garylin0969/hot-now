@@ -1,36 +1,269 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔥 Hot Now | 熱門話題一把抓
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-部署-000000?style=flat-square&logo=vercel)](https://vercel.com/)
 
-First, run the development server:
+Hot Now 是一個整合各大平台熱門內容的資訊聚合網站，讓你一站式瀏覽各種熱門話題，隨時掌握最新趨勢。
+
+## 🌐 網站連結
+
+- **官方網站**: [https://hotnow.garylin.dev](https://hotnow.garylin.dev)
+- **Vercel 部署**: [https://vercel.com/garylin0969s-projects/garylin0969-hot-now](https://vercel.com/garylin0969s-projects/garylin0969-hot-now)
+- **爬蟲專案**: [https://github.com/garylin0969/trend-scraper](https://github.com/garylin0969/trend-scraper)
+
+## ✨ 功能特色
+
+### 📊 多平台整合
+
+- **YouTube** - 發燒影片（最新、遊戲、音樂、電影）
+- **PTT** - 24小時熱門文章
+- **Google** - 熱搜榜（過去4小時）
+- **巴哈姆特** - 熱門話題（全站、遊戲、動漫、生活）
+- **Reddit** - 熱門文章（全站、台灣相關、中國相關）
+- **Komica(K島)** - 熱門文章
+
+### 🔧 實用工具
+
+- **自訂超連結** - 快速存取常用網站
+- **深色模式** - 護眼閱讀體驗
+- **響應式設計** - 跨裝置完美適配
+
+## 🏗️ 技術架構
+
+### 前端技術棧
+
+- **框架**: Next.js 15 (App Router)
+- **語言**: TypeScript
+- **樣式**: Tailwind CSS 4
+- **UI 元件**: Radix UI
+- **狀態管理**: Zustand
+- **資料請求**: TanStack Query (React Query)
+- **主題**: next-themes
+- **圖示**: Lucide React
+
+### 資料來源與快取策略
+
+| 平台         | 資料來源         | 更新方式  | 快取時間 | 爬蟲頻率 |
+| ------------ | ---------------- | --------- | -------- | -------- |
+| **YouTube**  | Google Cloud API | ISR       | 30分鐘   | -        |
+| **PTT**      | 爬蟲專案         | ISR       | 5分鐘    | 每10分鐘 |
+| **Google**   | 爬蟲專案         | ISR       | 30分鐘   | 每30分鐘 |
+| **巴哈姆特** | 官方 API         | ISR       | 60分鐘   | -        |
+| **Reddit**   | 官方 API         | Client 端 | 30分鐘   | -        |
+| **Komica**   | 爬蟲專案         | ISR       | 30分鐘   | 每30分鐘 |
+
+### 📡 API 配額資訊
+
+#### YouTube Data API v3
+
+- **每日配額**: 10,000 Queries
+- **每分鐘配額**: 1,800,000 Queries
+- **提供商**: Google Cloud Platform
+
+#### 其他 API
+
+- **巴哈姆特**: 使用官方 Get API
+- **Reddit**: 使用官方 JSON 端點
+- **PTT/Google/Komica**: 透過爬蟲專案提供
+
+## 🚀 快速開始
+
+### 環境需求
+
+- Node.js 18+
+- pnpm (推薦) 或 npm
+
+### 安裝步驟
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 複製專案
+git clone https://github.com/garylin0969/hot-now.git
+cd hot-now
+
+# 安裝依賴
+pnpm install
+
+# 設定環境變數
+cp .env.example .env.local
+# 編輯 .env.local 填入必要的 API 金鑰
+
+# 啟動開發伺服器
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 環境變數設定
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+# YouTube API
+NEXT_PRIVATE_YOUTUBE_API_KEY=your_youtube_api_key
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 爬蟲專案資料來源
+NEXT_PUBLIC_GITHUB_REPO_URL=https://garylin0969.github.io/trend-scraper/data
+```
 
-## Learn More
+## 📁 專案結構
 
-To learn more about Next.js, take a look at the following resources:
+```
+hot-now/
+├── public/                    # 靜態資源
+│   ├── favicon/              # 網站圖標
+│   └── image-not-found.png   # 預設圖片
+├── src/
+│   ├── api/                  # API 相關
+│   │   ├── gamer-api.ts     # 巴哈姆特 API
+│   │   ├── google-api.ts    # Google 趨勢 API
+│   │   ├── komica-api.ts    # Komica API
+│   │   ├── ptt-api.ts       # PTT API
+│   │   ├── reddit-api.ts    # Reddit API
+│   │   └── youtube-api.ts   # YouTube API
+│   ├── app/                  # Next.js App Router
+│   │   ├── layout.tsx       # 根布局
+│   │   ├── page.tsx         # 首頁
+│   │   ├── privacy/         # 隱私政策頁面
+│   │   └── globals.css      # 全域樣式
+│   ├── components/           # React 元件
+│   │   ├── atoms/           # 原子元件
+│   │   ├── molecules/       # 分子元件
+│   │   ├── organisms/       # 有機體元件
+│   │   └── ui/              # UI 元件庫
+│   ├── hooks/               # 自定義 Hooks
+│   ├── providers/           # Context Providers
+│   ├── store/               # Zustand 狀態管理
+│   ├── types/               # TypeScript 型別定義
+│   └── utils/               # 工具函式
+├── components.json          # shadcn/ui 設定
+├── next.config.ts          # Next.js 設定
+├── package.json            # 專案依賴
+├── tailwind.config.ts      # Tailwind 設定
+└── tsconfig.json           # TypeScript 設定
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 設計系統
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 元件架構
 
-## Deploy on Vercel
+採用 Atomic Design 設計模式：
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Atoms**: 基礎元件 (按鈕、輸入框等)
+- **Molecules**: 組合元件 (卡片、表單等)
+- **Organisms**: 複雜元件 (頁首、內容區塊等)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 主題系統
+
+- 支援明亮/深色主題
+- 使用 CSS Variables 實現主題切換
+- 遵循系統偏好設定
+
+## 📱 功能說明
+
+### 分頁導覽
+
+- **YouTube**: 多類別影片瀏覽
+- **PTT**: 24小時熱門文章
+- **Google**: 4小時內熱搜關鍵字
+- **巴哈姆特**: 多板塊熱門話題
+- **Reddit**: 多版塊熱門文章
+- **Komica**: K島熱門討論
+
+### 自訂超連結
+
+- 新增/編輯/刪除個人常用網站
+- 自動獲取網站 favicon
+- 支援拖拽排序
+- 本地儲存設定
+
+## 🔧 開發指令
+
+```bash
+# 開發環境
+pnpm dev
+
+# 建構專案
+pnpm build
+
+# 啟動正式環境
+pnpm start
+
+# 程式碼檢查
+pnpm lint
+
+# 格式化程式碼
+pnpm format
+
+# 檢查格式
+pnpm format:check
+```
+
+## 🌟 特色說明
+
+### ISR (Incremental Static Regeneration)
+
+為了避免 Vercel 流量被消耗過快，所有外部 API 都採用 ISR 策略：
+
+- 在指定時間內提供快取內容
+- 背景更新資料，確保內容新鮮度
+- 大幅降低 API 請求頻率
+
+### Reddit 特殊處理
+
+Reddit API 在 Vercel 伺服器端會回傳 403 錯誤，但本地開發正常。因此改用 Client 端請求：
+
+- 使用 React Query 管理快取
+- 30分鐘快取時間
+- 自動重試機制
+
+### 爬蟲資料整合
+
+部分平台（PTT、Google、Komica）透過獨立的爬蟲專案提供資料：
+
+- 避免直接爬取造成的不穩定
+- 統一的資料格式
+- 獨立的更新頻率控制
+
+## 🚀 部署資訊
+
+### Vercel 部署
+
+- **平台**: Vercel
+- **域名**: 透過 GoDaddy 購買，使用 subdomain 設定
+- **自動部署**: 推送到 main 分支自動觸發
+- **環境變數**: 在 Vercel 控制台設定
+
+## 📊 監控與分析
+
+### Google Analytics
+
+- **追蹤 ID**: G-F0MRGZ2J39
+- **資料保護**: 遵循隱私政策
+- **匿名化**: 不收集個人識別資訊
+
+### 錯誤監控
+
+- 內建錯誤邊界
+- 優雅的錯誤處理
+- 使用者友善的錯誤訊息
+
+## 🔒 隱私政策
+
+Hot Now 重視使用者隱私：
+
+- 不收集個人識別資訊
+- 僅使用 Google Analytics 進行匿名統計
+- 所有自訂設定儲存在本地
+- 詳細資訊請參考[隱私政策頁面](https://hotnow.garylin.dev/privacy)
+
+## 🛠️ 開發工具
+
+### 程式碼品質
+
+- **ESLint**: 程式碼檢查
+- **Prettier**: 程式碼格式化
+- **TypeScript**: 型別安全
+
+### 開發體驗
+
+- **Turbopack**: 快速編譯
+- **React DevTools**: 除錯工具
+- **React Query DevTools**: 查詢狀態監控
