@@ -29,8 +29,6 @@ Hot Now 是一個整合各大平台熱門內容的資訊聚合網站，讓你一
 - **自訂超連結** - 快速存取常用網站
 - **深色模式** - 護眼閱讀體驗
 - **響應式設計** - 跨裝置完美適配
-- **PWA 支援** - 可安裝到手機/桌面，支援離線瀏覽
-- **Chrome 插件整合** - 新分頁直接顯示熱門內容
 
 ## 🏗️ 技術架構
 
@@ -44,33 +42,6 @@ Hot Now 是一個整合各大平台熱門內容的資訊聚合網站，讓你一
 - **資料請求**: TanStack Query (React Query)
 - **主題**: next-themes
 - **圖示**: Lucide React
-- **PWA**: Next.js 15 官方 PWA 指南實現
-- **Service Worker**: 手動實現，配合 ISR 時間優化
-
-### 🔄 PWA 快取策略
-
-基於 Next.js 15 官方 PWA 指南，手動實現 Service Worker，配合 ISR 時間優化：
-
-| 平台/資源    | ISR 時間 | SW 快取時間 | 策略                 | 說明                       |
-| ------------ | -------- | ----------- | -------------------- | -------------------------- |
-| **PTT**      | 5分鐘    | 4分鐘       | StaleWhileRevalidate | 提前1分鐘，避免請求衝突    |
-| **Google**   | 30分鐘   | 25分鐘      | StaleWhileRevalidate | 提前5分鐘，智慧背景更新    |
-| **YouTube**  | 30分鐘   | 25分鐘      | StaleWhileRevalidate | 提前5分鐘，配合 API 配額   |
-| **Gamer**    | 60分鐘   | 50分鐘      | StaleWhileRevalidate | 提前10分鐘，減少伺服器壓力 |
-| **Reddit**   | 60分鐘   | 50分鐘      | StaleWhileRevalidate | 提前10分鐘，保持資料新鮮   |
-| **Komica**   | 30分鐘   | 25分鐘      | StaleWhileRevalidate | 提前5分鐘，平衡更新頻率    |
-| **靜態資源** | -        | 永久        | CacheFirst           | CSS、JS、圖片等長期快取    |
-
-### 🔌 Chrome 插件整合
-
-Hot Now 提供 Chrome 插件，將網站設為新分頁頁面，完美解決 iframe 空白問題：
-
-- **消除空白閃爍** - 透過 Service Worker 立即載入快取內容
-- **瞬間載入體驗** - 從 2-3 秒減少到 0.5 秒內
-- **智慧背景更新** - 配合 ISR 策略，保持資料最新
-- **多層快取機制** - Service Worker + ISR 雙重保障
-- **離線支援** - 網路不穩時仍可瀏覽快取內容
-- **流量節省** - 減少不必要的 API 請求
 
 ### 資料來源與快取策略
 
@@ -137,7 +108,6 @@ NEXT_PUBLIC_GITHUB_REPO_URL=https://garylin0969.github.io/trend-scraper/data
 hot-now/
 ├── public/                    # 靜態資源
 │   ├── favicon/              # 網站圖標
-│   ├── sw.js                 # Service Worker（手動實現）
 │   └── image-not-found.png   # 預設圖片
 ├── src/
 │   ├── api/                  # API 相關
@@ -252,32 +222,6 @@ Reddit API 會遇到 403 或 429 錯誤，因此改用爬蟲資料：
 - 獨立的更新頻率控制
 - 解決 API 限制問題
 
-### PWA + Chrome 插件優化
-
-為了解決 Chrome 插件 iframe 載入時的空白問題，實施了 PWA 優化策略：
-
-#### 🎯 解決的問題
-
-- **iframe 瞬間空白** - Chrome 插件載入網站時的白屏問題
-- **重複請求** - 避免每次開新分頁都重新請求 API
-- **載入延遲** - 減少網路請求時間
-
-#### ⚡ 優化效果
-
-- **載入時間** - 從 2-3 秒減少到 0.5 秒內
-- **使用者體驗** - 消除空白閃爍，流暢載入
-- **流量節省** - 減少 Vercel 和 API 服務商的請求量
-- **離線可用** - 即使網路不穩也能正常瀏覽
-
-#### 🔧 技術實現
-
-1. **基於 Next.js 15 官方 PWA 指南** - 移除 next-pwa，使用原生 Web API
-2. **手動 Service Worker** - 精確控制快取策略和時間
-3. **配合 ISR 優化** - Service Worker 快取時間略短於 ISR，避免衝突
-4. **智慧 TTL 管理** - 自動檢查快取過期時間，精準背景更新
-5. **解決 Turbopack 兼容** - 完全消除 webpack 配置衝突警告
-6. **安全性標頭** - 遵循 Next.js 官方 PWA 指南
-
 ## 🚀 部署資訊
 
 ### Vercel 部署
@@ -320,30 +264,6 @@ Hot Now 重視使用者隱私：
 
 ### 開發體驗
 
-- **Turbopack**: 快速編譯（已解決 PWA 兼容性問題）
+- **Turbopack**: 快速編譯
 - **React DevTools**: 除錯工具
 - **React Query DevTools**: 查詢狀態監控
-- **Service Worker DevTools**: 快取策略除錯與監控
-
-## 🛠️ 問題解決歷程
-
-### PWA 實現演進
-
-**原始方案（next-pwa）**：
-
-- 使用 `next-pwa` 套件自動生成 Service Worker
-- 遇到 Next.js 15 + Turbopack 兼容性問題
-- 開發環境出現 Service Worker 404 錯誤
-
-**最終方案（Next.js 15 官方）**：
-
-- 基於 [Next.js 15 官方 PWA 指南](https://nextjs.org/docs/app/guides/progressive-web-apps)
-- 手動實現 Service Worker，完全控制快取策略
-- 配合 ISR 時間優化，避免請求衝突
-- 解決所有兼容性問題，提供更好的效能
-
-### Chrome 插件優化
-
-**問題**：iframe 載入網站時出現瞬間空白
-**解決**：Service Worker + ISR 雙重快取機制
-**效果**：載入時間從 2-3 秒減少到 0.5 秒內
