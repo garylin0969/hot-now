@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
+import ServiceWorkerRegister from '@/components/atoms/service-worker-register';
 import Footer from '@/components/organisms/footer';
 import Header from '@/components/organisms/header';
 import { Toaster } from '@/components/ui/sonner';
@@ -155,6 +156,7 @@ export default function RootLayout({
     return (
         <html lang="zh-TW" suppressHydrationWarning>
             <body className={cn('flex min-h-screen flex-col antialiased', geistSans.variable, geistMono.variable)}>
+                <ServiceWorkerRegister />
                 <QueryProvider>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                         <Header />
