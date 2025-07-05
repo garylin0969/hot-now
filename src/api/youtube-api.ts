@@ -5,7 +5,7 @@ import { unstable_cache } from 'next/cache';
 const YOUTUBE_API_KEY = String(process.env.NEXT_PRIVATE_YOUTUBE_API_KEY);
 const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
 
-const TWO_HOURS = 60 * 60 * 2; // 2小時
+const THIRTY_MINUTES = 60 * 30; // 30 minutes
 
 // YouTube 類別定義
 export const YOUTUBE_CATEGORIES = {
@@ -59,7 +59,7 @@ export const GetYoutubeHotVideosWithCache = unstable_cache(
     },
     ['get-hot-videos-cache'],
     {
-        revalidate: TWO_HOURS,
+        revalidate: THIRTY_MINUTES,
         tags: ['youtube-hot-videos'],
     }
 );
@@ -79,7 +79,7 @@ export const GetYoutubeHotVideosByCategory = unstable_cache(
     },
     ['get-hot-videos-by-category-cache'],
     {
-        revalidate: TWO_HOURS,
+        revalidate: THIRTY_MINUTES,
         tags: ['youtube-hot-videos-by-category'],
     }
 );
