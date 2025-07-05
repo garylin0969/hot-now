@@ -17,6 +17,16 @@ const STATIC_ASSETS = [
     '/image-not-found.png',
 ];
 
+// 不攔截的外部資源（避免 CSP 問題）
+const EXTERNAL_RESOURCES = [
+    'googletagmanager.com',
+    'googleapis.com',
+    'youtube.com',
+    'ytimg.com',
+    'fonts.googleapis.com',
+    'fonts.gstatic.com',
+];
+
 // API 快取配置 - 配合 ISR 設定
 const API_CACHE_CONFIG = {
     // PTT - ISR: 5分鐘, SW快取: 4分鐘
@@ -101,6 +111,11 @@ self.addEventListener('activate', (event) => {
     );
 });
 
+// 檢查是否為外部資源
+function isExternalResource(url) {
+    return EXTERNAL_RESOURCES.some((domain) => url.includes(domain));
+}
+
 // 攔截網路請求
 self.addEventListener('fetch', (event) => {
     const { request } = event;
@@ -108,6 +123,12 @@ self.addEventListener('fetch', (event) => {
 
     // 只處理 HTTP/HTTPS 請求
     if (!url.protocol.startsWith('http')) {
+        return;
+    }
+
+    // 跳過外部資源避免 CSP 問題
+    if (isExternalResource(url.href)) {
+        console.log('[SW] 跳過外部資源:', url.href);
         return;
     }
 
