@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
+import IframePotMessage from '@/components/atoms/iframe-pot-message';
 import Footer from '@/components/organisms/footer';
 import Header from '@/components/organisms/header';
 import { Toaster } from '@/components/ui/sonner';
@@ -164,6 +165,7 @@ export default function RootLayout({
                     </ThemeProvider>
                 </QueryProvider>
                 <GoogleAnalytics gaId={GA_ID} />
+                <IframePotMessage />
             </body>
         </html>
     );
