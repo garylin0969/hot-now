@@ -2,13 +2,18 @@ import { GetGamerTrends } from '@/api/gamer-api';
 import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
 import { GetPttTrends } from '@/api/ptt-api';
+import {
+    GetSimplifiedRedditAllHotTrends,
+    GetSimplifiedRedditTaiwaneseHotTrends,
+    GetSimplifiedRedditChinaIrlHotTrends,
+} from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
 import SectionTitle from '@/components/atoms/section-title';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import GamerContent from '@/components/organisms/gamer-content';
-import RedditContent, { RedditPrefetch } from '@/components/organisms/reddit-content';
+import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -62,10 +67,15 @@ const Home = async () => {
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
 
+    // Reddit - 獲取爬蟲資料
+    const redditAllArticles = await GetSimplifiedRedditAllHotTrends();
+    const redditTaiwaneseArticles = await GetSimplifiedRedditTaiwaneseHotTrends();
+    const redditChinaIrlArticles = await GetSimplifiedRedditChinaIrlHotTrends();
+
     return (
         <div className="container mx-auto px-4 py-8">
             {/* Reddit 資料預載，避免TAB載入時的延遲，因為Reddit API是Client Side */}
-            <RedditPrefetch />
+            {/* <RedditPrefetch /> */}
             <div className="mb-4 flex justify-center">
                 <Shortcuts />
             </div>
@@ -112,7 +122,11 @@ const Home = async () => {
                     />
                 </TabsContent>
                 <TabsContent value="reddit">
-                    <RedditContent />
+                    <RedditContent
+                        allArticles={redditAllArticles}
+                        taiwaneseArticles={redditTaiwaneseArticles}
+                        chinaIrlArticles={redditChinaIrlArticles}
+                    />
                 </TabsContent>
                 <TabsContent value="komica">
                     <KomicaList className="mx-auto max-w-xl" trends={komicaTrends} />

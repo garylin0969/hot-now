@@ -1,3 +1,7 @@
+// ========== 原本的 Client-side Reddit Prefetch 組件 (註解但保留) ==========
+// 注意：已改用 server-side 資料獲取，避免 403 和 429 錯誤
+
+/*
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
@@ -39,6 +43,14 @@ const RedditPrefetch = () => {
     }, [queryClient]);
 
     return null; // 這是一個不渲染任何內容的組件
+};
+
+export default RedditPrefetch;
+*/
+
+// 暫時匯出空的組件，避免 import 錯誤
+const RedditPrefetch = () => {
+    return null;
 };
 
 export default RedditPrefetch;
