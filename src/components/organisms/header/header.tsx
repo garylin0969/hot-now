@@ -8,7 +8,7 @@ const LOGO_IMAGE_PATH = '/favicon/favicon-32x32.png';
 const SOCIAL_LINKS = [
     {
         href: 'https://www.google.com',
-        target: '_self',
+        target: '_blank',
         icon: FaGoogle,
         label: 'Google',
     },
