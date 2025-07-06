@@ -92,7 +92,7 @@ interface PttArticleCardProps {
 }
 
 const PttArticleCard = ({ article }: PttArticleCardProps) => {
-    const pttUrl = `https://www.ptt.cc${article.link}.html`;
+    const pttUrl = `https://www.pttweb.cc${article.link}`;
     const { display: scoreDisplay, color: scoreColor } = formatRecommendScore(article.recommendScore);
     const scoreNum = parseInt(article.recommendScore, 10);
     const formattedTime = formatPublishedTime(article.publishTime);
