@@ -10,8 +10,18 @@ Hot Now 是一個整合各大平台熱門內容的資訊聚合網站，讓你一
 ## 🌐 網站連結
 
 - **官方網站**: [https://hotnow.garylin.dev](https://hotnow.garylin.dev)
+- **Chrome 擴充功能**: [Chrome Web Store](https://chromewebstore.google.com/detail/hot-now%EF%BD%9C%E7%86%B1%E9%96%80%E8%A9%B1%E9%A1%8C%E4%B8%80%E6%8A%8A%E6%8A%93/pcgkeopgenagbemoagdogljeapjhapch)
 - **Vercel 部署**: [https://vercel.com/garylin0969s-projects/garylin0969-hot-now](https://vercel.com/garylin0969s-projects/garylin0969-hot-now)
 - **爬蟲專案**: [https://github.com/garylin0969/trend-scraper](https://github.com/garylin0969/trend-scraper)
+
+## 🔌 Chrome 擴充功能
+
+Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏覽最熱門的網路討論話題：
+
+- **一鍵瀏覽**: 開啟新分頁即可查看熱門話題
+- **無需登入**: 不需要帳號即可使用
+- **隱私保護**: 不收集個人身份資訊
+- **使用分析**: 僅使用 Google Analytics 進行匿名使用行為分析
 
 ## ✨ 功能特色
 
