@@ -7,7 +7,7 @@ export const GetPttTrends = async (): Promise<PttApiResponse> => {
     try {
         const response = await fetch(`${PTT_BASE_URL}/ptt-trends.json`, {
             next: {
-                revalidate: 60 * 5, // 5 minutes
+                revalidate: 60 * 30, // 30 minutes
             },
         });
 
