@@ -5,7 +5,7 @@ const REDDIT_BASE_URL = 'https://www.reddit.com';
 // Reddit爬蟲 API URL
 const REDDIT_SCRAPER_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
 
-// 配置 axios 实例
+// 配置 axios 實例
 const redditAxios = axios.create({
     baseURL: REDDIT_BASE_URL,
     timeout: 10000,
