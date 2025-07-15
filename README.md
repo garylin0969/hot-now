@@ -42,7 +42,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 
 ## 🏗️ 技術架構
 
-### 前端技術棧
+### 前端技術
 
 - **框架**: Next.js 15 (App Router)
 - **語言**: TypeScript
