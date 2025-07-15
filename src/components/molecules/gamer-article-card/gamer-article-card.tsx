@@ -1,4 +1,4 @@
-import NativeImage from '@/components/atoms/native-image';
+import NextImage from '@/components/atoms/next-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { GamerTrend } from '@/types';
@@ -38,11 +38,11 @@ const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
                     <div className="relative hidden w-24 flex-shrink-0 overflow-hidden md:block md:w-40 lg:w-48">
-                        <NativeImage
+                        <NextImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={article.thumbnail}
                             alt={article.title}
-                            loading="lazy"
+                            fill
                         />
                     </div>
 

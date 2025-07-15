@@ -1,4 +1,4 @@
-import NativeImage from '@/components/atoms/native-image';
+import NextImage from '@/components/atoms/next-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { BbcArticle } from '@/types';
@@ -39,11 +39,11 @@ const BbcArticleCard = ({ article }: BbcArticleCardProps) => {
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', STYLES.cardHeight)}>
                     <div className="relative hidden w-24 flex-shrink-0 overflow-hidden md:block md:w-40 lg:w-48">
-                        <NativeImage
+                        <NextImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={article.thumbnail}
                             alt={article.title}
-                            loading="lazy"
+                            fill
                         />
                     </div>
                     <CardContent className={cn('flex flex-1 flex-col space-y-2 p-3 sm:p-4', STYLES.cardHeight)}>

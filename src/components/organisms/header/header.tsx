@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FaGithub, FaGoogle, FaLinkedin } from 'react-icons/fa';
-import NativeImage from '@/components/atoms/native-image';
+import NextImage from '@/components/atoms/next-image';
 import ThemeToggle from '@/components/atoms/theme-toggle';
 
 const LOGO_IMAGE_PATH = '/favicon/favicon-32x32.png';
@@ -31,7 +31,7 @@ const Header = () => {
         <header className="border-border/40 bg-background/70 sticky top-0 left-0 z-50 h-14.5 border-b shadow-md backdrop-blur-md">
             <div className="container mx-auto flex h-full items-center justify-between p-2 md:p-0">
                 <Link href="/" className="flex items-center gap-x-2">
-                    <NativeImage src={LOGO_IMAGE_PATH} alt="Hot Now" className="h-8 w-8" loading="eager" />
+                    <NextImage src={LOGO_IMAGE_PATH} width={32} height={32} alt="Hot Now" loading="eager" />
                     <h1 className="text-primary text-2xl font-extrabold">Hot Now</h1>
                 </Link>
                 <nav className="flex items-center gap-2">

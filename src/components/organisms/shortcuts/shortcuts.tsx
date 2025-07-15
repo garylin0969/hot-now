@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import NativeImage from '@/components/atoms/native-image';
+import NextImage from '@/components/atoms/next-image';
 import { useShortcutsStore } from '@/store/shortcuts';
 import { cn } from '@/utils/shadcn';
-import { getFaviconUrl, getShortcutInitial, openUrlInNewTab } from '@/utils/shortcuts';
+import { getFaviconUrl, openUrlInNewTab } from '@/utils/shortcuts';
 import ShortcutsDialog from './shortcuts-dialog';
 
 interface ShortcutsProps {
@@ -12,30 +11,9 @@ interface ShortcutsProps {
 }
 
 // 快捷方式圖標
-const ShortcutIcon = ({
-    shortcut,
-    hasError,
-    onError,
-}: {
-    shortcut: { id: string; url: string; title: string };
-    hasError: boolean;
-    onError: () => void;
-}) => {
-    if (hasError) {
-        return (
-            <div className="flex h-full w-full items-center justify-center">
-                <span className="text-xs font-medium">{getShortcutInitial(shortcut.title)}</span>
-            </div>
-        );
-    }
-
+const ShortcutIcon = ({ shortcut }: { shortcut: { id: string; url: string; title: string } }) => {
     return (
-        <NativeImage
-            src={getFaviconUrl(shortcut.url)}
-            alt={shortcut.title}
-            className="h-full w-full object-cover"
-            onError={onError}
-        />
+        <NextImage src={getFaviconUrl(shortcut.url)} alt={shortcut.title} className="h-full w-full object-cover" fill />
     );
 };
 
@@ -56,11 +34,6 @@ const AddShortcutButton = () => (
 // 快捷方式組件
 const Shortcuts = ({ className }: ShortcutsProps) => {
     const { shortcuts } = useShortcutsStore();
-    const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-
-    const handleImageError = (shortcutId: string) => {
-        setImageErrors((prev) => ({ ...prev, [shortcutId]: true }));
-    };
 
     const handleLinkClick = (url: string) => {
         openUrlInNewTab(url);
@@ -75,11 +48,7 @@ const Shortcuts = ({ className }: ShortcutsProps) => {
                     onClick={() => handleLinkClick(shortcut.url)}
                 >
                     <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 transition-colors">
-                        <ShortcutIcon
-                            shortcut={shortcut}
-                            hasError={imageErrors[shortcut.id] || false}
-                            onError={() => handleImageError(shortcut.id)}
-                        />
+                        <ShortcutIcon shortcut={shortcut} />
                     </div>
                     <span className="max-w-16 truncate text-center text-xs transition-colors">{shortcut.title}</span>
                 </div>
