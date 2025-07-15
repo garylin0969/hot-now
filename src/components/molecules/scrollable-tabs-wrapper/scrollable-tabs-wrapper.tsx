@@ -1,12 +1,12 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReactNode, useRef, useEffect } from 'react';
+import { ReactNode, useRef } from 'react';
 import { cn } from '@/utils/shadcn';
 
 interface ScrollableTabsWrapperProps {
     className?: string;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 const ScrollableTabsWrapper = ({ className, children }: ScrollableTabsWrapperProps) => {
@@ -30,27 +30,8 @@ const ScrollableTabsWrapper = ({ className, children }: ScrollableTabsWrapperPro
         });
     };
 
-    // 監聽滾動事件和設置滾動條隱藏
-    useEffect(() => {
-        const scrollElement = scrollRef.current;
-        if (!scrollElement) return;
-
-        // 動態添加 CSS 規則來隱藏滾動條
-        const styleId = 'scrollable-tabs-style';
-        if (!document.getElementById(styleId)) {
-            const style = document.createElement('style');
-            style.id = styleId;
-            style.textContent = `
-                .scrollable-tabs-container::-webkit-scrollbar {
-                    display: none;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }, []);
-
     return (
-        <div className={cn('relative flex w-full items-center px-5 md:w-auto', className)}>
+        <div className={cn('relative flex w-full items-center px-4 md:w-auto', className)}>
             {/* 左箭頭 */}
             <button
                 onClick={scrollLeft}
@@ -62,7 +43,7 @@ const ScrollableTabsWrapper = ({ className, children }: ScrollableTabsWrapperPro
 
             <div
                 ref={scrollRef}
-                className="scrollable-tabs-container overflow-x-auto"
+                className="overflow-x-auto"
                 style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
