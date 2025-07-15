@@ -46,7 +46,7 @@ const BbcArticleCard = ({ article }: BbcArticleCardProps) => {
                             loading="lazy"
                         />
                     </div>
-                    <CardContent className={cn('flex flex-1 flex-col justify-between p-3 sm:p-4', STYLES.cardHeight)}>
+                    <CardContent className={cn('flex flex-1 flex-col space-y-2 p-3 sm:p-4', STYLES.cardHeight)}>
                         <div>
                             <div className="mb-4 flex flex-wrap items-center gap-1 sm:gap-2">
                                 <Badge variant="secondary" className={STYLES.badgeText}>
@@ -58,7 +58,7 @@ const BbcArticleCard = ({ article }: BbcArticleCardProps) => {
                                 {article.title}
                             </h3>
                         </div>
-                        <div className="mt-2">
+                        <div>
                             <p className={cn('line-clamp-2 text-xs sm:text-sm', STYLES.textMuted)}>
                                 {article.description}
                             </p>
