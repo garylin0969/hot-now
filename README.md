@@ -29,6 +29,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 
 - **YouTube** - 發燒影片（最新、遊戲、音樂、電影）
 - **PTT** - 24小時熱門文章
+- **BBC** - 中文新聞（最新資訊、國際新聞）
 - **Google** - 熱搜榜（過去4小時）
 - **巴哈姆特** - 熱門話題（全站、遊戲、動漫、生活）
 - **Reddit** - 熱門文章（全站、台灣相關、中國相關）
@@ -59,6 +60,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 | ------------ | ---------------- | -------- | -------- | -------- |
 | **YouTube**  | Google Cloud API | ISR      | 30分鐘   | -        |
 | **PTT**      | 爬蟲專案         | ISR      | 30分鐘   | 每10分鐘 |
+| **BBC**      | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
 | **Google**   | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
 | **巴哈姆特** | 官方 API         | ISR      | 60分鐘   | -        |
 | **Reddit**   | 爬蟲專案         | ISR      | 60分鐘   | 每30分鐘 |
@@ -75,7 +77,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 #### 其他 API
 
 - **巴哈姆特**: 使用官方 Get API
-- **PTT/Google/Reddit/Komica**: 透過爬蟲專案提供
+- **PTT/BBC/Google/Reddit/Komica**: 透過爬蟲專案提供
 
 ## 🚀 快速開始
 
@@ -121,6 +123,7 @@ hot-now/
 │   └── image-not-found.png   # 預設圖片
 ├── src/
 │   ├── api/                  # API 相關
+│   │   ├── bbc-api.ts       # BBC 新聞 API
 │   │   ├── gamer-api.ts     # 巴哈姆特 API
 │   │   ├── google-api.ts    # Google 趨勢 API
 │   │   ├── komica-api.ts    # Komica API
@@ -171,6 +174,7 @@ hot-now/
 
 - **YouTube**: 多類別影片瀏覽
 - **PTT**: 24小時熱門文章
+- **BBC**: 中文新聞最新資訊
 - **Google**: 4小時內熱搜關鍵字
 - **巴哈姆特**: 多板塊熱門話題
 - **Reddit**: 多版塊熱門文章
@@ -226,7 +230,7 @@ Reddit API 會遇到 403 或 429 錯誤，因此改用爬蟲資料：
 
 ### 爬蟲資料整合
 
-部分平台（PTT、Google、Reddit、Komica）透過獨立的爬蟲專案提供資料：
+部分平台（PTT、BBC、Google、Reddit、Komica）透過獨立的爬蟲專案提供資料：
 
 - 避免直接爬取造成的不穩定
 - 統一的資料格式
