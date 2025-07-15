@@ -47,7 +47,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 - **框架**: Next.js 15 (App Router)
 - **語言**: TypeScript
 - **樣式**: Tailwind CSS 4
-- **UI 元件**: Radix UI
+- **UI 元件**: Shadcn UI
 - **狀態管理**: Zustand
 - **資料請求**: TanStack Query (React Query)
 - **主題**: next-themes
