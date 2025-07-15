@@ -1,3 +1,4 @@
+import { GetBbcTrends } from '@/api/bbc-api';
 import { GetGamerTrends } from '@/api/gamer-api';
 import { GetGoogleTrends } from '@/api/google-api';
 import { GetKomicaTrends } from '@/api/komica-api';
@@ -9,9 +10,11 @@ import {
 } from '@/api/reddit-api';
 import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
 import SectionTitle from '@/components/atoms/section-title';
+import BbcArticleCard from '@/components/molecules/bbc-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
 import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
+import ScrollableTabsWrapper from '@/components/molecules/scrollable-tabs-wrapper';
 import GamerContent from '@/components/organisms/gamer-content';
 import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
@@ -21,6 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const TABS = [
     { label: 'Youtube', value: 'youtube' },
     { label: 'PTT', value: 'ptt' },
+    { label: 'BBC', value: 'bbc' },
     { label: 'Google', value: 'google' },
     { label: 'Gamer', value: 'gamer' },
     { label: 'Reddit', value: 'reddit' },
@@ -52,6 +56,10 @@ const Home = async () => {
     const pttResponse = await GetPttTrends();
     const pttArticles = pttResponse.articles || [];
 
+    // BBC
+    const bbcResponse = await GetBbcTrends();
+    const bbcArticles = bbcResponse.trends || [];
+
     // Google
     const googleResponse = await GetGoogleTrends();
     const googleTrends = googleResponse.trends || [];
@@ -81,13 +89,15 @@ const Home = async () => {
             </div>
             <Tabs defaultValue={TABS[0]?.value} className="w-full">
                 <div className="mb-3 flex w-full justify-center">
-                    <TabsList className="text-muted-foreground mx-auto max-w-full space-x-1 bg-transparent sm:min-w-fit">
-                        {TABS.map((tab) => (
-                            <TabsTrigger key={tab?.value} className={TAB_TRIGGER_CLASSNAME} value={tab?.value}>
-                                {tab?.label}
-                            </TabsTrigger>
-                        ))}
-                    </TabsList>
+                    <ScrollableTabsWrapper>
+                        <TabsList className="text-muted-foreground mx-auto space-x-1 bg-transparent">
+                            {TABS.map((tab) => (
+                                <TabsTrigger key={tab?.value} className={TAB_TRIGGER_CLASSNAME} value={tab?.value}>
+                                    {tab?.label}
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                    </ScrollableTabsWrapper>
                 </div>
                 <TabsContent value="youtube">
                     <YouTubeContent
@@ -102,6 +112,14 @@ const Home = async () => {
                     <div className="mx-auto flex max-w-3xl flex-col gap-4">
                         {pttArticles?.map((article) => (
                             <PttArticleCard key={article.link} article={article} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="bbc">
+                    <SectionTitle title="BBC中文新聞" />
+                    <div className="mx-auto flex max-w-3xl flex-col gap-4">
+                        {bbcArticles?.map((article) => (
+                            <BbcArticleCard key={article.guid} article={article} />
                         ))}
                     </div>
                 </TabsContent>
