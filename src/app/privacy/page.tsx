@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const Privacy = () => {
     return (
         <div className="container mx-auto max-w-4xl px-4 py-8">
-            <h1 className="sr-only">Hot Now 隱私權政策 - Privacy Policy</h1>
+            <CardTitle className="sr-only">Hot Now 隱私權政策 - Privacy Policy</CardTitle>
             <Tabs defaultValue="zh" className="w-full">
                 <div className="mb-6 flex w-full justify-center">
                     <TabsList className="text-muted-foreground bg-transparent">
