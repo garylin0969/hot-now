@@ -21,9 +21,7 @@ const KomicaList = ({ className, trends }: KomicaListProps) => {
                         <div className="flex items-start gap-3">
                             <Badge variant="secondary">{trend.replyCount} 回應</Badge>
                             <div className="flex-1">
-                                <h3 className="group-hover:text-primary line-clamp-1 font-semibold">
-                                    {trend.title}...
-                                </h3>
+                                <div className="group-hover:text-primary line-clamp-1 font-semibold">{trend.title}</div>
                                 <p className="text-muted-foreground mt-1 line-clamp-1 text-sm">
                                     {trend.description}...
                                 </p>

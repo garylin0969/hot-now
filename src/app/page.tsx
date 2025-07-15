@@ -82,6 +82,7 @@ const Home = async () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <h1 className="sr-only">Hot Now - 熱門話題整合平台</h1>
             {/* Reddit 資料預載，避免TAB載入時的延遲，因為Reddit API是Client Side */}
             {/* <RedditPrefetch /> */}
             <div className="mb-4 flex justify-center">

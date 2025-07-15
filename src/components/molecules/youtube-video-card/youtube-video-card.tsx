@@ -79,16 +79,16 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
                     <NextImage
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                         src={thumbnailUrl}
-                        alt={title}
+                        alt={`${title} image`}
                         fill
                     />
                     {isShort && <Badge className="absolute right-2 bottom-2">SHORTS</Badge>}
                 </AspectRatio>
                 <CardContent className="flex flex-1 flex-col justify-between space-y-2 px-4">
                     <div className="space-y-2">
-                        <h3 className="group-hover:text-primary line-clamp-2 h-10 text-sm leading-5 font-semibold">
+                        <div className="group-hover:text-primary line-clamp-2 h-10 text-sm leading-5 font-semibold">
                             {title}
-                        </h3>
+                        </div>
                         <p className="text-muted-foreground line-clamp-3 h-12 text-xs leading-4">{description}</p>
                     </div>
                     <div className="text-muted-foreground space-y-2 text-xs">

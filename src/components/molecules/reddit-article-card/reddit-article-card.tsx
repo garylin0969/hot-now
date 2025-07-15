@@ -83,7 +83,7 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
                         <NextImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={thumbnailUrl}
-                            alt={article.title}
+                            alt={`${article.title} image`}
                             fill
                         />
                         {article.is_video && (
@@ -101,9 +101,9 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
                                 <span className={cn('hidden sm:inline', textMutedClasses)}>by {article.author}</span>
                                 <span className={textMutedClasses}>{formatPublishedTime(article.created_utc)}</span>
                             </div>
-                            <h3 className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                            <div className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                                 {article.title}
-                            </h3>
+                            </div>
                         </div>
                         <div className={cn('mt-2 flex items-center gap-2 sm:gap-4 sm:text-sm', textMutedClasses)}>
                             <div className="flex items-center gap-1">

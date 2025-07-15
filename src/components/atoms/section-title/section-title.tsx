@@ -10,10 +10,10 @@ interface SectionTitleProps {
 const SectionTitle = ({ className, title, children }: SectionTitleProps) => {
     return (
         <div className={cn('mb-4 flex items-center justify-center', className)}>
-            <div className="text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold">
+            <h2 className="text-primary bg-primary/10 rounded-2xl px-4 py-2 font-extrabold">
                 {title}
                 {children}
-            </div>
+            </h2>
         </div>
     );
 };

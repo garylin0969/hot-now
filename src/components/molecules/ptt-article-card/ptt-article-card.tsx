@@ -110,9 +110,9 @@ const PttArticleCard = ({ article }: PttArticleCardProps) => {
                             <span className={cn('hidden sm:inline', STYLES.textMuted)}>by {article.author}</span>
                             <span className={STYLES.textMuted}>{formattedTime}</span>
                         </div>
-                        <h3 className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                        <div className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                             {article.title}
-                        </h3>
+                        </div>
                     </div>
                     <div className={cn('mt-2 flex items-center gap-2 sm:gap-4 sm:text-sm', STYLES.textMuted)}>
                         <div className="flex items-center gap-1">

@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const Privacy = () => {
     return (
         <div className="container mx-auto max-w-4xl px-4 py-8">
+            <h1 className="sr-only">Hot Now 隱私權政策 - Privacy Policy</h1>
             <Tabs defaultValue="zh" className="w-full">
                 <div className="mb-6 flex w-full justify-center">
                     <TabsList className="text-muted-foreground bg-transparent">
@@ -26,7 +27,7 @@ const Privacy = () => {
                 <TabsContent value="zh">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-center text-2xl">Hot Now 隱私權政策</CardTitle>
+                            <h2 className="text-center text-2xl leading-none font-semibold">Hot Now 隱私權政策</h2>
                             <CardDescription className="text-center text-base">
                                 最後更新日期：{new Date().toLocaleDateString('zh-TW')}
                             </CardDescription>
@@ -60,7 +61,7 @@ const Privacy = () => {
                 <TabsContent value="en">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-center text-2xl">Hot Now Privacy Policy</CardTitle>
+                            <h2 className="text-center text-2xl leading-none font-semibold">Hot Now Privacy Policy</h2>
                             <CardDescription className="text-center text-base">
                                 Last updated: {new Date().toLocaleDateString('en-US')}
                             </CardDescription>

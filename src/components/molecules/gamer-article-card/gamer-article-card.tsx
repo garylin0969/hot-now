@@ -41,7 +41,7 @@ const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
                         <NextImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={article.thumbnail}
-                            alt={article.title}
+                            alt={`${article.title} image`}
                             fill
                         />
                     </div>
@@ -57,9 +57,9 @@ const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
                                     {article.subbtitle}
                                 </Badge>
                             </div>
-                            <h3 className="group-hover:text-primary line-clamp-1 text-sm font-semibold transition-colors sm:text-base lg:text-lg">
+                            <div className="group-hover:text-primary line-clamp-1 text-sm font-semibold transition-colors sm:text-base lg:text-lg">
                                 {article.title}
-                            </h3>
+                            </div>
                             <p className="text-muted-foreground line-clamp-1 text-xs">{article.summary}</p>
                         </div>
                         <div className={cn('mt-2 flex items-center gap-2 sm:gap-4 sm:text-sm', textMutedClasses)}>

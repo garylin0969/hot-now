@@ -25,7 +25,7 @@ export const metadata: Metadata = {
         default: 'Hot Now｜熱門話題一把抓',
         template: '%s | Hot Now',
     },
-    description: '用 Hot Now 隨時掌握最新熱門話題。',
+    description: '用 Hot Now 隨時掌握熱門話題。',
     keywords: [
         'PTT',
         'Reddit',
@@ -33,6 +33,7 @@ export const metadata: Metadata = {
         'Bahamut',
         'Komica',
         'Google Trends',
+        'BBC',
         '熱門',
         '趨勢',
         '整合',
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: 'Hot Now｜熱門話題一把抓',
-        description: '用 Hot Now 隨時掌握最新熱門話題。',
+        description: '用 Hot Now 隨時掌握熱門話題。',
         url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
         locale: 'zh_TW',
@@ -75,7 +76,7 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: 'Hot Now｜熱門話題一把抓',
-        description: '追蹤 PTT、Reddit、YouTube、巴哈姆特、Komica、Google 趨勢等平台的熱門內容',
+        description: '追蹤 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容',
         images: ['/og-image.png'],
         creator: '@hotnow',
         site: '@hotnow',
@@ -137,8 +138,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
+    maximumScale: 5,
+    userScalable: true,
     themeColor: [
         { media: '(prefers-color-scheme: light)', color: '#ffffff' },
         { media: '(prefers-color-scheme: dark)', color: '#000000' },

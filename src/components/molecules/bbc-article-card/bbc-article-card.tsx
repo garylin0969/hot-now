@@ -42,7 +42,7 @@ const BbcArticleCard = ({ article }: BbcArticleCardProps) => {
                         <NextImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={article.thumbnail}
-                            alt={article.title}
+                            alt={`${article.title} image`}
                             fill
                         />
                     </div>
@@ -54,9 +54,9 @@ const BbcArticleCard = ({ article }: BbcArticleCardProps) => {
                                 </Badge>
                                 <span className={STYLES.textMuted}>{formattedTime}</span>
                             </div>
-                            <h3 className="group-hover:text-primary line-clamp-1 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
+                            <div className="group-hover:text-primary line-clamp-1 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                                 {article.title}
-                            </h3>
+                            </div>
                         </div>
                         <div>
                             <p className={cn('line-clamp-2 text-xs sm:text-sm', STYLES.textMuted)}>

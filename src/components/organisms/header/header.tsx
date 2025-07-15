@@ -31,8 +31,8 @@ const Header = () => {
         <header className="border-border/40 bg-background/70 sticky top-0 left-0 z-50 h-14.5 border-b shadow-md backdrop-blur-md">
             <div className="container mx-auto flex h-full items-center justify-between p-2 md:p-0">
                 <Link href="/" className="flex items-center gap-x-2">
-                    <NextImage src={LOGO_IMAGE_PATH} width={32} height={32} alt="Hot Now" loading="eager" />
-                    <h1 className="text-primary text-2xl font-extrabold">Hot Now</h1>
+                    <NextImage src={LOGO_IMAGE_PATH} width={32} height={32} alt="Hot Now logo" loading="eager" />
+                    <div className="text-primary text-2xl font-extrabold">Hot Now</div>
                 </Link>
                 <nav className="flex items-center gap-2">
                     {SOCIAL_LINKS.map(({ href, target, icon: Icon, label }) => (
