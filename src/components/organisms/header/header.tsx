@@ -3,7 +3,7 @@ import { FaGithub, FaGoogle, FaLinkedin } from 'react-icons/fa';
 import NextImage from '@/components/atoms/next-image';
 import ThemeToggle from '@/components/atoms/theme-toggle';
 
-const LOGO_IMAGE_PATH = '/favicon/favicon-32x32.png';
+const LOGO_IMAGE_PATH = '/favicons/favicon-32x32.png';
 
 const SOCIAL_LINKS = [
     {
