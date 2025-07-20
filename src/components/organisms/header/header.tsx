@@ -27,7 +27,7 @@ const SOCIAL_LINKS = [
     },
 ] as const;
 
-const NOTICE_BAR_MESSAGE = '點我至 Chrome Extension 頁面';
+const NOTICE_BAR_MESSAGE = '點我至 Chrome Extension 商店';
 const NOTICE_BAR_LINK =
     'https://chromewebstore.google.com/detail/hot-now%EF%BD%9C%E7%86%B1%E9%96%80%E8%A9%B1%E9%A1%8C%E4%B8%80%E6%8A%8A%E6%8A%93/pcgkeopgenagbemoagdogljeapjhapch';
 
