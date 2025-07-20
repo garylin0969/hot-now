@@ -1,14 +1,3 @@
-import { GetBbcTrends } from '@/api/bbc-api';
-import { GetGamerTrends } from '@/api/gamer-api';
-import { GetGoogleTrends } from '@/api/google-api';
-import { GetKomicaTrends } from '@/api/komica-api';
-import { GetPttTrends } from '@/api/ptt-api';
-import {
-    GetSimplifiedRedditAllHotTrends,
-    GetSimplifiedRedditTaiwaneseHotTrends,
-    GetSimplifiedRedditChinaIrlHotTrends,
-} from '@/api/reddit-api';
-import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/api/youtube-api';
 import SectionTitle from '@/components/atoms/section-title';
 import BbcArticleCard from '@/components/molecules/bbc-article-card';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
@@ -20,6 +9,17 @@ import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GetBbcTrends } from '@/services/bbc-api';
+import { GetGamerTrends } from '@/services/gamer-api';
+import { GetGoogleTrends } from '@/services/google-api';
+import { GetKomicaTrends } from '@/services/komica-api';
+import { GetPttTrends } from '@/services/ptt-api';
+import {
+    GetSimplifiedRedditAllHotTrends,
+    GetSimplifiedRedditTaiwaneseHotTrends,
+    GetSimplifiedRedditChinaIrlHotTrends,
+} from '@/services/reddit-api';
+import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/services/youtube-api';
 
 const TABS = [
     { label: 'Youtube', value: 'youtube' },

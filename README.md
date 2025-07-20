@@ -122,7 +122,7 @@ hot-now/
 │   ├── favicon/              # 網站圖標
 │   └── image-not-found.png   # 預設圖片
 ├── src/
-│   ├── api/                  # API 相關
+│   ├── services/            # API 相關
 │   │   ├── bbc-api.ts       # BBC 新聞 API
 │   │   ├── gamer-api.ts     # 巴哈姆特 API
 │   │   ├── google-api.ts    # Google 趨勢 API
