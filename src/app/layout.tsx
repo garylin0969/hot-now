@@ -25,7 +25,8 @@ export const metadata: Metadata = {
         default: 'Hot Now｜熱門話題一把抓',
         template: '%s | Hot Now',
     },
-    description: '用 Hot Now 隨時掌握熱門話題。',
+    description:
+        '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
     keywords: [
         'PTT',
         'Reddit',
@@ -43,11 +44,6 @@ export const metadata: Metadata = {
     authors: [{ name: 'Hot Now' }],
     creator: 'Hot Now',
     publisher: 'Hot Now',
-    formatDetection: {
-        email: false,
-        address: false,
-        telephone: false,
-    },
     metadataBase: new URL('https://hotnow.garylin.dev'),
     alternates: {
         canonical: '/',
@@ -59,16 +55,17 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: 'Hot Now｜熱門話題一把抓',
-        description: '用 Hot Now 隨時掌握熱門話題。',
+        description:
+            '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
         url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
         locale: 'zh_TW',
         type: 'website',
         images: [
             {
-                url: '/og-image.png',
-                width: 1200,
-                height: 630,
+                url: '/favicons/android-chrome-512x512.png',
+                width: 512,
+                height: 512,
                 alt: 'Hot Now｜熱門話題一把抓',
             },
         ],
@@ -76,8 +73,9 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: 'Hot Now｜熱門話題一把抓',
-        description: '追蹤 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容',
-        images: ['/og-image.png'],
+        description:
+            '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+        images: ['/favicons/android-chrome-512x512.png'],
         creator: '@hotnow',
         site: '@hotnow',
     },
@@ -114,15 +112,6 @@ export const metadata: Metadata = {
         ],
     },
     manifest: '/favicons/site.webmanifest',
-    other: {
-        'msapplication-TileColor': '#ffffff',
-        'msapplication-config': '/favicons/browserconfig.xml',
-    },
-    verification: {
-        google: 'your-google-site-verification-code',
-        yandex: 'your-yandex-verification-code',
-        yahoo: 'your-yahoo-verification-code',
-    },
     category: 'technology',
     classification: 'Hot Content Aggregator',
     referrer: 'origin-when-cross-origin',
