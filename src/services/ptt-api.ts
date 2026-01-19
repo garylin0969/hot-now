@@ -1,24 +1,15 @@
+/**
+ * @fileoverview PTT API 服務
+ * 通過爬蟲源獲取 PTT 熱門文章。
+ */
+import { fetchFromScraper } from '@/services/api-client';
 import type { PttApiResponse } from '@/types';
 
-// PTT API URL
-const PTT_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
-
+/**
+ * 獲取 PTT 熱門文章 (爬蟲資料)
+ *
+ * @returns 包含文章資料的 Promise 物件
+ */
 export const GetPttTrends = async (): Promise<PttApiResponse> => {
-    try {
-        const response = await fetch(`${PTT_BASE_URL}/ptt-trends.json`, {
-            next: {
-                revalidate: 60 * 30, // 30 minutes
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching PTT trends:', error);
-        throw new Error(`Failed to fetch PTT trends: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
+    return fetchFromScraper<PttApiResponse>('ptt-trends.json');
 };

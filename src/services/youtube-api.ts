@@ -1,85 +1,53 @@
+/**
+ * @fileoverview YouTube API 服務
+ * 使用 Google API Client 獲取發燒影片資訊。
+ */
 import { google } from 'googleapis';
-import { unstable_cache } from 'next/cache';
+import { YOUTUBE_CATEGORIES, type YouTubeCategoryKey } from '@/constants/youtube';
 
-// 設定 YouTube API
+/** YouTube API 金鑰 (從環境變數讀取) */
 const YOUTUBE_API_KEY = String(process.env.NEXT_PRIVATE_YOUTUBE_API_KEY);
+
+/** 初始化 YouTube API v3 客戶端 */
 const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
 
-const THIRTY_MINUTES = 60 * 30; // 30 minutes
-
-// YouTube 類別定義
-export const YOUTUBE_CATEGORIES = {
-    latest: undefined, // 最新 (所有類別)
-    gaming: '20', // 遊戲
-    music: '10', // 音樂
-    film: '1', // 電影
-} as const;
-
-export type YouTubeCategoryKey = keyof typeof YOUTUBE_CATEGORIES;
-
-// 取得發燒影片（無緩存）
+/**
+ * 獲取 YouTube 發燒影片列表
+ *
+ * @param categoryId - (選填) YouTube 影片類別 ID
+ * @returns 包含發燒影片資料的 Promise 物件
+ * @throws {Error} 當 API 金鑰未配置或 API 回傳異常時拋出錯誤
+ */
 export const GetYoutubeHotVideos = async (categoryId?: string) => {
-    try {
-        if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'undefined') {
-            throw new Error('YouTube API key is not configured');
-        }
-
-        const params = {
-            part: ['snippet', 'statistics', 'contentDetails'],
-            chart: 'mostPopular',
-            regionCode: 'TW',
-            maxResults: 50,
-            ...(categoryId && { videoCategoryId: categoryId }),
-        };
-
-        const response = await youtube.videos.list(params);
-
-        if (!response.data) {
-            throw new Error('No data received from YouTube API');
-        }
-
-        return response;
-    } catch (error) {
-        console.error('Error fetching YouTube hot videos:', error);
-        throw new Error(
-            `Failed to fetch YouTube hot videos: ${error instanceof Error ? error.message : 'Unknown error'}`
-        );
+    if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'undefined') {
+        throw new Error('YouTube API key is not configured');
     }
+
+    const params = {
+        part: ['snippet', 'statistics', 'contentDetails'],
+        chart: 'mostPopular',
+        regionCode: 'TW',
+        maxResults: 50,
+        ...(categoryId && { videoCategoryId: categoryId }),
+    };
+
+    const response = await youtube.videos.list(params);
+
+    if (!response.data) {
+        throw new Error('No data received from YouTube API');
+    }
+
+    // 將 googleapis 回傳的物件轉換為純物件，避免序列化問題
+    return JSON.parse(JSON.stringify(response.data));
 };
 
-// 取得發燒影片（帶緩存）
-export const GetYoutubeHotVideosWithCache = unstable_cache(
-    async (categoryId?: string) => {
-        try {
-            return await GetYoutubeHotVideos(categoryId);
-        } catch (error) {
-            console.error('Error in cached YouTube hot videos:', error);
-            throw error;
-        }
-    },
-    ['get-hot-videos-cache'],
-    {
-        revalidate: THIRTY_MINUTES,
-        tags: ['youtube-hot-videos'],
-    }
-);
-
-// 取得特定類別的發燒影片（帶緩存）
-export const GetYoutubeHotVideosByCategory = unstable_cache(
-    async (categoryKey: YouTubeCategoryKey) => {
-        try {
-            const categoryId = YOUTUBE_CATEGORIES[categoryKey];
-            return await GetYoutubeHotVideos(categoryId);
-        } catch (error) {
-            console.error(`Error fetching YouTube hot videos for category ${categoryKey}:`, error);
-            throw new Error(
-                `Failed to fetch YouTube hot videos for category ${categoryKey}: ${error instanceof Error ? error.message : 'Unknown error'}`
-            );
-        }
-    },
-    ['get-hot-videos-by-category-cache'],
-    {
-        revalidate: THIRTY_MINUTES,
-        tags: ['youtube-hot-videos-by-category'],
-    }
-);
+/**
+ * 根據自定義類別鍵值獲取 YouTube 發燒影片
+ *
+ * @param categoryKey - 定義在 constants 中的類別鍵值
+ * @returns 包含該類別發燒影片資料的 Promise 物件
+ */
+export const GetYoutubeHotVideosByCategory = async (categoryKey: YouTubeCategoryKey) => {
+    const categoryId = YOUTUBE_CATEGORIES[categoryKey].id;
+    return GetYoutubeHotVideos(categoryId);
+};

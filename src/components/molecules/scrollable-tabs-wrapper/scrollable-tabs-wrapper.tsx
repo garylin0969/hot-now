@@ -1,65 +1,36 @@
 'use client';
 
+/**
+ * @fileoverview 可滾動的標籤頁容器元件
+ */
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReactNode, useRef, useState, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
+import { useScrollable } from '@/hooks/use-scrollable';
 import { cn } from '@/utils/shadcn';
 
+/** 屬性介面 */
 interface ScrollableTabsWrapperProps {
+    /** 自定義樣式類名 */
     className?: string;
+    /** 子元素 (通常是 TabsList) */
     children?: ReactNode;
 }
 
+/**
+ * 封裝的可滾動標籤頁容器
+ * 當標籤頁超出容器寬度時，提供左右滾動箭頭以便於操作。
+ * 自動偵測滾動位置與視窗大小變化。
+ *
+ * @param props - 元件屬性
+ * @returns 渲染後的滾動容器
+ */
 const ScrollableTabsWrapper = ({ className, children }: ScrollableTabsWrapperProps) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [showLeftArrow, setShowLeftArrow] = useState(false);
-    const [showRightArrow, setShowRightArrow] = useState(false);
+    const { scrollRef, showLeftArrow, showRightArrow, scrollLeft, scrollRight, checkScrollPosition } = useScrollable();
 
-    // 檢查滾動位置並更新箭頭顯示狀態
-    const checkScrollPosition = () => {
-        if (!scrollRef.current) return;
-
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-
-        // 當滾動位置大於 0 時顯示左箭頭
-        setShowLeftArrow(scrollLeft > 0);
-
-        // 當還沒滾動到最右邊時顯示右箭頭
-        setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
-    };
-
-    // 初始化時檢查一次
+    // 當子元素變動時重新檢查滾動位置
     useEffect(() => {
         checkScrollPosition();
-
-        // 監聽窗口大小變化
-        const handleResize = () => {
-            checkScrollPosition();
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [children]);
-
-    // 左滑動
-    const scrollLeft = () => {
-        if (!scrollRef.current) return;
-        scrollRef.current.scrollBy({
-            left: -120,
-            behavior: 'smooth',
-        });
-    };
-
-    // 右滑動
-    const scrollRight = () => {
-        if (!scrollRef.current) return;
-        scrollRef.current.scrollBy({
-            left: 120,
-            behavior: 'smooth',
-        });
-    };
+    }, [children, checkScrollPosition]);
 
     return (
         <div className={cn('relative flex w-full items-center px-4 md:w-auto', className)}>

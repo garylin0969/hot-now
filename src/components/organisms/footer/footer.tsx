@@ -1,3 +1,13 @@
+/**
+ * @fileoverview 頁尾元件
+ */
+
+/**
+ * 網站頁尾
+ * 顯示隱私權聲明與版權資訊。
+ *
+ * @returns 渲染後的頁尾區塊
+ */
 const Footer = () => {
     return (
         <footer className="bg-background border-t">

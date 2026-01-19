@@ -1,15 +1,28 @@
+/**
+ * @fileoverview Google 搜尋趨勢卡片元件
+ */
 // import CopyToClipboard from '@/components/atoms/copy-to-clipboard';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { GoogleTrend } from '@/types';
 
-// 文字樣式
+/** 文字樣式常量 */
 const MUTED_TEXT_CLASS = 'text-muted-foreground text-sm';
 
+/** Google 趨勢卡片屬性介面 */
 interface GoogleTrendCardProps {
+    /** Google 趨勢資料 */
     trend: GoogleTrend;
 }
 
+/**
+ * 顯示 Google 搜尋趨勢的卡片元件
+ * 包含關鍵字、搜尋量及開始時間
+ *
+ * @param props - 元件屬性
+ * @param props.trend - 趨勢資料物件
+ * @returns 渲染後的趨勢卡片
+ */
 const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
     // 提取重複的樣式
 
@@ -18,7 +31,7 @@ const GoogleTrendCard = ({ trend }: GoogleTrendCardProps) => {
             <CardHeader className="flex-1 gap-0">
                 <CardTitle className="text-lg font-semibold">{trend.googleTrend}</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-[2] items-center">
+            <CardContent className="flex flex-2 items-center">
                 <div className="flex flex-1 items-center gap-1">
                     <span className={MUTED_TEXT_CLASS}>搜尋量：</span>
                     <Badge variant="outline">{trend.searchVolume}</Badge>

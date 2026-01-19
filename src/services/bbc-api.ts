@@ -1,24 +1,15 @@
+/**
+ * @fileoverview BBC 新聞 API 服務
+ * 通過爬蟲源獲取 BBC 中文新聞趨勢。
+ */
+import { fetchFromScraper } from '@/services/api-client';
 import type { BbcApiResponse } from '@/types';
 
-// BBC API URL
-const BBC_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
-
+/**
+ * 獲取 BBC 熱門新聞 (爬蟲資料)
+ *
+ * @returns 包含新聞趨勢資料的 Promise 物件
+ */
 export const GetBbcTrends = async (): Promise<BbcApiResponse> => {
-    try {
-        const response = await fetch(`${BBC_BASE_URL}/bbc-trends.json`, {
-            next: {
-                revalidate: 60 * 30, // 30 minutes
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching BBC trends:', error);
-        throw new Error(`Failed to fetch BBC trends: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
+    return fetchFromScraper<BbcApiResponse>('bbc-trends.json');
 };

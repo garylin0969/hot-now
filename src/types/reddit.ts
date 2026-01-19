@@ -1,20 +1,35 @@
-// Reddit API 回應格式的型別定義
+/**
+ * @fileoverview Reddit 相關型別定義
+ */
+
+/** Reddit 預覽圖片資訊 */
 export interface RedditPreviewImage {
+    /** 圖片 URL */
     url: string;
+    /** 寬度 */
     width: number;
+    /** 高度 */
     height: number;
 }
 
+/** Reddit 預覽資料結構 */
 export interface RedditPreview {
+    /** 圖片列表 */
     images: Array<{
+        /** 原始圖片 */
         source: RedditPreviewImage;
+        /** 不同解析度的版本 */
         resolutions: RedditPreviewImage[];
+        /** 變體 (如 GIF, MP4 等) */
         variants: Record<string, unknown>;
+        /** 圖片 ID */
         id: string;
     }>;
+    /** 是否啟用預覽 */
     enabled: boolean;
 }
 
+/** Reddit 文章詳細資料 (原始 API 結構) */
 export interface RedditArticleData {
     approved_at_utc: null;
     subreddit: string;
@@ -125,37 +140,62 @@ export interface RedditArticleData {
     is_video: boolean;
 }
 
+/** Reddit 文章容器 */
 export interface RedditArticle {
+    /** 資料類型 (例如 't3' 代表文章) */
     kind: 't3';
+    /** 文章內容資料 */
     data: RedditArticleData;
 }
 
+/** Reddit 列表資料結構 */
 export interface RedditListingData {
+    /** 下一頁的錨點 */
     after: string | null;
+    /** 數量 */
     dist: number;
+    /** Mod hash */
     modhash: string;
+    /** 地理過濾器 */
     geo_filter: null;
+    /** 子項目列表 (文章) */
     children: RedditArticle[];
+    /** 上一頁的錨點 */
     before: null;
 }
 
+/** Reddit API 回應格式 */
 export interface RedditApiResponse {
+    /** 回應類型 (通常為 'Listing') */
     kind: 'Listing';
+    /** 回應資料 */
     data: RedditListingData;
 }
 
-// 簡化的文章資料格式
+/** 簡化後的 Reddit 文章資料格式 (前端顯示用) */
 export interface SimplifiedRedditArticle {
+    /** 文章 ID */
     id: string;
+    /** 文章標題 */
     title: string;
+    /** 作者名稱 */
     author: string;
+    /** 子版塊名稱 */
     subreddit: string;
+    /** 分數 (推 - 噓) */
     score: number;
+    /** 留言數 */
     num_comments: number;
+    /** 外部連結 URL */
     url: string;
+    /** 縮圖 URL */
     thumbnail: string;
+    /** 建立時間 (UTC Timestamp, 秒) */
     created_utc: number;
+    /** 文章永久連結 (相對路徑) */
     permalink: string;
+    /** 是否為影片 */
     is_video: boolean;
+    /** 預覽圖片 URL (若有) */
     preview_image?: string;
 }

@@ -1,24 +1,18 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { PttArticle } from '@/types';
+import { formatRelativeTime } from '@/utils/date';
+import { formatCompactNumber } from '@/utils/number';
 import { cn } from '@/utils/shadcn';
 
-// 推薦分數閾值
+/** 推薦分數閾值 */
 const SCORE_THRESHOLDS = {
     HIGH: 100,
     MEDIUM: 50,
     LOW: 10,
 } as const;
 
-// 時間常量
-const TIME_CONSTANTS = {
-    MINUTE: 60,
-    HOUR: 3600,
-    DAY: 86400,
-    MONTH: 86400 * 30,
-} as const;
-
-// 推薦分數顏色
+/** 推薦分數顏色 */
 const SCORE_COLORS = {
     HIGH: 'text-red-500',
     MEDIUM: 'text-orange-500',
@@ -26,14 +20,19 @@ const SCORE_COLORS = {
     NEGATIVE: 'text-gray-500',
 } as const;
 
-// 樣式常量
+/** 樣式常量 */
 const STYLES = {
     cardHeight: 'h-[120px] sm:h-[140px]',
     textMuted: 'text-muted-foreground text-xs',
     badgeText: 'text-xs',
 } as const;
 
-// 格式化推薦分數顯示
+/**
+ * 格式化推薦分數顯示
+ *
+ * @param score - 推薦分數
+ * @returns 包含顯示文字與顏色的物件
+ */
 const formatRecommendScore = (score: string): { display: string; color: string } => {
     const scoreNum = parseInt(score, 10);
 
@@ -49,54 +48,27 @@ const formatRecommendScore = (score: string): { display: string; color: string }
     return { display: scoreNum.toString(), color: SCORE_COLORS.NEGATIVE };
 };
 
-// 格式化發布時間
-const formatPublishedTime = (publishTime: string): string => {
-    try {
-        const [datePart, timePart] = publishTime.split(' ');
-        if (!datePart || !timePart) return publishTime;
-
-        const [year, month, day] = datePart.split('/').map(Number);
-        const [hour, minute] = timePart.split(':').map(Number);
-
-        const published = new Date(year, month - 1, day, hour, minute);
-        const now = new Date();
-        const diffInSeconds = Math.floor((now.getTime() - published.getTime()) / 1000);
-
-        if (diffInSeconds < TIME_CONSTANTS.HOUR) {
-            const minutes = Math.floor(diffInSeconds / TIME_CONSTANTS.MINUTE);
-            return `${minutes} 分鐘前`;
-        }
-        if (diffInSeconds < TIME_CONSTANTS.DAY) {
-            const hours = Math.floor(diffInSeconds / TIME_CONSTANTS.HOUR);
-            return `${hours} 小時前`;
-        }
-        if (diffInSeconds < TIME_CONSTANTS.MONTH) {
-            const days = Math.floor(diffInSeconds / TIME_CONSTANTS.DAY);
-            return `${days} 天前`;
-        }
-        const months = Math.floor(diffInSeconds / TIME_CONSTANTS.MONTH);
-        return `${months} 個月前`;
-    } catch {
-        return publishTime;
-    }
-};
-
-// 格式化推薦數量
-const formatRecommendCount = (count: string): string => {
-    const num = parseInt(count, 10);
-    return num >= 1000 ? `${(num / 1000).toFixed(1)}K` : num.toString();
-};
-
+/**
+ * PTT 文章卡片元件的屬性介面
+ */
 interface PttArticleCardProps {
+    /** PTT 文章資料 */
     article: PttArticle;
 }
 
+/**
+ * 顯示 PTT 熱門文章的卡片元件
+ *
+ * @param props - 元件屬性
+ * @param props.article - 文章資料
+ * @returns 渲染後的文章卡片
+ */
 const PttArticleCard = ({ article }: PttArticleCardProps) => {
     const pttUrl = `https://www.pttweb.cc${article.link}`;
     const { display: scoreDisplay, color: scoreColor } = formatRecommendScore(article.recommendScore);
     const scoreNum = parseInt(article.recommendScore, 10);
-    const formattedTime = formatPublishedTime(article.publishTime);
-    const formattedCount = formatRecommendCount(article.recommendCount);
+    const formattedTime = formatRelativeTime(article.publishTime);
+    const formattedCount = formatCompactNumber(article.recommendCount);
 
     return (
         <a href={pttUrl} target="_blank" rel="noopener noreferrer" className="group">
