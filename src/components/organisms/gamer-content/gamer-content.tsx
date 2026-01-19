@@ -1,28 +1,38 @@
+/**
+ * @fileoverview 巴哈姆特 (Gamer) 內容區塊元件
+ */
+import { cacheLife } from 'next/cache';
+import type { ComponentProps } from 'react';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { GAMER_CATEGORIES, type GamerCategoryKey } from '@/constants/gamer';
+import { GetGamerTrends } from '@/services/gamer-api';
 import type { GamerTrend } from '@/types';
 import { cn } from '@/utils/shadcn';
 
-// 類別頁籤資料
-const CATEGORY_TABS = [
-    { value: 'all', label: '全部' },
-    { value: 'game', label: '遊戲' },
-    { value: 'ac', label: '動漫' },
-    { value: 'life', label: '宅生活' },
-] as const;
-
-// 頁籤樣式
+/** 頁籤樣式類名 */
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
-interface GamerContentProps {
-    className?: string;
-    allTrends: GamerTrend[];
-    gameTrends: GamerTrend[];
-    acTrends: GamerTrend[];
-    lifeTrends: GamerTrend[];
-}
+/**
+ * 巴哈姆特熱門文章內容區塊
+ * 非同步 Server Component，負責獲取並顯示巴哈姆特各分類的熱門文章。
+ * 包含全站、遊戲、動漫、生活等分類標籤頁。
+ *
+ * @param props - 元件屬性
+ * @returns 渲染後的 Gamer 內容區塊
+ */
+const GamerContent = async ({ className, ...props }: ComponentProps<'div'>) => {
+    'use cache';
+    cacheLife('hours');
 
-const GamerContent = ({ className, allTrends, gameTrends, acTrends, lifeTrends }: GamerContentProps) => {
+    // 獲取所有分類資料
+    const gamerResponse = await GetGamerTrends();
+    const allTrends = gamerResponse.data?.all || [];
+
+    const gameTrends = gamerResponse.data?.game || [];
+    const acTrends = gamerResponse.data?.ac || [];
+    const lifeTrends = gamerResponse.data?.life || [];
+
     // 趨勢資料
     const trendData = {
         all: allTrends,
@@ -30,6 +40,9 @@ const GamerContent = ({ className, allTrends, gameTrends, acTrends, lifeTrends }
         ac: acTrends,
         life: lifeTrends,
     };
+
+    // 取得所有類別鍵值
+    const categoryKeys = Object.keys(GAMER_CATEGORIES) as GamerCategoryKey[];
 
     // 渲染文章列表
     const renderArticleList = (trends: GamerTrend[], keyPrefix: string) => (
@@ -41,23 +54,23 @@ const GamerContent = ({ className, allTrends, gameTrends, acTrends, lifeTrends }
     );
 
     return (
-        <div className={cn('w-full', className)}>
-            <Tabs defaultValue={CATEGORY_TABS[0]?.value}>
+        <div className={cn('w-full', className)} {...props}>
+            <Tabs defaultValue={categoryKeys[0]}>
                 {/* 類別選擇器 */}
                 <div className="mb-6">
                     <TabsList className="mx-auto grid w-full max-w-2xl grid-cols-4">
-                        {CATEGORY_TABS?.map(({ value, label }) => (
-                            <TabsTrigger key={value} value={value} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
-                                {label}
+                        {categoryKeys.map((key) => (
+                            <TabsTrigger key={key} value={key} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
+                                {GAMER_CATEGORIES[key].label}
                             </TabsTrigger>
                         ))}
                     </TabsList>
                 </div>
 
                 {/* 動態渲染所有類別的內容 */}
-                {CATEGORY_TABS?.map(({ value }) => (
-                    <TabsContent key={value} value={value}>
-                        {renderArticleList(trendData[value], value)}
+                {categoryKeys.map((key) => (
+                    <TabsContent key={key} value={key}>
+                        {renderArticleList(trendData[key], key)}
                     </TabsContent>
                 ))}
             </Tabs>
