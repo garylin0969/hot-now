@@ -38,7 +38,7 @@ const Privacy = () => {
                         <CardHeader>
                             <h2 className="text-center text-2xl leading-none font-semibold">Hot Now 隱私權政策</h2>
                             <CardDescription className="text-center text-base">
-                                最後更新日期：{new Date().toLocaleDateString('zh-TW')}
+                                最後更新日期：2026/01/19
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
@@ -72,7 +72,7 @@ const Privacy = () => {
                         <CardHeader>
                             <h2 className="text-center text-2xl leading-none font-semibold">Hot Now Privacy Policy</h2>
                             <CardDescription className="text-center text-base">
-                                Last updated: {new Date().toLocaleDateString('en-US')}
+                                Last updated: 01/19/2026
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
