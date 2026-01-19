@@ -1,10 +1,21 @@
+/**
+ * @fileoverview YouTube 影片卡片元件
+ */
 import type { youtube_v3 } from 'googleapis';
-import NextImage from '@/components/atoms/next-image';
+import BaseImage from '@/components/atoms/base-image';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { formatRelativeTime } from '@/utils/date';
+import { formatCompactNumber } from '@/utils/number';
 
-// 判斷是否為 Shorts
+/**
+ * 判斷影片是否為 Shorts (短影音)
+ * 檢查影片時長是否小於 60 秒
+ *
+ * @param duration - ISO 8601 格式的持續時間字串 (例如: PT1M30S)
+ * @returns 若為 Shorts 則返回 true
+ */
 const isShorts = (duration: string): boolean => {
     // Match ISO 8601 duration format: PT#H#M#S
     const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
@@ -21,44 +32,21 @@ const isShorts = (duration: string): boolean => {
     return totalSeconds > 0 && totalSeconds < 60;
 };
 
-// 格式化觀看次數
-const formatViewCount = (viewCount: string | null | undefined): string => {
-    if (!viewCount) return '0';
-
-    const count = parseInt(viewCount);
-    if (count >= 1000000) {
-        return `${(count / 1000000).toFixed(1)}M`;
-    } else if (count >= 1000) {
-        return `${(count / 1000).toFixed(1)}K`;
-    } else {
-        return `${count}`;
-    }
-};
-
-// 格式化發布時間
-const formatPublishedTime = (publishedAt: string | null | undefined): string => {
-    if (!publishedAt) return '';
-
-    const now = new Date();
-    const published = new Date(publishedAt);
-    const diffInSeconds = Math.floor((now.getTime() - published.getTime()) / 1000);
-
-    if (diffInSeconds < 3600) {
-        const minutes = Math.floor(diffInSeconds / 60);
-        return `${minutes} 分鐘前`;
-    } else if (diffInSeconds < 86400) {
-        const hours = Math.floor(diffInSeconds / 3600);
-        return `${hours} 小時前`;
-    } else {
-        const days = Math.floor(diffInSeconds / 86400);
-        return `${days} 天前`;
-    }
-};
-
+/** YouTube 影片卡片屬性介面 */
 interface YoutubeVideoCardProps {
+    /** YouTube 影片資料物件 */
     video: youtube_v3.Schema$Video;
 }
 
+/**
+ * 顯示 YouTube 影片資訊的卡片元件
+ * 包含縮圖、標題、頻道名稱、觀看次數與發布時間。
+ * 自動偵測並標記 Shorts 影片。
+ *
+ * @param props - 元件屬性
+ * @param props.video - 影片資料
+ * @returns 渲染後的影片卡片
+ */
 const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
     const { id, snippet, statistics, contentDetails } = video;
 
@@ -76,7 +64,7 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
         <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="flex h-full cursor-pointer flex-col overflow-hidden pt-0 hover:shadow-lg">
                 <AspectRatio className="overflow-hidden" ratio={16 / 9}>
-                    <NextImage
+                    <BaseImage
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                         src={thumbnailUrl}
                         alt={`${title} image`}
@@ -94,9 +82,9 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
                     <div className="text-muted-foreground space-y-2 text-xs">
                         <p className="text-foreground font-medium">頻道：{channelTitle}</p>
                         <div className="flex items-center space-x-2">
-                            <span>觀看次數：{formatViewCount(viewCount)}</span>
+                            <span>觀看次數：{formatCompactNumber(viewCount ?? '0')}</span>
                             <span>•</span>
-                            <span>{formatPublishedTime(publishedAt)}</span>
+                            <span>{formatRelativeTime(publishedAt ?? '')}</span>
                         </div>
                     </div>
                 </CardContent>

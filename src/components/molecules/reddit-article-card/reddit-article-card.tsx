@@ -1,51 +1,17 @@
-import NextImage from '@/components/atoms/next-image';
+import BaseImage from '@/components/atoms/base-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { SimplifiedRedditArticle } from '@/types';
+import { formatRelativeTime } from '@/utils/date';
+import { formatCompactNumber } from '@/utils/number';
 import { cn } from '@/utils/shadcn';
 
-// 時間常數
-const TIME_CONSTANTS = {
-    SECOND: 1,
-    MINUTE: 60,
-    HOUR: 3600,
-    DAY: 86400,
-    MONTH: 86400 * 30,
-} as const;
-
-// 通用數字格式化函數
-const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
-        return `${(num / 1000000).toFixed(1)}M`;
-    } else if (num >= 1000) {
-        return `${(num / 1000).toFixed(1)}K`;
-    } else {
-        return num.toString();
-    }
-};
-
-// 格式化發布時間
-const formatPublishedTime = (created_utc: number): string => {
-    const now = new Date();
-    const published = new Date(created_utc * 1000); // Reddit 時間戳是秒，需要轉換為毫秒
-    const diffInSeconds = Math.floor((now.getTime() - published.getTime()) / 1000);
-
-    if (diffInSeconds < TIME_CONSTANTS.HOUR) {
-        const minutes = Math.floor(diffInSeconds / TIME_CONSTANTS.MINUTE);
-        return `${minutes} 分鐘前`;
-    } else if (diffInSeconds < TIME_CONSTANTS.DAY) {
-        const hours = Math.floor(diffInSeconds / TIME_CONSTANTS.HOUR);
-        return `${hours} 小時前`;
-    } else if (diffInSeconds < TIME_CONSTANTS.MONTH) {
-        const days = Math.floor(diffInSeconds / TIME_CONSTANTS.DAY);
-        return `${days} 天前`;
-    } else {
-        const months = Math.floor(diffInSeconds / TIME_CONSTANTS.MONTH);
-        return `${months} 個月前`;
-    }
-};
-
-// 取得適合的縮圖 URL
+/**
+ * 取得適合的縮圖 URL
+ *
+ * @param article - Reddit 文章資料
+ * @returns 縮圖 URL 字串
+ */
 const getThumbnailUrl = (article: SimplifiedRedditArticle): string => {
     // 優先使用 preview_image
     if (article.preview_image) {
@@ -62,10 +28,21 @@ const getThumbnailUrl = (article: SimplifiedRedditArticle): string => {
     return '';
 };
 
+/**
+ * Reddit 文章卡片元件的屬性介面
+ */
 interface RedditArticleCardProps {
+    /** Reddit 文章資料 */
     article: SimplifiedRedditArticle;
 }
 
+/**
+ * 顯示 Reddit 熱門文章的卡片元件
+ *
+ * @param props - 元件屬性
+ * @param props.article - 文章資料
+ * @returns 渲染後的文章卡片
+ */
 const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
     const thumbnailUrl = getThumbnailUrl(article);
     const redditUrl = `https://www.reddit.com${article.permalink}`;
@@ -79,8 +56,8 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
         <a href={redditUrl} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
-                    <div className="relative hidden w-24 flex-shrink-0 overflow-hidden md:block md:w-40 lg:w-48">
-                        <NextImage
+                    <div className="relative hidden w-24 shrink-0 overflow-hidden md:block md:w-40 lg:w-48">
+                        <BaseImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={thumbnailUrl}
                             alt={`${article.title} image`}
@@ -99,7 +76,9 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
                                     r/{article.subreddit}
                                 </Badge>
                                 <span className={cn('hidden sm:inline', textMutedClasses)}>by {article.author}</span>
-                                <span className={textMutedClasses}>{formatPublishedTime(article.created_utc)}</span>
+                                <span className={textMutedClasses}>
+                                    {formatRelativeTime(article.created_utc * 1000)}
+                                </span>
                             </div>
                             <div className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                                 {article.title}
@@ -108,12 +87,14 @@ const RedditArticleCard = ({ article }: RedditArticleCardProps) => {
                         <div className={cn('mt-2 flex items-center gap-2 sm:gap-4 sm:text-sm', textMutedClasses)}>
                             <div className="flex items-center gap-1">
                                 <span>👍</span>
-                                <span>{formatNumber(article.score)}</span>
+                                <span>{formatCompactNumber(article.score)}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <span>💬</span>
-                                <span className="hidden sm:inline">{formatNumber(article.num_comments)} 留言</span>
-                                <span className="sm:hidden">{formatNumber(article.num_comments)}</span>
+                                <span className="hidden sm:inline">
+                                    {formatCompactNumber(article.num_comments)} 留言
+                                </span>
+                                <span className="sm:hidden">{formatCompactNumber(article.num_comments)}</span>
                             </div>
                         </div>
                     </CardContent>
