@@ -1,7 +1,16 @@
-import React from 'react';
+/**
+ * @fileoverview 隱私權政策頁面
+ * 提供中英雙語的隱私權聲明。
+ */
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+/**
+ * 隱私權政策頁面元件
+ * 使用 Tabs 切換中文與英文版本。
+ *
+ * @returns 渲染後的隱私權頁面
+ */
 const Privacy = () => {
     return (
         <div className="container mx-auto max-w-4xl px-4 py-8">
