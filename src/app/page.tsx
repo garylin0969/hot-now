@@ -9,7 +9,6 @@ import GoogleContent from '@/components/organisms/google-content';
 import HomeTabs from '@/components/organisms/home-tabs';
 import KomicaContent from '@/components/organisms/komica-content';
 import PttContent from '@/components/organisms/ptt-content';
-import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -38,7 +37,6 @@ const TABS_CONFIG = [
     { value: 'bbc', Component: BbcContent },
     { value: 'google', Component: GoogleContent },
     { value: 'gamer', Component: GamerContent },
-    { value: 'reddit', Component: RedditContent },
     { value: 'komica', Component: KomicaContent },
 ] as const;
 

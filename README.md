@@ -33,7 +33,6 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 - **BBC** - 中文新聞（最新資訊、國際新聞）
 - **Google** - 熱搜榜（過去4小時）
 - **巴哈姆特** - 熱門話題（全站、遊戲、動漫、生活）
-- **Reddit** - 熱門文章（全站、台灣相關、中國相關）
 - **Komica(K島)** - 熱門文章
 
 ### 🔧 實用工具
@@ -75,7 +74,6 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 | **BBC**      | 爬蟲專案         | `use cache` | `halfHour`         | 每30分鐘 |
 | **Google**   | 爬蟲專案         | `use cache` | `halfHour`         | 每30分鐘 |
 | **巴哈姆特** | 官方 API         | `use cache` | `hours`            | -        |
-| **Reddit**   | 爬蟲專案         | `use cache` | `hours`            | 每30分鐘 |
 | **Komica**   | 爬蟲專案         | `use cache` | `halfHour`         | 每30分鐘 |
 
 ### 📡 API 配額資訊
@@ -89,7 +87,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 #### 其他 API
 
 - **巴哈姆特**: 使用官方 Get API
-- **PTT/BBC/Google/Reddit/Komica**: 透過 [Trend Scraper](https://github.com/garylin0969/trend-scraper) 爬蟲專案提供 JSON 靜態檔。
+- **PTT/BBC/Google/Komica**: 透過 [Trend Scraper](https://github.com/garylin0969/trend-scraper) 爬蟲專案提供 JSON 靜態檔。
 
 ## 🚀 快速開始
 
@@ -161,14 +159,6 @@ hot-now/
 - **`use cache` 指令**: 針對個別內容元件進行快取，而非整個頁面。
 - **`cacheLife` Profiles**: 在 `next.config.ts` 中自定義 `halfHour` 等快取生命週期，平衡內容新鮮度與效能。
 - **Streaming & Suspense**: 配合串流載入，讓使用者能立即看到頁面框架，個別內容區塊在完成快取讀取或 API 請求後自動出現。
-
-### Reddit 與爬蟲整合
-
-Reddit API 常遇見 403 或 429 限制，因此改用 [Trend Scraper](https://github.com/garylin0969/trend-scraper) 爬蟲專案：
-
-- 爬蟲定期抓取熱門資料並生成靜態 JSON。
-- 前端透過 `fetch` 直接讀取 JSON，無需經過 Reddit API。
-- 結合伺服器端快取，實作了極快的讀取速度與高穩定性。
 
 ## 🚀 部署資訊
 

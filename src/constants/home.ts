@@ -13,7 +13,6 @@ export const HOME_TABS = [
     { label: 'BBC', value: 'bbc' },
     { label: 'Google', value: 'google' },
     { label: 'Gamer', value: 'gamer' },
-    { label: 'Reddit', value: 'reddit' },
     { label: 'Komica', value: 'komica' },
 ] as const;
 
