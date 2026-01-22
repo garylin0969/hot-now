@@ -1,7 +1,7 @@
 /**
  * @fileoverview YouTube 內容區塊元件
  */
-import type { youtube_v3 } from 'googleapis';
+import type { YouTubeVideo } from '@/types/youtube';
 import { cacheLife } from 'next/cache';
 import type { ComponentProps } from 'react';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
@@ -48,7 +48,7 @@ const YouTubeContent = async ({ className, ...props }: ComponentProps<'div'>) =>
     const categoryKeys = Object.keys(YOUTUBE_CATEGORIES) as YouTubeCategoryKey[];
 
     // 渲染影片
-    const renderVideoGrid = (videos: youtube_v3.Schema$Video[], keyPrefix: string) => (
+    const renderVideoGrid = (videos: YouTubeVideo[], keyPrefix: string) => (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {videos?.map((video) => (
                 <YoutubeVideoCard key={`${keyPrefix}-${video.id}`} video={video} />

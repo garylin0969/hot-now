@@ -63,6 +63,10 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 - **Streaming (Suspense)**: 實作串流加載與 Skeleton 骨架屏，讓 UI 立即響應，內容逐步顯示。
 - **Atomic Design**: 嚴謹的原子設計元件架構。
 
+### 💡 技術決策說明
+
+- **YouTube API 移除 `googleapis` 套件**: 由於 `googleapis` 會觸發 Node.js 的 `DeprecationWarning: zlib.bytesRead is deprecated` (DEP0108) 警告，為保持開發環境日誌整潔並減少不必要的依賴，目前已移除該套件，並針對 YouTube 相關功能改用原生 `fetch` 手動實作 API 呼叫。
+
 ### 資料來源與快取策略
 
 專案利用 Next.js 16 的 `'use cache'` 指令與自定義 `cacheLife` 設定，實作了高效的元件級快取機制：

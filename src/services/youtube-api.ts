@@ -1,15 +1,15 @@
 /**
  * @fileoverview YouTube API 服務
- * 使用 Google API Client 獲取發燒影片資訊。
+ * 使用 Fetch API 獲取發燒影片資訊，替代 googleapis 庫以解決依賴問題。
  */
-import { google } from 'googleapis';
 import { YOUTUBE_CATEGORIES, type YouTubeCategoryKey } from '@/constants/youtube';
+import type { YouTubeApiResponse } from '@/types/youtube';
 
 /** YouTube API 金鑰 (從環境變數讀取) */
 const YOUTUBE_API_KEY = String(process.env.NEXT_PRIVATE_YOUTUBE_API_KEY);
 
-/** 初始化 YouTube API v3 客戶端 */
-const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
+/** YouTube API 基礎 URL */
+const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
 /**
  * 獲取 YouTube 發燒影片列表
@@ -18,27 +18,31 @@ const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
  * @returns 包含發燒影片資料的 Promise 物件
  * @throws {Error} 當 API 金鑰未配置或 API 回傳異常時拋出錯誤
  */
-export const GetYoutubeHotVideos = async (categoryId?: string) => {
+export const GetYoutubeHotVideos = async (categoryId?: string): Promise<YouTubeApiResponse> => {
     if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'undefined') {
         throw new Error('YouTube API key is not configured');
     }
 
-    const params = {
-        part: ['snippet', 'statistics', 'contentDetails'],
+    const params = new URLSearchParams({
+        part: 'snippet,statistics,contentDetails',
         chart: 'mostPopular',
         regionCode: 'TW',
-        maxResults: 50,
-        ...(categoryId && { videoCategoryId: categoryId }),
-    };
+        maxResults: '50',
+        key: YOUTUBE_API_KEY,
+    });
 
-    const response = await youtube.videos.list(params);
-
-    if (!response.data) {
-        throw new Error('No data received from YouTube API');
+    if (categoryId) {
+        params.append('videoCategoryId', categoryId);
     }
 
-    // 將 googleapis 回傳的物件轉換為純物件，避免序列化問題
-    return JSON.parse(JSON.stringify(response.data));
+    const response = await fetch(`${YOUTUBE_API_BASE_URL}/videos?${params.toString()}`);
+
+    if (!response.ok) {
+        throw new Error(`YouTube API error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as YouTubeApiResponse;
 };
 
 /**

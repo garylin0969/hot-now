@@ -1,7 +1,7 @@
 /**
  * @fileoverview YouTube 影片卡片元件
  */
-import type { youtube_v3 } from 'googleapis';
+import type { YouTubeVideo } from '@/types/youtube';
 import BaseImage from '@/components/atoms/base-image';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
@@ -35,7 +35,7 @@ const isShorts = (duration: string): boolean => {
 /** YouTube 影片卡片屬性介面 */
 interface YoutubeVideoCardProps {
     /** YouTube 影片資料物件 */
-    video: youtube_v3.Schema$Video;
+    video: YouTubeVideo;
 }
 
 /**
