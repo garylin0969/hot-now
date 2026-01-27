@@ -35,7 +35,9 @@ export const GetYoutubeHotVideos = async (categoryId?: string): Promise<YouTubeA
         params.append('videoCategoryId', categoryId);
     }
 
-    const response = await fetch(`${YOUTUBE_API_BASE_URL}/videos?${params.toString()}`);
+    const response = await fetch(`${YOUTUBE_API_BASE_URL}/videos?${params.toString()}`, {
+        next: { revalidate: 1800 }, // 30 分鐘
+    });
 
     if (!response.ok) {
         throw new Error(`YouTube API error! status: ${response.status}`);

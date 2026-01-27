@@ -1,7 +1,14 @@
+/**
+ * 顯示 PTT 熱門文章的卡片元件
+ *
+ * @param props - 元件屬性
+ * @param props.article - 文章資料
+ * @returns 渲染後的文章卡片
+ */
+import RelativeTime from '@/components/atoms/relative-time';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { PttArticle } from '@/types';
-import { formatRelativeTime } from '@/utils/date';
 import { formatCompactNumber } from '@/utils/number';
 import { cn } from '@/utils/shadcn';
 
@@ -67,7 +74,6 @@ const PttArticleCard = ({ article }: PttArticleCardProps) => {
     const pttUrl = `https://www.pttweb.cc${article.link}`;
     const { display: scoreDisplay, color: scoreColor } = formatRecommendScore(article.recommendScore);
     const scoreNum = parseInt(article.recommendScore, 10);
-    const formattedTime = formatRelativeTime(article.publishTime);
     const formattedCount = formatCompactNumber(article.recommendCount);
 
     return (
@@ -80,7 +86,9 @@ const PttArticleCard = ({ article }: PttArticleCardProps) => {
                                 {article.board}
                             </Badge>
                             <span className={cn('hidden sm:inline', STYLES.textMuted)}>by {article.author}</span>
-                            <span className={STYLES.textMuted}>{formattedTime}</span>
+                            <span className={STYLES.textMuted}>
+                                <RelativeTime time={article.publishTime} />
+                            </span>
                         </div>
                         <div className="group-hover:text-primary line-clamp-2 text-sm leading-tight font-semibold transition-colors sm:text-base lg:text-lg">
                             {article.title}

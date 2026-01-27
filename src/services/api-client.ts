@@ -15,13 +15,11 @@ const SCRAPER_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
  * @throws {Error} 當 HTTP 請求失敗時拋出錯誤
  */
 export const fetchFromScraper = async <T>(endpoint: string): Promise<T> => {
-    if (!SCRAPER_BASE_URL || SCRAPER_BASE_URL === 'undefined') {
-        throw new Error('API Base URL is not configured (NEXT_PUBLIC_GITHUB_REPO_URL)');
-    }
-
     // 確保 endpoint 不以 / 開頭，避免雙重斜線
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-    const response = await fetch(`${SCRAPER_BASE_URL}/${cleanEndpoint}`);
+    const response = await fetch(`${SCRAPER_BASE_URL}/${cleanEndpoint}`, {
+        next: { revalidate: 1800 }, // 30 分鐘
+    });
 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} fetching ${cleanEndpoint}`);

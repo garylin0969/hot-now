@@ -1,7 +1,6 @@
 /**
  * @fileoverview PTT 內容區塊元件
  */
-import { cacheLife } from 'next/cache';
 import type { ComponentProps } from 'react';
 import SectionTitle from '@/components/atoms/section-title';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
@@ -16,9 +15,6 @@ import { cn } from '@/utils/shadcn';
  * @returns 渲染後的 PTT 列表區塊
  */
 const PttContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    'use cache';
-    cacheLife('halfHour');
-
     // 獲取 PTT 資料
     const pttResponse = await GetPttTrends();
     const pttArticles = pttResponse.articles || [];

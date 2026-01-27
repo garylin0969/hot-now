@@ -1,12 +1,21 @@
 /**
  * @fileoverview YouTube 影片卡片元件
  */
-import type { YouTubeVideo } from '@/types/youtube';
+/**
+ * 顯示 YouTube 影片資訊的卡片元件
+ * 包含縮圖、標題、頻道名稱、觀看次數與發布時間。
+ * 自動偵測並標記 Shorts 影片。
+ *
+ * @param props - 元件屬性
+ * @param props.video - 影片資料
+ * @returns 渲染後的影片卡片
+ */
 import BaseImage from '@/components/atoms/base-image';
+import RelativeTime from '@/components/atoms/relative-time';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatRelativeTime } from '@/utils/date';
+import type { YouTubeVideo } from '@/types/youtube';
 import { formatCompactNumber } from '@/utils/number';
 
 /**
@@ -84,7 +93,7 @@ const YoutubeVideoCard = ({ video }: YoutubeVideoCardProps) => {
                         <div className="flex items-center space-x-2">
                             <span>觀看次數：{formatCompactNumber(viewCount ?? '0')}</span>
                             <span>•</span>
-                            <span>{formatRelativeTime(publishedAt ?? '')}</span>
+                            <RelativeTime time={publishedAt ?? ''} />
                         </div>
                     </div>
                 </CardContent>

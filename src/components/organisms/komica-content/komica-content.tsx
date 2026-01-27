@@ -1,7 +1,6 @@
 /**
  * @fileoverview Komica (K島) 內容區塊元件
  */
-import { cacheLife } from 'next/cache';
 import type { ComponentProps } from 'react';
 import KomicaArticleCard from '@/components/molecules/komica-article-card';
 import { GetKomicaTrends } from '@/services/komica-api';
@@ -15,9 +14,6 @@ import { cn } from '@/utils/shadcn';
  * @returns 渲染後的 Komica 列表區塊
  */
 const KomicaContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    'use cache';
-    cacheLife('halfHour');
-
     // 獲取 Komica 資料
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];

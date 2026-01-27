@@ -1,13 +1,12 @@
 /**
  * @fileoverview YouTube 內容區塊元件
  */
-import type { YouTubeVideo } from '@/types/youtube';
-import { cacheLife } from 'next/cache';
 import type { ComponentProps } from 'react';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { YOUTUBE_CATEGORIES, type YouTubeCategoryKey } from '@/constants/youtube';
 import { GetYoutubeHotVideos, GetYoutubeHotVideosByCategory } from '@/services/youtube-api';
+import type { YouTubeVideo } from '@/types/youtube';
 import { cn } from '@/utils/shadcn';
 
 /** 頁籤樣式類名 */
@@ -21,9 +20,6 @@ const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:tex
  * @returns 渲染後的 YouTube 內容區塊
  */
 const YouTubeContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    'use cache';
-    cacheLife('halfHour');
-
     // 獲取不同類別的影片
     const [latestResponse, gamingResponse, musicResponse, filmResponse] = await Promise.all([
         GetYoutubeHotVideos(), // 最新

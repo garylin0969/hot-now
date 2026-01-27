@@ -1,7 +1,6 @@
 /**
  * @fileoverview Google Trends 內容區塊元件
  */
-import { cacheLife } from 'next/cache';
 import type { ComponentProps } from 'react';
 import SectionTitle from '@/components/atoms/section-title';
 import GoogleTrendCard from '@/components/molecules/google-trend-card';
@@ -16,9 +15,6 @@ import { cn } from '@/utils/shadcn';
  * @returns 渲染後的 Google 趨勢列表
  */
 const GoogleContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    'use cache';
-    cacheLife('halfHour');
-
     // 獲取 Google 資料
     const googleResponse = await GetGoogleTrends();
     const googleTrends = googleResponse.trends || [];

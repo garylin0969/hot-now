@@ -1,7 +1,6 @@
 /**
  * @fileoverview 巴哈姆特 (Gamer) 內容區塊元件
  */
-import { cacheLife } from 'next/cache';
 import type { ComponentProps } from 'react';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -22,9 +21,6 @@ const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:tex
  * @returns 渲染後的 Gamer 內容區塊
  */
 const GamerContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    'use cache';
-    cacheLife('hours');
-
     // 獲取所有分類資料
     const gamerResponse = await GetGamerTrends();
     const allTrends = gamerResponse.data?.all || [];
