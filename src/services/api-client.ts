@@ -18,7 +18,10 @@ export const fetchFromScraper = async <T>(endpoint: string): Promise<T> => {
     // 確保 endpoint 不以 / 開頭，避免雙重斜線
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
     const response = await fetch(`${SCRAPER_BASE_URL}/${cleanEndpoint}`, {
-        next: { revalidate: 1800 }, // 30 分鐘
+        next: {
+            revalidate: 3600, // 1 小時
+            tags: ['scraper-data'], // 統一快取標籤
+        },
     });
 
     if (!response.ok) {

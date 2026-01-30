@@ -36,7 +36,10 @@ export const GetYoutubeHotVideos = async (categoryId?: string): Promise<YouTubeA
     }
 
     const response = await fetch(`${YOUTUBE_API_BASE_URL}/videos?${params.toString()}`, {
-        next: { revalidate: 1800 }, // 30 分鐘
+        next: {
+            revalidate: 3600, // 1 小時
+            tags: ['youtube-data'], // 統一快取標籤
+        },
     });
 
     if (!response.ok) {
