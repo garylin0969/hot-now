@@ -61,7 +61,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 
 - **Server Components**: 98% 的內容使用伺服器端渲染，大幅減少 Client Bundle 大小。
 - **Static Optimization**: 採用 **Static ISR + Client Time** 策略。
-    - 頁面主體 (HTML) 在伺服器端靜態生成並快取 30 分鐘，將 Vercel Function Execution 降至最低。
+    - 頁面主體 (HTML) 在伺服器端靜態生成並快取 1 小時，將 Vercel Function Execution 降至最低。
     - 時間顯示 (`<RelativeTime />`) 抽離為 Client Component，在瀏覽器端動態計算，確保時間準確性。
 - **Streaming (Suspense)**: 實作串流加載與 Skeleton 骨架屏，讓 UI 立即響應，內容逐步顯示。
 - **Atomic Design**: 嚴謹的原子設計元件架構。
