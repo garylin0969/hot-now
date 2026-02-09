@@ -70,22 +70,20 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 
 - **YouTube API 移除 `googleapis` 套件**: 由於 `googleapis` 會觸發 Node.js 的 `DeprecationWarning: zlib.bytesRead is deprecated` (DEP0108) 警告，為保持開發環境日誌整潔並減少不必要的依賴，目前已移除該套件，並針對 YouTube 相關功能改用原生 `fetch` 手動實作 API 呼叫。
 
-- **棄用 `use cache` 與 `cacheLife`**: 雖然 Next.js 16 的 `use cache` 指令提供了細粒度的元件級快取，但在高流量或複雜參數場景下，它會為每個不同的渲染結果產生獨立的快取項目 (RSC Payload)。這在 Vercel 平台上極易導致 **ISR Writes** 用量暴增並超過免費額度限制。因此，本專案回歸標準的 **Fetch Revalidation** 機制，並搭配 **Cache Tags** 統一管理快取失效，確保每個 API 來源每 30 分鐘僅觸發一次寫入，徹底解決基礎設施成本問題。
-
-- **Cache Tags 統一管理**: 使用 `next: { tags: ['tag-name'] }` 為相同來源的 API 請求設定統一標籤（如 `youtube-data`、`scraper-data`），讓多個請求共享快取失效時機，進一步減少 ISR Writes。
+- **棄用 `use cache` 與 `cacheLife`**: 雖然 Next.js 16 的 `use cache` 指令提供了細粒度的元件級快取，但在高流量或複雜參數場景下，它會為每個不同的渲染結果產生獨立的快取項目 (RSC Payload)。這在 Vercel 平台上極易導致 **ISR Writes** 用量暴增並超過免費額度限制。因此，本專案回歸標準的 **Fetch Revalidation** 機制，確保每個 API 來源每 30 分鐘僅觸發一次寫入，徹底解決基礎設施成本問題。
 
 ### 資料來源與快取策略
 
-專案利用 Next.js 的標準 **ISR (Incremental Static Regeneration)** 機制，透過 `fetch` 的 `revalidate` 與 `tags` 選項進行快取管理，有效解決了 ISR Writes 過高的問題：
+專案利用 Next.js 的標準 **ISR (Incremental Static Regeneration)** 機制，透過 `fetch` 的 `revalidate` 選項進行快取管理，有效解決了 ISR Writes 過高的問題：
 
-| 平台         | 資料來源         | 快取機制 (ISR)      | 更新頻率 |
-| ------------ | ---------------- | ------------------- | -------- |
-| **YouTube**  | Google Cloud API | `revalidate` + tags | 30 分鐘  |
-| **PTT**      | 爬蟲專案         | `revalidate` + tags | 30 分鐘  |
-| **BBC**      | 爬蟲專案         | `revalidate` + tags | 30 分鐘  |
-| **Google**   | 爬蟲專案         | `revalidate` + tags | 30 分鐘  |
-| **巴哈姆特** | 官方 API         | `revalidate` + tags | 30 分鐘  |
-| **Komica**   | 爬蟲專案         | `revalidate` + tags | 30 分鐘  |
+| 平台         | 資料來源         | 快取機制 (ISR) | 更新頻率 |
+| ------------ | ---------------- | -------------- | -------- |
+| **YouTube**  | Google Cloud API | `revalidate`   | 30 分鐘  |
+| **PTT**      | 爬蟲專案         | `revalidate`   | 30 分鐘  |
+| **BBC**      | 爬蟲專案         | `revalidate`   | 30 分鐘  |
+| **Google**   | 爬蟲專案         | `revalidate`   | 30 分鐘  |
+| **巴哈姆特** | 官方 API         | `revalidate`   | 30 分鐘  |
+| **Komica**   | 爬蟲專案         | `revalidate`   | 30 分鐘  |
 
 ### 📡 API 配額資訊
 

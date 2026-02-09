@@ -17,7 +17,6 @@ export const GetGamerTrends = async (): Promise<GamerApiResponse> => {
     const response = await fetch(GAMER_API_URL, {
         next: {
             revalidate: 1800, // 30 分鐘
-            tags: ['gamer-data'], // 統一快取標籤
         },
     });
 

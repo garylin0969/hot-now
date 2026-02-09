@@ -20,7 +20,6 @@ export const fetchFromScraper = async <T>(endpoint: string): Promise<T> => {
     const response = await fetch(`${SCRAPER_BASE_URL}/${cleanEndpoint}`, {
         next: {
             revalidate: 1800, // 30 分鐘
-            tags: ['scraper-data'], // 統一快取標籤
         },
     });
 
