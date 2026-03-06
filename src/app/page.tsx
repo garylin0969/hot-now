@@ -2,6 +2,7 @@
  * @fileoverview 應用程式首頁 (Home Page)
  * 整合多個內容平台熱門話題的標籤頁介面。
  */
+import { cacheLife } from 'next/cache';
 import { Suspense } from 'react';
 import BbcContent from '@/components/organisms/bbc-content';
 import GamerContent from '@/components/organisms/gamer-content';
@@ -44,8 +45,12 @@ const TABS_CONFIG = [
  * 首頁元件
  * 負責渲染頂部快捷方式、主要內容標籤頁及其對應的平台內容區塊。
  * 內容由 Server Component 渲染，只有 Tabs UI 控制在 Client Component 中。
+ * 整個頁面快取 30 分鐘，避免各 API fetch 各自產生 ISR Writes。
  */
-const Home = () => {
+const Home = async () => {
+    'use cache';
+    cacheLife('halfHour');
+
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="sr-only">Hot Now - 熱門話題整合平台</h1>

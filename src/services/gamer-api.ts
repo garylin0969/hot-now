@@ -14,11 +14,7 @@ const GAMER_API_URL = 'https://api.gamer.com.tw/www/v1/forum_hot_post.php';
  * @throws {Error} 當請求失敗時拋出錯誤
  */
 export const GetGamerTrends = async (): Promise<GamerApiResponse> => {
-    const response = await fetch(GAMER_API_URL, {
-        next: {
-            revalidate: 1800, // 30 分鐘
-        },
-    });
+    const response = await fetch(GAMER_API_URL);
 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
