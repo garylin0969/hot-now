@@ -5,38 +5,28 @@ import type { ComponentProps } from 'react';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { GAMER_CATEGORIES, type GamerCategoryKey } from '@/constants/gamer';
-import { GetGamerTrends } from '@/services/gamer-api';
-import type { GamerTrend } from '@/types';
+import type { GamerTrend, HomePageData } from '@/types';
 import { cn } from '@/utils/shadcn';
 
 /** 頁籤樣式類名 */
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
+/** 巴哈姆特內容區塊元件屬性。 */
+interface GamerContentProps extends ComponentProps<'div'> {
+    /** 首頁聚合後的巴哈姆特分類資料。 */
+    trendsByCategory: HomePageData['gamer'];
+}
+
 /**
  * 巴哈姆特熱門文章內容區塊
- * 非同步 Server Component，負責獲取並顯示巴哈姆特各分類的熱門文章。
+ * 展示型元件，負責顯示巴哈姆特各分類的熱門文章。
  * 包含全站、遊戲、動漫、生活等分類標籤頁。
  *
  * @param props - 元件屬性
+ * @param props.trendsByCategory - 巴哈姆特各分類文章資料
  * @returns 渲染後的 Gamer 內容區塊
  */
-const GamerContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    // 獲取所有分類資料
-    const gamerResponse = await GetGamerTrends();
-    const allTrends = gamerResponse.data?.all || [];
-
-    const gameTrends = gamerResponse.data?.game || [];
-    const acTrends = gamerResponse.data?.ac || [];
-    const lifeTrends = gamerResponse.data?.life || [];
-
-    // 趨勢資料
-    const trendData = {
-        all: allTrends,
-        game: gameTrends,
-        ac: acTrends,
-        life: lifeTrends,
-    };
-
+const GamerContent = ({ className, trendsByCategory, ...props }: GamerContentProps) => {
     // 取得所有類別鍵值
     const categoryKeys = Object.keys(GAMER_CATEGORIES) as GamerCategoryKey[];
 
@@ -66,7 +56,7 @@ const GamerContent = async ({ className, ...props }: ComponentProps<'div'>) => {
                 {/* 動態渲染所有類別的內容 */}
                 {categoryKeys.map((key) => (
                     <TabsContent key={key} value={key}>
-                        {renderArticleList(trendData[key], key)}
+                        {renderArticleList(trendsByCategory[key], key)}
                     </TabsContent>
                 ))}
             </Tabs>

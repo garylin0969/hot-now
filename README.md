@@ -61,29 +61,31 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 
 - **Server Components**: 98% 的內容使用伺服器端渲染，大幅減少 Client Bundle 大小。
 - **Static Optimization**: 採用 **Static ISR + Client Time** 策略。
-    - 頁面主體 (HTML) 在伺服器端靜態生成並快取 30 分鐘，將 Vercel Function Execution 降至最低。
+    - 首頁資料由 `getHomePageData()` 統一聚合後再渲染 HTML，並快取 30 分鐘，讓首頁只有一個明確的伺服器端資料入口。
     - 時間顯示 (`<RelativeTime />`) 抽離為 Client Component，在瀏覽器端動態計算，確保時間準確性。
-- **Streaming (Suspense)**: 實作串流加載與 Skeleton 骨架屏，讓 UI 立即響應，內容逐步顯示。
+- **Homepage Aggregation**: 首頁各平台區塊改為展示型元件，由 page 層統一分派資料，便於觀察快取與 ISR 行為。
 - **Atomic Design**: 嚴謹的原子設計元件架構。
 
 ### 💡 技術決策說明
 
 - **YouTube API 移除 `googleapis` 套件**: 由於 `googleapis` 會觸發 Node.js 的 `DeprecationWarning: zlib.bytesRead is deprecated` (DEP0108) 警告，為保持開發環境日誌整潔並減少不必要的依賴，目前已移除該套件，並針對 YouTube 相關功能改用原生 `fetch` 手動實作 API 呼叫。
 
-- **採用頁面級 `use cache` 快取**: 使用 Next.js 16 的 `use cache` 指令於頁面層級，搭配 `cacheLife` 設定 30 分鐘快取週期。此策略將所有 API 請求的結果合併為單一快取條目，相較於先前每個 `fetch` 各自設定 `revalidate` 產生獨立 ISR Writes 的模式，大幅降低 Vercel ISR Writes 用量。
+- **採用首頁聚合快取邊界**: 使用 `src/services/home-data.ts` 中的 `getHomePageData()` 作為首頁唯一資料入口，並在該函式內套用 `use cache` 與 `cacheLife('halfHour')`。這讓首頁的快取策略集中在單一位置，後續更容易調整 revalidate 週期、加入 tags，或改成 on-demand revalidation。
+
+- **Sitemap 採動態輸出**: `src/app/sitemap.ts` 目前使用 `new Date()` 產生 `lastModified`，因此 `sitemap.xml` 會以動態路由方式輸出，而不是靜態預渲染內容。
 
 ### 資料來源與快取策略
 
-專案使用 Next.js 16 的 `use cache` 指令於**頁面層級**進行快取，所有 API 資料合併為單一快取條目，每 30 分鐘重新驗證一次：
+專案使用 Next.js 16 的 `use cache` 指令於**首頁聚合函式層級**進行快取，首頁資料由 `getHomePageData()` 並行抓取後集中回傳，每 30 分鐘重新驗證一次：
 
-| 平台         | 資料來源         | 快取機制           | 更新頻率 |
-| ------------ | ---------------- | ------------------ | -------- |
-| **YouTube**  | Google Cloud API | 頁面級 `use cache` | 30 分鐘  |
-| **PTT**      | 爬蟲專案         | 頁面級 `use cache` | 30 分鐘  |
-| **BBC**      | 爬蟲專案         | 頁面級 `use cache` | 30 分鐘  |
-| **Google**   | 爬蟲專案         | 頁面級 `use cache` | 30 分鐘  |
-| **巴哈姆特** | 官方 API         | 頁面級 `use cache` | 30 分鐘  |
-| **Komica**   | 爬蟲專案         | 頁面級 `use cache` | 30 分鐘  |
+| 平台         | 資料來源         | 快取機制                     | 更新頻率 |
+| ------------ | ---------------- | ---------------------------- | -------- |
+| **YouTube**  | Google Cloud API | 首頁聚合 `getHomePageData()` | 30 分鐘  |
+| **PTT**      | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
+| **BBC**      | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
+| **Google**   | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
+| **巴哈姆特** | 官方 API         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
+| **Komica**   | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
 
 ### 📡 API 配額資訊
 
@@ -165,7 +167,7 @@ hot-now/
 
 為了解決動態內容 (Dynamic Rendering) 造成的 Serverless Function 成本問題，本專案採用了獨特的混合渲染策略：
 
-1.  **純靜態 HTML**: 所有的文章列表、卡片結構都在伺服器端生成，並透過 ISR 快取 30 分鐘。這確保了 TTFB (Time to First Byte) 極低，且不消耗伺服器運算資源。
+1.  **純靜態 HTML**: 所有的文章列表、卡片結構都在伺服器端生成，首頁資料先由 `getHomePageData()` 聚合，再透過 ISR 快取 30 分鐘。這確保了 TTFB (Time to First Byte) 極低，且首頁資料流更容易追蹤。
 2.  **客戶端時間**: 使用 `<RelativeTime />` 元件，在瀏覽器端動態計算「5分鐘前」、「1小時前」等相對時間。這解決了靜態快取導致時間顯示不準確的問題，同時避開了 Server Component 使用 `new Date()` 造成的建置錯誤。
 
 ## 🚀 部署資訊
