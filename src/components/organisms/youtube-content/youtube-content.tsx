@@ -5,41 +5,27 @@ import type { ComponentProps } from 'react';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { YOUTUBE_CATEGORIES, type YouTubeCategoryKey } from '@/constants/youtube';
-import { GetYoutubeHotVideos, GetYoutubeHotVideosByCategory } from '@/services/youtube-api';
-import type { YouTubeVideo } from '@/types/youtube';
+import type { HomePageData, YouTubeVideo } from '@/types';
 import { cn } from '@/utils/shadcn';
 
 /** 頁籤樣式類名 */
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
+/** YouTube 內容區塊元件屬性。 */
+interface YouTubeContentProps extends ComponentProps<'div'> {
+    /** 首頁聚合後的 YouTube 各分類影片資料。 */
+    videos: HomePageData['youtube'];
+}
+
 /**
  * YouTube 發燒影片內容區塊
- * 非同步 Server Component，負責獲取並顯示 YouTube 各類別的熱門影片。
+ * 展示型元件，負責顯示 YouTube 各類別的熱門影片。
  *
  * @param props - 元件屬性
+ * @param props.videos - 各分類 YouTube 影片資料
  * @returns 渲染後的 YouTube 內容區塊
  */
-const YouTubeContent = async ({ className, ...props }: ComponentProps<'div'>) => {
-    // 獲取不同類別的影片
-    const [latestResponse, gamingResponse, musicResponse, filmResponse] = await Promise.all([
-        GetYoutubeHotVideos(), // 最新
-        GetYoutubeHotVideosByCategory('gaming'), // 遊戲
-        GetYoutubeHotVideosByCategory('music'), // 音樂
-        GetYoutubeHotVideosByCategory('film'), // 電影
-    ]);
-    const latestVideos = latestResponse?.items || [];
-    const gamingVideos = gamingResponse?.items || [];
-    const musicVideos = musicResponse?.items || [];
-    const filmVideos = filmResponse?.items || [];
-
-    // 影片資料
-    const videoData = {
-        latest: latestVideos,
-        gaming: gamingVideos,
-        music: musicVideos,
-        film: filmVideos,
-    };
-
+const YouTubeContent = ({ className, videos, ...props }: YouTubeContentProps) => {
     // 取得所有類別鍵值
     const categoryKeys = Object.keys(YOUTUBE_CATEGORIES) as YouTubeCategoryKey[];
 
@@ -69,7 +55,7 @@ const YouTubeContent = async ({ className, ...props }: ComponentProps<'div'>) =>
                 {/* 動態渲染所有類別的內容 */}
                 {categoryKeys.map((key) => (
                     <TabsContent key={key} value={key}>
-                        {renderVideoGrid(videoData[key], key)}
+                        {renderVideoGrid(videos[key], key)}
                     </TabsContent>
                 ))}
             </Tabs>
