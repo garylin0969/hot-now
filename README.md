@@ -1,7 +1,6 @@
 # 🔥 Hot Now | 熱門話題一把抓
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-部署-000000?style=flat-square&logo=vercel)](https://vercel.com/)
@@ -43,49 +42,27 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 
 ## 🏗️ 技術架構
 
-本專案採用最新的前端技術棧，專注於極致的載入效能與開發體驗：
+### 前端技術
 
-### 核心技術
-
-- **框架**: Next.js 16 (App Router)
-- **核心庫**: React 19 (啟用 React Compiler)
+- **框架**: Next.js 15 (App Router)
 - **語言**: TypeScript
 - **樣式**: Tailwind CSS 4
 - **UI 元件**: Shadcn UI
-- **狀態管理**: Zustand (用於客戶端狀態如 Shortcuts)
-- **資料獲取**: Server Components + Native Fetch + `use cache` (頁面級快取)
+- **狀態管理**: Zustand
+- **資料請求**: TanStack Query (React Query)
 - **主題**: next-themes
-- **圖示**: Lucide React / React Icons
-
-### 架構設計
-
-- **Server Components**: 98% 的內容使用伺服器端渲染，大幅減少 Client Bundle 大小。
-- **Static Optimization**: 採用 **Static ISR + Client Time** 策略。
-    - 首頁資料由 `getHomePageData()` 統一聚合後再渲染 HTML，並快取 30 分鐘，讓首頁只有一個明確的伺服器端資料入口。
-    - 時間顯示 (`<RelativeTime />`) 抽離為 Client Component，在瀏覽器端動態計算，確保時間準確性。
-- **Homepage Aggregation**: 首頁各平台區塊改為展示型元件，由 page 層統一分派資料，便於觀察快取與 ISR 行為。
-- **Atomic Design**: 嚴謹的原子設計元件架構。
-
-### 💡 技術決策說明
-
-- **YouTube API 移除 `googleapis` 套件**: 由於 `googleapis` 會觸發 Node.js 的 `DeprecationWarning: zlib.bytesRead is deprecated` (DEP0108) 警告，為保持開發環境日誌整潔並減少不必要的依賴，目前已移除該套件，並針對 YouTube 相關功能改用原生 `fetch` 手動實作 API 呼叫。
-
-- **採用首頁聚合快取邊界**: 使用 `src/services/home-data.ts` 中的 `getHomePageData()` 作為首頁唯一資料入口，並在該函式內套用 `use cache` 與 `cacheLife('halfHour')`。這讓首頁的快取策略集中在單一位置，後續更容易調整 revalidate 週期、加入 tags，或改成 on-demand revalidation。
-
-- **Sitemap 採動態輸出**: `src/app/sitemap.ts` 目前使用 `new Date()` 產生 `lastModified`，因此 `sitemap.xml` 會以動態路由方式輸出，而不是靜態預渲染內容。
+- **圖示**: Lucide React
 
 ### 資料來源與快取策略
 
-專案使用 Next.js 16 的 `use cache` 指令於**首頁聚合函式層級**進行快取，首頁資料由 `getHomePageData()` 並行抓取後集中回傳，每 30 分鐘重新驗證一次：
-
-| 平台         | 資料來源         | 快取機制                     | 更新頻率 |
-| ------------ | ---------------- | ---------------------------- | -------- |
-| **YouTube**  | Google Cloud API | 首頁聚合 `getHomePageData()` | 30 分鐘  |
-| **PTT**      | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
-| **BBC**      | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
-| **Google**   | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
-| **巴哈姆特** | 官方 API         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
-| **Komica**   | 爬蟲專案         | 首頁聚合 `getHomePageData()` | 30 分鐘  |
+| 平台         | 資料來源         | 更新方式 | 快取時間 | 爬蟲頻率 |
+| ------------ | ---------------- | -------- | -------- | -------- |
+| **YouTube**  | Google Cloud API | ISR      | 30分鐘   | -        |
+| **PTT**      | 爬蟲專案         | ISR      | 30分鐘   | 每10分鐘 |
+| **BBC**      | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
+| **Google**   | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
+| **巴哈姆特** | 官方 API         | ISR      | 60分鐘   | -        |
+| **Komica**   | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
 
 ### 📡 API 配額資訊
 
@@ -98,13 +75,13 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 #### 其他 API
 
 - **巴哈姆特**: 使用官方 Get API
-- **PTT/BBC/Google/Komica**: 透過 [Trend Scraper](https://github.com/garylin0969/trend-scraper) 爬蟲專案提供 JSON 靜態檔。
+- **PTT/BBC/Google/Komica**: 透過爬蟲專案提供
 
 ## 🚀 快速開始
 
 ### 環境需求
 
-- Node.js 20+ (配合 Next.js 16)
+- Node.js 18+
 - pnpm (推薦) 或 npm
 
 ### 安裝步驟
@@ -118,7 +95,7 @@ cd hot-now
 pnpm install
 
 # 設定環境變數
-cp .env.local
+cp .env.example .env.local
 # 編輯 .env.local 填入必要的 API 金鑰
 
 # 啟動開發伺服器
@@ -140,35 +117,112 @@ NEXT_PUBLIC_GITHUB_REPO_URL=https://garylin0969.github.io/trend-scraper/data
 ```
 hot-now/
 ├── public/                    # 靜態資源
+│   ├── favicon/              # 網站圖標
+│   └── image-not-found.png   # 預設圖片
 ├── src/
-│   ├── app/                   # Next.js App Router (Server Components)
-│   │   ├── layout.tsx         # 根布局
-│   │   ├── page.tsx           # 首頁 (整合 Suspense 與 Tabs)
-│   │   └── ...
-│   ├── components/            # React 元件 (Atomic Design)
-│   │   ├── atoms/             # 原子 (BaseImage, RelativeTime...)
-│   │   ├── molecules/         # 分子 (ArticleCard, Shortcuts...)
-│   │   ├── organisms/         # 有機體 (GamerContent, HomeTabs...)
-│   │   └── ui/                # Shadcn UI 基礎元件
-│   ├── constants/             # 常數定義
-│   ├── hooks/                 # 自定義 Hooks (useIsMounted...)
-│   ├── providers/             # Context Providers
-│   ├── services/              # API 服務層 (Fetch & ISR 邏輯)
-│   ├── store/                 # Zustand 狀態管理
-│   ├── types/                 # TypeScript 型別定義
-│   └── utils/                 # 工具函式
-├── next.config.ts             # Next.js 設定
-└── ...
+│   ├── services/            # API 相關
+│   │   ├── bbc-api.ts       # BBC 新聞 API
+│   │   ├── gamer-api.ts     # 巴哈姆特 API
+│   │   ├── google-api.ts    # Google 趨勢 API
+│   │   ├── komica-api.ts    # Komica API
+│   │   ├── ptt-api.ts       # PTT API
+│   │   └── youtube-api.ts   # YouTube API
+│   ├── app/                  # Next.js App Router
+│   │   ├── layout.tsx       # 根布局
+│   │   ├── page.tsx         # 首頁
+│   │   ├── privacy/         # 隱私政策頁面
+│   │   └── globals.css      # 全域樣式
+│   ├── components/           # React 元件
+│   │   ├── atoms/           # 原子元件
+│   │   ├── molecules/       # 分子元件
+│   │   ├── organisms/       # 有機體元件
+│   │   └── ui/              # UI 元件庫
+│   ├── hooks/               # 自定義 Hooks
+│   ├── providers/           # Context Providers
+│   ├── store/               # Zustand 狀態管理
+│   ├── types/               # TypeScript 型別定義
+│   └── utils/               # 工具函式
+├── components.json          # shadcn/ui 設定
+├── next.config.ts          # Next.js 設定
+├── package.json            # 專案依賴
+├── tailwind.config.ts      # Tailwind 設定
+└── tsconfig.json           # TypeScript 設定
 ```
 
-## 🌟 核心優化
+## 🎨 設計系統
 
-### 靜態生成與動態時間 (Static Generation + Dynamic Time)
+### 元件架構
 
-為了解決動態內容 (Dynamic Rendering) 造成的 Serverless Function 成本問題，本專案採用了獨特的混合渲染策略：
+採用 Atomic Design 設計模式：
 
-1.  **純靜態 HTML**: 所有的文章列表、卡片結構都在伺服器端生成，首頁資料先由 `getHomePageData()` 聚合，再透過 ISR 快取 30 分鐘。這確保了 TTFB (Time to First Byte) 極低，且首頁資料流更容易追蹤。
-2.  **客戶端時間**: 使用 `<RelativeTime />` 元件，在瀏覽器端動態計算「5分鐘前」、「1小時前」等相對時間。這解決了靜態快取導致時間顯示不準確的問題，同時避開了 Server Component 使用 `new Date()` 造成的建置錯誤。
+- **Atoms**: 基礎元件 (按鈕、輸入框等)
+- **Molecules**: 組合元件 (卡片、表單等)
+- **Organisms**: 複雜元件 (頁首、內容區塊等)
+
+### 主題系統
+
+- 支援明亮/深色主題
+- 使用 CSS Variables 實現主題切換
+- 遵循系統偏好設定
+
+## 📱 功能說明
+
+### 分頁導覽
+
+- **YouTube**: 多類別影片瀏覽
+- **PTT**: 24小時熱門文章
+- **BBC**: 中文新聞最新資訊
+- **Google**: 4小時內熱搜關鍵字
+- **巴哈姆特**: 多板塊熱門話題
+- **Komica**: K島熱門討論
+
+### 自訂超連結
+
+- 新增/編輯/刪除個人常用網站
+- 自動獲取網站 favicon
+- 支援拖拽排序
+- 本地儲存設定
+
+## 🔧 開發指令
+
+```bash
+# 開發環境
+pnpm dev
+
+# 建構專案
+pnpm build
+
+# 啟動正式環境
+pnpm start
+
+# 程式碼檢查
+pnpm lint
+
+# 格式化程式碼
+pnpm format
+
+# 檢查格式
+pnpm format:check
+```
+
+## 🌟 特色說明
+
+### ISR (Incremental Static Regeneration)
+
+為了避免 Vercel 流量被消耗過快，所有外部 API 都採用 ISR 策略：
+
+- 在指定時間內提供快取內容
+- 背景更新資料，確保內容新鮮度
+- 大幅降低 API 請求頻率
+
+### 爬蟲資料整合
+
+部分平台（PTT、BBC、Google、Komica）透過獨立的爬蟲專案提供資料：
+
+- 避免直接爬取造成的不穩定
+- 統一的資料格式
+- 獨立的更新頻率控制
+- 解決 API 限制問題
 
 ## 🚀 部署資訊
 
@@ -187,16 +241,31 @@ hot-now/
 - **資料保護**: 遵循隱私政策
 - **匿名化**: 不收集個人識別資訊
 
+### 錯誤監控
+
+- 內建錯誤邊界
+- 優雅的錯誤處理
+- 使用者友善的錯誤訊息
+
 ## 🔒 隱私政策
 
 Hot Now 重視使用者隱私：
 
 - 不收集個人識別資訊
 - 僅使用 Google Analytics 進行匿名統計
-- 所有自訂設定 (如快捷方式) 僅儲存在本地瀏覽器
+- 所有自訂設定儲存在本地
 - 詳細資訊請參考[隱私政策頁面](https://hotnow.garylin.dev/privacy)
 
 ## 🛠️ 開發工具
 
-- **Turbopack**: 使用 Next.js 內建的 Rust 構建工具，提供極速的開發體驗。
-- **ESLint / Prettier**: 確保程式碼品質與風格一致。
+### 程式碼品質
+
+- **ESLint**: 程式碼檢查
+- **Prettier**: 程式碼格式化
+- **TypeScript**: 型別安全
+
+### 開發體驗
+
+- **Turbopack**: 快速編譯
+- **React DevTools**: 除錯工具
+- **React Query DevTools**: 查詢狀態監控

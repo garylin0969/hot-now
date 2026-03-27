@@ -1,15 +1,25 @@
-/**
- * @fileoverview Komica API 服務
- * 通過爬蟲源獲取 Komica (K島) 熱門文章。
- */
-import { fetchFromScraper } from '@/services/api-client';
 import type { KomicaApiResponse } from '@/types';
 
-/**
- * 獲取 Komica 熱門文章 (爬蟲資料)
- *
- * @returns 包含文章資料的 Promise 物件
- */
+// KOMICA API URL
+const KOMICA_BASE_URL = String(process.env.NEXT_PUBLIC_GITHUB_REPO_URL);
+
+// K島熱門文章
 export const GetKomicaTrends = async (): Promise<KomicaApiResponse> => {
-    return fetchFromScraper<KomicaApiResponse>('komica-trends.json');
+    try {
+        const response = await fetch(`${KOMICA_BASE_URL}/komica-trends.json`, {
+            next: {
+                revalidate: 60 * 30, // 30 minutes
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching Komica trends:', error);
+        throw new Error(`Failed to fetch Komica trends: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
 };

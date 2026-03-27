@@ -1,50 +1,44 @@
-import BaseImage from '@/components/atoms/base-image';
+import NextImage from '@/components/atoms/next-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { GamerTrend } from '@/types';
-import { formatCompactNumber } from '@/utils/number';
 import { cn } from '@/utils/shadcn';
 
-/**
- * 構造巴哈姆特文章連結
- *
- * @param bsn - 看板編號
- * @param snA - 文章編號
- * @returns 完整的文章 URL
- */
+// 通用數字格式化函數
+const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+        return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+        return `${(num / 1000).toFixed(1)}K`;
+    } else {
+        return num.toString();
+    }
+};
+
+// 構造巴哈姆特文章連結
 const buildGamerLink = (bsn: number, snA: number): string => {
     return `https://forum.gamer.com.tw/C.php?bsn=${bsn}&snA=${snA}`;
 };
 
-/**
- * Gamer 文章卡片元件的屬性介面
- */
 interface GamerArticleCardProps {
-    /** Gamer 文章趨勢資料 */
     article: GamerTrend;
 }
 
-/**
- * 顯示巴哈姆特熱門文章的卡片元件
- *
- * @param props - 元件屬性
- * @param props.article - 文章資料
- * @returns 渲染後的文章卡片
- */
 const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
-    // 樣式類名
+    // 提取重複的樣式類名
     const cardHeightClasses = 'h-[120px] sm:h-[140px]';
     const textMutedClasses = 'text-muted-foreground text-xs';
     const badgeTextClasses = 'text-xs';
 
+    // 構造文章連結
     const articleLink = buildGamerLink(article.bsn, article.snA);
 
     return (
         <a href={articleLink} target="_blank" rel="noopener noreferrer" className="group">
             <Card className="cursor-pointer overflow-hidden p-0 transition-shadow hover:shadow-lg">
                 <div className={cn('flex flex-row', cardHeightClasses)}>
-                    <div className="relative hidden w-24 shrink-0 overflow-hidden md:block md:w-40 lg:w-48">
-                        <BaseImage
+                    <div className="relative hidden w-24 flex-shrink-0 overflow-hidden md:block md:w-40 lg:w-48">
+                        <NextImage
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             src={article.thumbnail}
                             alt={`${article.title} image`}
@@ -82,9 +76,9 @@ const GamerArticleCard = ({ article }: GamerArticleCardProps) => {
                             <div className="flex items-center gap-1">
                                 <span>💬</span>
                                 <span className="hidden sm:inline">
-                                    {formatCompactNumber(article.interaction.others)} 留言
+                                    {formatNumber(article.interaction.others)} 留言
                                 </span>
-                                <span className="sm:hidden">{formatCompactNumber(article.interaction.others)}</span>
+                                <span className="sm:hidden">{formatNumber(article.interaction.others)}</span>
                             </div>
                         </div>
                     </CardContent>

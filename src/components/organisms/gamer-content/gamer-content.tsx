@@ -1,34 +1,35 @@
-/**
- * @fileoverview 巴哈姆特 (Gamer) 內容區塊元件
- */
-import type { ComponentProps } from 'react';
 import GamerArticleCard from '@/components/molecules/gamer-article-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { GAMER_CATEGORIES, type GamerCategoryKey } from '@/constants/gamer';
-import type { GamerTrend, HomePageData } from '@/types';
+import type { GamerTrend } from '@/types';
 import { cn } from '@/utils/shadcn';
 
-/** 頁籤樣式類名 */
+// 類別頁籤資料
+const CATEGORY_TABS = [
+    { value: 'all', label: '全部' },
+    { value: 'game', label: '遊戲' },
+    { value: 'ac', label: '動漫' },
+    { value: 'life', label: '宅生活' },
+] as const;
+
+// 頁籤樣式
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
-/** 巴哈姆特內容區塊元件屬性。 */
-interface GamerContentProps extends ComponentProps<'div'> {
-    /** 首頁聚合後的巴哈姆特分類資料。 */
-    trendsByCategory: HomePageData['gamer'];
+interface GamerContentProps {
+    className?: string;
+    allTrends: GamerTrend[];
+    gameTrends: GamerTrend[];
+    acTrends: GamerTrend[];
+    lifeTrends: GamerTrend[];
 }
 
-/**
- * 巴哈姆特熱門文章內容區塊
- * 展示型元件，負責顯示巴哈姆特各分類的熱門文章。
- * 包含全站、遊戲、動漫、生活等分類標籤頁。
- *
- * @param props - 元件屬性
- * @param props.trendsByCategory - 巴哈姆特各分類文章資料
- * @returns 渲染後的 Gamer 內容區塊
- */
-const GamerContent = ({ className, trendsByCategory, ...props }: GamerContentProps) => {
-    // 取得所有類別鍵值
-    const categoryKeys = Object.keys(GAMER_CATEGORIES) as GamerCategoryKey[];
+const GamerContent = ({ className, allTrends, gameTrends, acTrends, lifeTrends }: GamerContentProps) => {
+    // 趨勢資料
+    const trendData = {
+        all: allTrends,
+        game: gameTrends,
+        ac: acTrends,
+        life: lifeTrends,
+    };
 
     // 渲染文章列表
     const renderArticleList = (trends: GamerTrend[], keyPrefix: string) => (
@@ -40,23 +41,23 @@ const GamerContent = ({ className, trendsByCategory, ...props }: GamerContentPro
     );
 
     return (
-        <div className={cn('w-full', className)} {...props}>
-            <Tabs defaultValue={categoryKeys[0]}>
+        <div className={cn('w-full', className)}>
+            <Tabs defaultValue={CATEGORY_TABS[0]?.value}>
                 {/* 類別選擇器 */}
                 <div className="mb-6">
                     <TabsList className="mx-auto grid w-full max-w-2xl grid-cols-4">
-                        {categoryKeys.map((key) => (
-                            <TabsTrigger key={key} value={key} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
-                                {GAMER_CATEGORIES[key].label}
+                        {CATEGORY_TABS?.map(({ value, label }) => (
+                            <TabsTrigger key={value} value={value} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
+                                {label}
                             </TabsTrigger>
                         ))}
                     </TabsList>
                 </div>
 
                 {/* 動態渲染所有類別的內容 */}
-                {categoryKeys.map((key) => (
-                    <TabsContent key={key} value={key}>
-                        {renderArticleList(trendsByCategory[key], key)}
+                {CATEGORY_TABS?.map(({ value }) => (
+                    <TabsContent key={value} value={value}>
+                        {renderArticleList(trendData[value], value)}
                     </TabsContent>
                 ))}
             </Tabs>

@@ -1,24 +1,25 @@
-/**
- * @fileoverview 巴哈姆特 API 服務
- * 直接獲取巴哈姆特哈啦區熱門文章。
- */
 import type { GamerApiResponse } from '@/types';
 
-/** 巴哈姆特熱門文章 API URL */
+// Gamer API URL
 const GAMER_API_URL = 'https://api.gamer.com.tw/www/v1/forum_hot_post.php';
 
-/**
- * 獲獲取巴哈姆特熱門文章
- *
- * @returns 包含巴哈姆特 API 回應的 Promise 物件
- * @throws {Error} 當請求失敗時拋出錯誤
- */
+// Gamer 熱門文章
 export const GetGamerTrends = async (): Promise<GamerApiResponse> => {
-    const response = await fetch(GAMER_API_URL);
+    try {
+        const response = await fetch(GAMER_API_URL, {
+            next: {
+                revalidate: 60 * 60, // 60 minutes
+            },
+        });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching Gamer trends:', error);
+        throw new Error(`Failed to fetch Gamer trends: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    return response.json();
 };

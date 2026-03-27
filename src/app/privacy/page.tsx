@@ -1,16 +1,7 @@
-/**
- * @fileoverview 隱私權政策頁面
- * 提供中英雙語的隱私權聲明。
- */
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-/**
- * 隱私權政策頁面元件
- * 使用 Tabs 切換中文與英文版本。
- *
- * @returns 渲染後的隱私權頁面
- */
 const Privacy = () => {
     return (
         <div className="container mx-auto max-w-4xl px-4 py-8">
@@ -38,7 +29,7 @@ const Privacy = () => {
                         <CardHeader>
                             <h2 className="text-center text-2xl leading-none font-semibold">Hot Now 隱私權政策</h2>
                             <CardDescription className="text-center text-base">
-                                最後更新日期：2026/01/19
+                                最後更新日期：{new Date().toLocaleDateString('zh-TW')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
@@ -72,7 +63,7 @@ const Privacy = () => {
                         <CardHeader>
                             <h2 className="text-center text-2xl leading-none font-semibold">Hot Now Privacy Policy</h2>
                             <CardDescription className="text-center text-base">
-                                Last updated: 01/19/2026
+                                Last updated: {new Date().toLocaleDateString('en-US')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">

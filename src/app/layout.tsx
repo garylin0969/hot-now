@@ -1,56 +1,32 @@
-/**
- * @fileoverview 應用程式根佈局 (Root Layout)
- * 定義全域的 HTML 結構、字型、Metadata、Providers 以及共用元件 (Header, Footer)。
- */
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
-import IframePostMessage from '@/components/atoms/iframe-post-message';
+import IframePotMessage from '@/components/atoms/iframe-pot-message';
 import Footer from '@/components/organisms/footer';
 import Header from '@/components/organisms/header';
 import { Toaster } from '@/components/ui/sonner';
-import { QueryProvider, ThemeProvider } from '@/providers';
+import { ThemeProvider } from '@/providers';
 import { cn } from '@/utils/shadcn';
 import './globals.css';
 
-/** Geist Sans 字型配置 */
 const geistSans = Geist({
     variable: '--font-geist-sans',
     subsets: ['latin'],
 });
 
-/** Geist Mono 字型配置 */
 const geistMono = Geist_Mono({
     variable: '--font-geist-mono',
     subsets: ['latin'],
 });
 
-/**
- * 全域 Metadata 配置
- * 包含 SEO 標題、描述、關鍵字、Open Graph 與 Twitter Card 設定。
- */
 export const metadata: Metadata = {
     title: {
         default: 'Hot Now｜熱門話題一把抓',
         template: '%s | Hot Now',
     },
-    description:
-        '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
-    keywords: [
-        'PTT',
-        'Reddit',
-        'YouTube',
-        'Bahamut',
-        'Komica',
-        'Google Trends',
-        'BBC',
-        '熱門',
-        '趨勢',
-        '整合',
-        '台灣',
-        '討論區',
-    ],
+    description: '用 Hot Now 隨時掌握熱門話題，包含 PTT、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+    keywords: ['PTT', 'YouTube', 'Bahamut', 'Komica', 'Google Trends', 'BBC', '熱門', '趨勢', '整合', '台灣', '討論區'],
     authors: [{ name: 'Hot Now' }],
     creator: 'Hot Now',
     publisher: 'Hot Now',
@@ -66,7 +42,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Hot Now｜熱門話題一把抓',
         description:
-            '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+            '用 Hot Now 隨時掌握熱門話題，包含 PTT、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
         url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
         locale: 'zh_TW',
@@ -84,7 +60,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Hot Now｜熱門話題一把抓',
         description:
-            '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+            '用 Hot Now 隨時掌握熱門話題，包含 PTT、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
         images: ['/favicons/android-chrome-512x512.png'],
         creator: '@hotnow',
         site: '@hotnow',
@@ -134,7 +110,6 @@ export const metadata: Metadata = {
     },
 };
 
-/** 全域 Viewport 配置 */
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
@@ -147,16 +122,8 @@ export const viewport: Viewport = {
     colorScheme: 'light dark',
 };
 
-/** Google Analytics ID */
 const GA_ID = 'G-F0MRGZ2J39';
 
-/**
- * 根佈局元件
- *
- * @param props - 元件屬性
- * @param props.children - 頁面內容
- * @returns 渲染後的 HTML 結構
- */
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -165,16 +132,14 @@ export default function RootLayout({
     return (
         <html lang="zh-TW" suppressHydrationWarning>
             <body className={cn('flex min-h-screen flex-col antialiased', geistSans.variable, geistMono.variable)}>
-                <QueryProvider>
-                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                        <Header />
-                        <main className="flex-1">{children}</main>
-                        <Footer />
-                        <Toaster />
-                    </ThemeProvider>
-                </QueryProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <Header />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                    <Toaster />
+                </ThemeProvider>
                 <GoogleAnalytics gaId={GA_ID} />
-                <IframePostMessage />
+                <IframePotMessage />
             </body>
         </html>
     );

@@ -1,36 +1,38 @@
-/**
- * @fileoverview YouTube 內容區塊元件
- */
-import type { ComponentProps } from 'react';
+import type { youtube_v3 } from 'googleapis';
 import YoutubeVideoCard from '@/components/molecules/youtube-video-card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { YOUTUBE_CATEGORIES, type YouTubeCategoryKey } from '@/constants/youtube';
-import type { HomePageData, YouTubeVideo } from '@/types';
 import { cn } from '@/utils/shadcn';
 
-/** 頁籤樣式類名 */
+// 頁籤資料
+const CATEGORY_TABS = [
+    { value: 'latest', label: '最新' },
+    { value: 'gaming', label: '遊戲' },
+    { value: 'music', label: '音樂' },
+    { value: 'film', label: '電影' },
+] as const;
+
+// 頁籤樣式
 const ACTIVE_TAB_CLASS = 'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground';
 
-/** YouTube 內容區塊元件屬性。 */
-interface YouTubeContentProps extends ComponentProps<'div'> {
-    /** 首頁聚合後的 YouTube 各分類影片資料。 */
-    videos: HomePageData['youtube'];
+interface YouTubeContentProps {
+    className?: string;
+    latestVideos: youtube_v3.Schema$Video[];
+    gamingVideos: youtube_v3.Schema$Video[];
+    musicVideos: youtube_v3.Schema$Video[];
+    filmVideos: youtube_v3.Schema$Video[];
 }
 
-/**
- * YouTube 發燒影片內容區塊
- * 展示型元件，負責顯示 YouTube 各類別的熱門影片。
- *
- * @param props - 元件屬性
- * @param props.videos - 各分類 YouTube 影片資料
- * @returns 渲染後的 YouTube 內容區塊
- */
-const YouTubeContent = ({ className, videos, ...props }: YouTubeContentProps) => {
-    // 取得所有類別鍵值
-    const categoryKeys = Object.keys(YOUTUBE_CATEGORIES) as YouTubeCategoryKey[];
+const YouTubeContent = ({ className, latestVideos, gamingVideos, musicVideos, filmVideos }: YouTubeContentProps) => {
+    // 影片資料
+    const videoData = {
+        latest: latestVideos,
+        gaming: gamingVideos,
+        music: musicVideos,
+        film: filmVideos,
+    };
 
     // 渲染影片
-    const renderVideoGrid = (videos: YouTubeVideo[], keyPrefix: string) => (
+    const renderVideoGrid = (videos: youtube_v3.Schema$Video[], keyPrefix: string) => (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {videos?.map((video) => (
                 <YoutubeVideoCard key={`${keyPrefix}-${video.id}`} video={video} />
@@ -39,23 +41,23 @@ const YouTubeContent = ({ className, videos, ...props }: YouTubeContentProps) =>
     );
 
     return (
-        <div className={cn('w-full', className)} {...props}>
-            <Tabs defaultValue={categoryKeys[0]}>
+        <div className={cn('w-full', className)}>
+            <Tabs defaultValue={CATEGORY_TABS[0]?.value}>
                 {/* 類別選擇器 */}
                 <div className="mb-6">
                     <TabsList className="mx-auto grid w-full max-w-2xl grid-cols-4">
-                        {categoryKeys.map((key) => (
-                            <TabsTrigger key={key} value={key} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
-                                {YOUTUBE_CATEGORIES[key].label}
+                        {CATEGORY_TABS?.map(({ value, label }) => (
+                            <TabsTrigger key={value} value={value} className={cn('text-sm', ACTIVE_TAB_CLASS)}>
+                                {label}
                             </TabsTrigger>
                         ))}
                     </TabsList>
                 </div>
 
                 {/* 動態渲染所有類別的內容 */}
-                {categoryKeys.map((key) => (
-                    <TabsContent key={key} value={key}>
-                        {renderVideoGrid(videos[key], key)}
+                {CATEGORY_TABS?.map(({ value }) => (
+                    <TabsContent key={value} value={value}>
+                        {renderVideoGrid(videoData[value], value)}
                     </TabsContent>
                 ))}
             </Tabs>
