@@ -6,7 +6,7 @@ import IframePotMessage from '@/components/atoms/iframe-pot-message';
 import Footer from '@/components/organisms/footer';
 import Header from '@/components/organisms/header';
 import { Toaster } from '@/components/ui/sonner';
-import { QueryProvider, ThemeProvider } from '@/providers';
+import { ThemeProvider } from '@/providers';
 import { cn } from '@/utils/shadcn';
 import './globals.css';
 
@@ -25,22 +25,8 @@ export const metadata: Metadata = {
         default: 'Hot Now｜熱門話題一把抓',
         template: '%s | Hot Now',
     },
-    description:
-        '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
-    keywords: [
-        'PTT',
-        'Reddit',
-        'YouTube',
-        'Bahamut',
-        'Komica',
-        'Google Trends',
-        'BBC',
-        '熱門',
-        '趨勢',
-        '整合',
-        '台灣',
-        '討論區',
-    ],
+    description: '用 Hot Now 隨時掌握熱門話題，包含 PTT、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+    keywords: ['PTT', 'YouTube', 'Bahamut', 'Komica', 'Google Trends', 'BBC', '熱門', '趨勢', '整合', '台灣', '討論區'],
     authors: [{ name: 'Hot Now' }],
     creator: 'Hot Now',
     publisher: 'Hot Now',
@@ -56,7 +42,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Hot Now｜熱門話題一把抓',
         description:
-            '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+            '用 Hot Now 隨時掌握熱門話題，包含 PTT、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
         url: 'https://hotnow.garylin.dev',
         siteName: 'Hot Now',
         locale: 'zh_TW',
@@ -74,7 +60,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Hot Now｜熱門話題一把抓',
         description:
-            '用 Hot Now 隨時掌握熱門話題，包含 PTT、Reddit、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
+            '用 Hot Now 隨時掌握熱門話題，包含 PTT、YouTube、BBC、巴哈姆特、Komica、Google 趨勢等平台的熱門內容。',
         images: ['/favicons/android-chrome-512x512.png'],
         creator: '@hotnow',
         site: '@hotnow',
@@ -146,14 +132,12 @@ export default function RootLayout({
     return (
         <html lang="zh-TW" suppressHydrationWarning>
             <body className={cn('flex min-h-screen flex-col antialiased', geistSans.variable, geistMono.variable)}>
-                <QueryProvider>
-                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                        <Header />
-                        <main className="flex-1">{children}</main>
-                        <Footer />
-                        <Toaster />
-                    </ThemeProvider>
-                </QueryProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <Header />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                    <Toaster />
+                </ThemeProvider>
                 <GoogleAnalytics gaId={GA_ID} />
                 <IframePotMessage />
             </body>

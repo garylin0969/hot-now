@@ -32,7 +32,6 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 - **BBC** - 中文新聞（最新資訊、國際新聞）
 - **Google** - 熱搜榜（過去4小時）
 - **巴哈姆特** - 熱門話題（全站、遊戲、動漫、生活）
-- **Reddit** - 熱門文章（全站、台灣相關、中國相關）
 - **Komica(K島)** - 熱門文章
 
 ### 🔧 實用工具
@@ -63,7 +62,6 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 | **BBC**      | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
 | **Google**   | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
 | **巴哈姆特** | 官方 API         | ISR      | 60分鐘   | -        |
-| **Reddit**   | 爬蟲專案         | ISR      | 60分鐘   | 每30分鐘 |
 | **Komica**   | 爬蟲專案         | ISR      | 30分鐘   | 每30分鐘 |
 
 ### 📡 API 配額資訊
@@ -77,7 +75,7 @@ Hot Now 已在 Chrome Web Store 上架！每次開啟新分頁，都能立即瀏
 #### 其他 API
 
 - **巴哈姆特**: 使用官方 Get API
-- **PTT/BBC/Google/Reddit/Komica**: 透過爬蟲專案提供
+- **PTT/BBC/Google/Komica**: 透過爬蟲專案提供
 
 ## 🚀 快速開始
 
@@ -128,7 +126,6 @@ hot-now/
 │   │   ├── google-api.ts    # Google 趨勢 API
 │   │   ├── komica-api.ts    # Komica API
 │   │   ├── ptt-api.ts       # PTT API
-│   │   ├── reddit-api.ts    # Reddit API
 │   │   └── youtube-api.ts   # YouTube API
 │   ├── app/                  # Next.js App Router
 │   │   ├── layout.tsx       # 根布局
@@ -177,7 +174,6 @@ hot-now/
 - **BBC**: 中文新聞最新資訊
 - **Google**: 4小時內熱搜關鍵字
 - **巴哈姆特**: 多板塊熱門話題
-- **Reddit**: 多版塊熱門文章
 - **Komica**: K島熱門討論
 
 ### 自訂超連結
@@ -219,18 +215,9 @@ pnpm format:check
 - 背景更新資料，確保內容新鮮度
 - 大幅降低 API 請求頻率
 
-### Reddit 特殊處理
-
-Reddit API 會遇到 403 或 429 錯誤，因此改用爬蟲資料：
-
-- 使用 ISR 策略，伺服器端獲取資料
-- 60分鐘快取時間
-- 避免 API 請求限制問題
-- 原 axois、useQuery 邏輯先保留但未用到
-
 ### 爬蟲資料整合
 
-部分平台（PTT、BBC、Google、Reddit、Komica）透過獨立的爬蟲專案提供資料：
+部分平台（PTT、BBC、Google、Komica）透過獨立的爬蟲專案提供資料：
 
 - 避免直接爬取造成的不穩定
 - 統一的資料格式

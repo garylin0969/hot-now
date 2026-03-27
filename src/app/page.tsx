@@ -5,7 +5,6 @@ import KomicaList from '@/components/molecules/komica-list';
 import PttArticleCard from '@/components/molecules/ptt-article-card';
 import ScrollableTabsWrapper from '@/components/molecules/scrollable-tabs-wrapper';
 import GamerContent from '@/components/organisms/gamer-content';
-import RedditContent from '@/components/organisms/reddit-content';
 import Shortcuts from '@/components/organisms/shortcuts';
 import YouTubeContent from '@/components/organisms/youtube-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,11 +13,6 @@ import { GetGamerTrends } from '@/services/gamer-api';
 import { GetGoogleTrends } from '@/services/google-api';
 import { GetKomicaTrends } from '@/services/komica-api';
 import { GetPttTrends } from '@/services/ptt-api';
-import {
-    GetSimplifiedRedditAllHotTrends,
-    GetSimplifiedRedditTaiwaneseHotTrends,
-    GetSimplifiedRedditChinaIrlHotTrends,
-} from '@/services/reddit-api';
 import { GetYoutubeHotVideosWithCache, GetYoutubeHotVideosByCategory } from '@/services/youtube-api';
 
 const TABS = [
@@ -27,7 +21,6 @@ const TABS = [
     { label: 'BBC', value: 'bbc' },
     { label: 'Google', value: 'google' },
     { label: 'Gamer', value: 'gamer' },
-    { label: 'Reddit', value: 'reddit' },
     { label: 'Komica', value: 'komica' },
 ];
 
@@ -75,16 +68,9 @@ const Home = async () => {
     const komicaResponse = await GetKomicaTrends();
     const komicaTrends = komicaResponse.trends || [];
 
-    // Reddit - 獲取爬蟲資料
-    const redditAllArticles = await GetSimplifiedRedditAllHotTrends();
-    const redditTaiwaneseArticles = await GetSimplifiedRedditTaiwaneseHotTrends();
-    const redditChinaIrlArticles = await GetSimplifiedRedditChinaIrlHotTrends();
-
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="sr-only">Hot Now - 熱門話題整合平台</h1>
-            {/* Reddit 資料預載，避免TAB載入時的延遲，因為Reddit API是Client Side */}
-            {/* <RedditPrefetch /> */}
             <div className="mb-4 flex justify-center">
                 <Shortcuts />
             </div>
@@ -138,13 +124,6 @@ const Home = async () => {
                         gameTrends={gamerGameTrends}
                         acTrends={gamerAcTrends}
                         lifeTrends={gamerLifeTrends}
-                    />
-                </TabsContent>
-                <TabsContent value="reddit">
-                    <RedditContent
-                        allArticles={redditAllArticles}
-                        taiwaneseArticles={redditTaiwaneseArticles}
-                        chinaIrlArticles={redditChinaIrlArticles}
                     />
                 </TabsContent>
                 <TabsContent value="komica">
